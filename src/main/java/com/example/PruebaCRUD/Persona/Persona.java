@@ -1,10 +1,9 @@
 package com.example.PruebaCRUD.Persona;
 
+import com.example.PruebaCRUD.Sexo.Sexo;
+import com.example.PruebaCRUD.Unidad_Académica.UnidadAcademica;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 // Para decirle que es una entidad y una tabla dentro de la BD, se pone esto
 @Entity
@@ -13,23 +12,33 @@ public class Persona {
     // Si ocupamos que se ponga como id se pone @Id, si queremos que se genere automaticamente: @GeneratedValue(strategy = Generation.Type.IDENTITY)
     //@Column(unique = true)
     @Id
-    @Column(name = "curp", nullable=false)
+    @Column(name = "curp", nullable=false, length = 18)
     private String CURP;
+
     @JsonProperty("nombre")
     @Column(name = "nombre", nullable=false)
     private String Nombre;
+
     @JsonProperty("apellido_P")
     @Column(name = "apellido_p", nullable=false)
     private String Apellido_P;
+
     @JsonProperty("apellido_M")
     @Column(name = "apellido_m", nullable=false)
     private String Apellido_M;
+
+//  ############ REFERENCIAS A OTRAS TABLAS #############
+//    @Column(name = "sexo", nullable=false)
     @JsonProperty("sexo")
-    @Column(name = "sexo", nullable=false)
-    private int Sexo;
+    @ManyToOne
+    @JoinColumn(name = "idSexo", nullable = false)
+    private Sexo sexo;
+
+//    @Column(name = "id_escuela", nullable=false)
     @JsonProperty("id_Escuela")
-    @Column(name = "id_escuela", nullable=false)
-    private int Id_Escuela;
+    @ManyToOne
+    @JoinColumn(name = "id_escuela", nullable = false)
+    private UnidadAcademica unidadAcademica;
 
     public Persona() {
     }
@@ -42,21 +51,21 @@ public class Persona {
      * @param sexo Sexo de la persona
      * @param id_escuela Escuela a la que pertenece la persona
      */
-    public Persona(String CURP, String nombre, String apellido_p, String apellido_m, int sexo, int id_escuela) {
+    public Persona(String CURP, String nombre, String apellido_p, String apellido_m, Sexo sexo, UnidadAcademica unidadAcademica) {
         this.CURP = CURP;
         this.Nombre = nombre;
         this.Apellido_P = apellido_p;
         this.Apellido_M = apellido_m;
-        this.Sexo = sexo;
-        this.Id_Escuela = id_escuela;
+        this.sexo = sexo;
+        this.unidadAcademica = unidadAcademica;
     }
 
-    public Persona(String nombre, String apellido_p, String apellido_m, int sexo, int id_escuela) {
+    public Persona(String nombre, String apellido_p, String apellido_m, Sexo sexo, UnidadAcademica unidadAcademica) {
         Nombre = nombre;
         Apellido_P = apellido_p;
         Apellido_M = apellido_m;
-        Sexo = sexo;
-        Id_Escuela = id_escuela;
+        this.sexo = sexo;
+        this.unidadAcademica = unidadAcademica;
     }
 
     public String getCURP() {
@@ -91,19 +100,19 @@ public class Persona {
         Apellido_M = apellido_M;
     }
 
-    public int getSexo() {
-        return Sexo;
+    public Sexo getSexo() {
+        return sexo;
     }
 
-    public void setSexo(int sexo) {
-        Sexo = sexo;
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
     }
 
-    public int getId_Escuela() {
-        return Id_Escuela;
+    public UnidadAcademica getUnidadAcademica() {
+        return unidadAcademica;
     }
 
-    public void setId_Escuela(int id_Escuela) {
-        Id_Escuela = id_Escuela;
+    public void setUnidadAcademica(UnidadAcademica unidadAcademica) {
+        this.unidadAcademica = unidadAcademica;
     }
 }

@@ -23,6 +23,7 @@ public class PersonaController {
 
     @PostMapping
     public ResponseEntity<Object> registrarPersona(@RequestBody Persona persona) {
+
         return this.personaService.newPersona(persona);
     }
 

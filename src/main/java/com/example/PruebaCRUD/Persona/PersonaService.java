@@ -1,5 +1,9 @@
 package com.example.PruebaCRUD.Persona;
 
+import com.example.PruebaCRUD.Sexo.Sexo;
+import com.example.PruebaCRUD.Sexo.SexoRepository;
+import com.example.PruebaCRUD.Unidad_Académica.UnidadAcademica;
+import com.example.PruebaCRUD.Unidad_Académica.UnidadAcademicaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +18,16 @@ public class PersonaService {
     HashMap<String, Object> datos = new HashMap<>();
 
     private final PersonaRepository personaRepository;
+    private final SexoRepository sexoRepository;
+    private final UnidadAcademicaRepository unidadAcademicaRepository;
 
     // Con esta inyección podremos hacer el CRUD de forma directa
     @Autowired
-    public PersonaService(PersonaRepository personaRepository) {
+    public PersonaService(PersonaRepository personaRepository, SexoRepository sexoRepository,
+                          UnidadAcademicaRepository unidadAcademicaRepository) {
         this.personaRepository = personaRepository;
+        this.sexoRepository = sexoRepository;
+        this.unidadAcademicaRepository = unidadAcademicaRepository;
     }
 
     // Esto traerá un listado de todas las personas registradas en la BD
@@ -26,6 +35,9 @@ public class PersonaService {
         return this.personaRepository.findAll();
     }
 
+    /**
+    * Función para registrar una nueva persona
+    * */
     public ResponseEntity<Object> newPersona(Persona persona) {
         datos = new HashMap<>();
 
@@ -51,6 +63,34 @@ public class PersonaService {
                     HttpStatus.CONFLICT
             );
         }
+
+        Optional<Sexo> sexOpt = sexoRepository.findByNombre(persona.getSexo().getNombre());
+        if (sexOpt.isEmpty()) {
+            datos.put("Error", true);
+            datos.put("message", "El sexo proporcionado no es válido: " +
+                    persona.getSexo().getNombre());
+
+            return new ResponseEntity<>(
+                    datos,
+                    HttpStatus.CONFLICT
+            );
+        }
+        persona.setSexo(sexOpt.get());
+
+        Optional<UnidadAcademica> uaOP =
+                unidadAcademicaRepository.findByNombre(persona.getUnidadAcademica().getNombre());
+        if (uaOP.isEmpty()) {
+            datos.put("Error", true);
+            datos.put("message", "La unidad académica ingresada no existe: " +
+                    persona.getUnidadAcademica().getNombre());
+
+            return new ResponseEntity<>(
+                    datos,
+                    HttpStatus.CONFLICT
+            );
+        }
+        persona.setUnidadAcademica(uaOP.get());
+
 
         personaRepository.save(persona);
         datos.put("data", persona);
