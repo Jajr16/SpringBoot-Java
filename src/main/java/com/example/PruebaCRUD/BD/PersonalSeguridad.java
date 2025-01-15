@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "personalseguridad")
 public class PersonalSeguridad {
 
+    @Id
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "CURP", nullable = false)
     private Persona CURP;

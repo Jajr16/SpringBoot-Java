@@ -4,7 +4,7 @@ import com.example.PruebaCRUD.BD.PKCompuesta.InscripcionETSPK;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "InscripcionETS")
+@Table(name = "inscripcionets")
 public class InscripcionETS {
 
     @EmbeddedId

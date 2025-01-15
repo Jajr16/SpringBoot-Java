@@ -43,4 +43,60 @@ public class AsistenciaInscripcion {
         this.ResultadoRN = ResultadoRN;
         this.Aceptado = Aceptado;
     }
+
+    public AsistenciaInscripcionPK getId() {
+        return id;
+    }
+
+    public void setId(AsistenciaInscripcionPK id) {
+        this.id = id;
+    }
+
+    public Date getFechaAsistencia() {
+        return FechaAsistencia;
+    }
+
+    public void setFechaAsistencia(Date fechaAsistencia) {
+        FechaAsistencia = fechaAsistencia;
+    }
+
+    public InscripcionETS getBoleta() {
+        return Boleta;
+    }
+
+    public void setBoleta(InscripcionETS boleta) {
+        Boleta = boleta;
+    }
+
+    public InscripcionETS getIdETS() {
+        return idETS;
+    }
+
+    public void setIdETS(InscripcionETS idETS) {
+        this.idETS = idETS;
+    }
+
+    public boolean isAsistio() {
+        return Asistio;
+    }
+
+    public void setAsistio(boolean asistio) {
+        Asistio = asistio;
+    }
+
+    public boolean isResultadoRN() {
+        return ResultadoRN;
+    }
+
+    public void setResultadoRN(boolean resultadoRN) {
+        ResultadoRN = resultadoRN;
+    }
+
+    public boolean isAceptado() {
+        return Aceptado;
+    }
+
+    public void setAceptado(boolean aceptado) {
+        Aceptado = aceptado;
+    }
 }

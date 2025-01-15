@@ -1,7 +1,10 @@
 package com.example.PruebaCRUD.BD;
 
+import com.example.PruebaCRUD.BD.Config.PersonaConfig;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Entity
 @Table(name = "alumno")

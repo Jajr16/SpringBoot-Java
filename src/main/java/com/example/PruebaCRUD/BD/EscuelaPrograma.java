@@ -22,6 +22,14 @@ public class EscuelaPrograma {
 
     public EscuelaPrograma(){}
 
+    public EscuelaProgramaPK getId() {
+        return id;
+    }
+
+    public void setId(EscuelaProgramaPK id) {
+        this.id = id;
+    }
+
     public EscuelaPrograma(EscuelaProgramaPK id) {
         this.id = id;
     }

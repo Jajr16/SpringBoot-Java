@@ -1,5 +1,6 @@
 package com.example.PruebaCRUD.BD;
 
+import com.example.PruebaCRUD.BD.Repositories.TipoUsuarioRepository;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,13 +15,22 @@ public class Usuario {
     private String Password;
 
 //  FOREIGN KEYS
-    @Column(name = "TipoU", nullable = false)
+    @JoinColumn(name = "TipoU", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private TipoUsuario TipoU;
 
-    @Column(name = "CURP", nullable = false, length = 18)
+    @JoinColumn(name = "CURP", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Persona CURP;
+
+    public Usuario() {}
+
+    public Usuario(String usuario, String password, TipoUsuario tipoU, Persona CURP) {
+        this.usuario = usuario;
+        this.Password = password;
+        this.TipoU = tipoU;
+        this.CURP = CURP;
+    }
 
     public String getUsuario() {
         return usuario;

@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 // Para decirle que es una entidad y una tabla dentro de la BD, se pone esto
 @Entity
-@Table(name = "Persona")
+@Table(name = "persona")
 public class Persona {
     // Si ocupamos que se ponga como id se pone @Id, si queremos que se genere automaticamente: @GeneratedValue(strategy = Generation.Type.IDENTITY)
     //@Column(unique = true)
@@ -14,7 +14,7 @@ public class Persona {
     private String CURP;
 
     @JsonProperty("nombre")
-    @Column(name = "nombre", nullable=false)
+    @Column(name = "Nombre", nullable=false)
     private String Nombre;
 
     @JsonProperty("ApellidoP")
@@ -28,13 +28,13 @@ public class Persona {
 //  ############ REFERENCIAS A OTRAS TABLAS #############
 //    @Column(name = "sexo", nullable=false)
     @JsonProperty("sexo")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idSexo", nullable = false)
     private Sexo sexo;
 
 //    @Column(name = "id_escuela", nullable=false)
     @JsonProperty("idEscuela")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idEscuela", nullable = false)
     private UnidadAcademica unidadAcademica;
 
@@ -59,9 +59,9 @@ public class Persona {
     }
 
     public Persona(String nombre, String apellido_p, String apellido_m, Sexo sexo, UnidadAcademica unidadAcademica) {
-        Nombre = nombre;
-        Apellido_P = apellido_p;
-        Apellido_M = apellido_m;
+        this.Nombre = nombre;
+        this.Apellido_P = apellido_p;
+        this.Apellido_M = apellido_m;
         this.sexo = sexo;
         this.unidadAcademica = unidadAcademica;
     }

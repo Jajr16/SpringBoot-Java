@@ -3,7 +3,7 @@ package com.example.PruebaCRUD.BD;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Sexo")
+@Table(name = "sexo")
 public class Sexo {
 
     public Sexo() {}

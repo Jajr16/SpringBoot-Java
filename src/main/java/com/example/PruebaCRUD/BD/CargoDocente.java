@@ -4,7 +4,7 @@ import com.example.PruebaCRUD.BD.PKCompuesta.CargoDocentePK;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "CargoDocente")
+@Table(name = "cargodocente")
 public class CargoDocente {
 
     @EmbeddedId
