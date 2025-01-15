@@ -1,9 +1,11 @@
 package com.example.PruebaCRUD.Persona;
 
-import com.example.PruebaCRUD.Sexo.Sexo;
-import com.example.PruebaCRUD.Sexo.SexoRepository;
-import com.example.PruebaCRUD.Unidad_Académica.UnidadAcademica;
-import com.example.PruebaCRUD.Unidad_Académica.UnidadAcademicaRepository;
+import com.example.PruebaCRUD.BD.Persona;
+import com.example.PruebaCRUD.BD.Repositories.PersonaRepository;
+import com.example.PruebaCRUD.BD.Sexo;
+import com.example.PruebaCRUD.BD.Repositories.SexoRepository;
+import com.example.PruebaCRUD.BD.UnidadAcademica;
+import com.example.PruebaCRUD.BD.Repositories.UnidadAcademicaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

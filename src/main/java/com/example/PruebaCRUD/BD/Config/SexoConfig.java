@@ -1,5 +1,7 @@
-package com.example.PruebaCRUD.Sexo;
+package com.example.PruebaCRUD.BD.Config;
 
+import com.example.PruebaCRUD.BD.Sexo;
+import com.example.PruebaCRUD.BD.Repositories.SexoRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;

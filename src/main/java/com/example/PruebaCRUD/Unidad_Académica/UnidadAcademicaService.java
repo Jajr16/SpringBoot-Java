@@ -1,5 +1,7 @@
 package com.example.PruebaCRUD.Unidad_Académica;
 
+import com.example.PruebaCRUD.BD.Repositories.UnidadAcademicaRepository;
+import com.example.PruebaCRUD.BD.UnidadAcademica;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

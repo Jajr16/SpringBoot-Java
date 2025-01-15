@@ -1,5 +1,7 @@
 package com.example.PruebaCRUD.Sexo;
 
+import com.example.PruebaCRUD.BD.Repositories.SexoRepository;
+import com.example.PruebaCRUD.BD.Sexo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

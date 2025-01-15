@@ -1,5 +1,6 @@
 package com.example.PruebaCRUD.Unidad_Académica;
 
+import com.example.PruebaCRUD.BD.UnidadAcademica;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

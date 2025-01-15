@@ -1,5 +1,6 @@
-package com.example.PruebaCRUD.Persona;
+package com.example.PruebaCRUD.BD.Repositories;
 
+import com.example.PruebaCRUD.BD.Persona;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

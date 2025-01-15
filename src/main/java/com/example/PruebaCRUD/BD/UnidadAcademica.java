@@ -1,4 +1,4 @@
-package com.example.PruebaCRUD.Unidad_Académica;
+package com.example.PruebaCRUD.BD;
 
 import jakarta.persistence.*;
 

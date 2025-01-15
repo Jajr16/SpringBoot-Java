@@ -1,5 +1,6 @@
 package com.example.PruebaCRUD.Persona;
 
+import com.example.PruebaCRUD.BD.Persona;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/v1/Persona")// Indicar la ruta de a donde quieres que vaya // Esto marca la función disponible para consulta
-public class PersonaController {
+public class    PersonaController {
     private final PersonaService personaService;
 
     @Autowired // Notación para inyectar esta clase en el constructor

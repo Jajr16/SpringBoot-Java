@@ -1,6 +1,7 @@
-package com.example.PruebaCRUD.Unidad_Académica;
+package com.example.PruebaCRUD.BD.Repositories;
 
 
+import com.example.PruebaCRUD.BD.UnidadAcademica;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

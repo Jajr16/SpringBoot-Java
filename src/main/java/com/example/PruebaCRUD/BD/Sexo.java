@@ -1,4 +1,4 @@
-package com.example.PruebaCRUD.Sexo;
+package com.example.PruebaCRUD.BD;
 
 import jakarta.persistence.*;
 

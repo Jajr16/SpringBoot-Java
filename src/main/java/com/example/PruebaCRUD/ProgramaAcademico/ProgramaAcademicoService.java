@@ -1,6 +1,6 @@
 package com.example.PruebaCRUD.ProgramaAcademico;
 
-import org.springframework.http.ResponseEntity;
+import com.example.PruebaCRUD.BD.Repositories.ProgramaAcademicoRepository;
 
 import java.util.HashMap;
 // El Service es el CRUD de la clase
@@ -13,9 +13,12 @@ public class ProgramaAcademicoService {
         this.programaAcademicoRepository = programaAcademicoRepository;
     }
 
-    public ResponseEntity<Object> newProgramaAcademico(ProgramaAcademico programaAcademico) {
-        datos = new HashMap<>();
-
-        
-    }
+//    public ResponseEntity<Object> newProgramaAcademico(ProgramaAcademico programaAcademico) {
+//        datos = new HashMap<>();
+////
+////        if (programaAcademico.getId_PA()) {
+////
+////        }
+//        return "Si"
+//    }
 }

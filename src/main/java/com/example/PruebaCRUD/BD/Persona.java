@@ -1,7 +1,5 @@
-package com.example.PruebaCRUD.Persona;
+package com.example.PruebaCRUD.BD;
 
-import com.example.PruebaCRUD.Sexo.Sexo;
-import com.example.PruebaCRUD.Unidad_Académica.UnidadAcademica;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
@@ -12,19 +10,19 @@ public class Persona {
     // Si ocupamos que se ponga como id se pone @Id, si queremos que se genere automaticamente: @GeneratedValue(strategy = Generation.Type.IDENTITY)
     //@Column(unique = true)
     @Id
-    @Column(name = "curp", nullable=false, length = 18)
+    @Column(name = "CURP", nullable=false, length = 18)
     private String CURP;
 
     @JsonProperty("nombre")
     @Column(name = "nombre", nullable=false)
     private String Nombre;
 
-    @JsonProperty("apellido_P")
-    @Column(name = "apellido_p", nullable=false)
+    @JsonProperty("ApellidoP")
+    @Column(name = "ApellidoP", nullable=false)
     private String Apellido_P;
 
-    @JsonProperty("apellido_M")
-    @Column(name = "apellido_m", nullable=false)
+    @JsonProperty("ApellidoM")
+    @Column(name = "ApellidoM", nullable=false)
     private String Apellido_M;
 
 //  ############ REFERENCIAS A OTRAS TABLAS #############
@@ -35,9 +33,9 @@ public class Persona {
     private Sexo sexo;
 
 //    @Column(name = "id_escuela", nullable=false)
-    @JsonProperty("id_Escuela")
+    @JsonProperty("idEscuela")
     @ManyToOne
-    @JoinColumn(name = "id_escuela", nullable = false)
+    @JoinColumn(name = "idEscuela", nullable = false)
     private UnidadAcademica unidadAcademica;
 
     public Persona() {
@@ -49,7 +47,7 @@ public class Persona {
      * @param apellido_p Apellido paterno de la persona
      * @param apellido_m Apellido materno de la persona
      * @param sexo Sexo de la persona
-     * @param id_escuela Escuela a la que pertenece la persona
+     * @param unidadAcademica Escuela a la que pertenece la persona
      */
     public Persona(String CURP, String nombre, String apellido_p, String apellido_m, Sexo sexo, UnidadAcademica unidadAcademica) {
         this.CURP = CURP;

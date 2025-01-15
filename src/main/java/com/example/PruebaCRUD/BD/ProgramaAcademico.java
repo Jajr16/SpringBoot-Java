@@ -1,28 +1,28 @@
-package com.example.PruebaCRUD.ProgramaAcademico;
+package com.example.PruebaCRUD.BD;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Programa_academico")
+@Table(name = "ProgramaAcademico")
 public class ProgramaAcademico {
 
     public ProgramaAcademico() {}
 
     @Id
-    @Column(name = "Id_PA", nullable = false, length = 20)
-    private String id_PA;
+    @Column(name = "idPA", nullable = false, length = 20)
+    private String idPA;
 
-    @JsonProperty("nombre")
-    @Column(name = "nombre", nullable = false)
-    private String Nombre;
+    @JsonProperty("Nombre")
+    @Column(name = "Nombre", nullable = false)
+    private String Nombre; // Cambiado a minúscula
 
-    @JsonProperty("descripcion")
-    @Column(name = "descripcion", nullable = false)
-    private String Descripcion;
+    @JsonProperty("Descripcion")
+    @Column(name = "Descripcion", nullable = false)
+    private String Descripcion; // Cambiado a minúscula
 
     public ProgramaAcademico(String id_PA, String nombre, String descripcion) {
-        this.id_PA = id_PA;
+        this.idPA = id_PA;
         this.Nombre = nombre;
         this.Descripcion = descripcion;
     }
@@ -33,11 +33,11 @@ public class ProgramaAcademico {
     }
 
     public String getId_PA() {
-        return id_PA;
+        return idPA;
     }
 
     public void setId_PA(String id_PA) {
-        this.id_PA = id_PA;
+        this.idPA = id_PA;
     }
 
     public String getNombre() {
@@ -45,7 +45,7 @@ public class ProgramaAcademico {
     }
 
     public void setNombre(String nombre) {
-        Nombre = nombre;
+        this.Nombre = nombre;
     }
 
     public String getDescripcion() {
@@ -53,7 +53,6 @@ public class ProgramaAcademico {
     }
 
     public void setDescripcion(String descripcion) {
-        Descripcion = descripcion;
+        this.Descripcion = descripcion;
     }
 }
-
