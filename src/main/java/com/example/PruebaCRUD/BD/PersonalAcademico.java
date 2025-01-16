@@ -22,7 +22,7 @@ public class PersonalAcademico {
     private String CorreoI;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TipoPA", nullable = false)
+    @JoinColumn(name = "tipoPA", nullable = false)
     private TipoPersonal TipoPA;
 
     //    ================= RELACIONES INVERSAS CON OTRAS TABLAS ========================

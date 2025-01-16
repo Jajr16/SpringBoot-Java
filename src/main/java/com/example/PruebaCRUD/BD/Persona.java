@@ -26,14 +26,12 @@ public class Persona {
     private String Apellido_M;
 
 //  ############ REFERENCIAS A OTRAS TABLAS #############
-    @JsonProperty("sexo")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idSexo", nullable = false)
     private Sexo sexo;
 
-    @JsonProperty("idEscuela")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idEscuela", nullable = false)
+    @JoinColumn(name = "id_Escuela", nullable = false)
     private UnidadAcademica unidadAcademica;
 
     public Persona() {

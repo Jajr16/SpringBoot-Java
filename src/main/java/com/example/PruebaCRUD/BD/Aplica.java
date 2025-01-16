@@ -12,12 +12,12 @@ public class Aplica {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("idETS")
-    @JoinColumn(name = "id_ETS", nullable = false)
+    @JoinColumn(name = "idETS", nullable = false)
     private ETS idETS;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("DocenteRFC")
-    @JoinColumn(name = "DocenteRFC", nullable = false)
+    @JoinColumn(name = "RFC", nullable = false)
     private PersonalAcademico DocenteRFC;
 
     @Column(name = "Titular", nullable = false)

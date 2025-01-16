@@ -22,7 +22,6 @@ public class UnidadAcademica {
     private List<EscuelaPrograma> detailsUA;
 
 
-
     public UnidadAcademica (int idEscuela, String nombre) {
         this.id_Escuela = idEscuela;
         this.nombre = nombre;

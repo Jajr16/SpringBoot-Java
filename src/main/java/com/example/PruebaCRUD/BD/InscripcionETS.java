@@ -24,7 +24,7 @@ public class InscripcionETS {
 
 //    ================= RELACIONES INVERSAS CON OTRAS TABLAS ========================
 
-    @OneToMany(mappedBy = "Boleta", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "BoletaIns", cascade = CascadeType.PERSIST)
     private List<AsistenciaInscripcion> AsistIns;
 
     @OneToMany(mappedBy = "idETSAsisIns", cascade = CascadeType.PERSIST)

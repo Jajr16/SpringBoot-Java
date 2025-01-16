@@ -15,7 +15,7 @@ public class Usuario {
     private String Password;
 
 //  FOREIGN KEYS
-    @JoinColumn(name = "TipoU", nullable = false)
+    @JoinColumn(name = "idTU", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private TipoUsuario TipoU;
 

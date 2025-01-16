@@ -19,6 +19,7 @@ public class AlumnoConfig {
                                      PersonaRepository personaRepository,
                                      ProgramaAcademicoRepository programaAcademicoRepository) {
         return args -> {
+            System.out.println("=========== CREACIÓN DE ALUMNOS (ORDER8) ==============");
             if (alumnoRepository.count() == 0) {
                 Persona Alfredo = personaRepository.findPersonaByCURP("1").orElseGet(null);
                 Persona Ale = personaRepository.findPersonaByCURP("2").orElseGet(null);

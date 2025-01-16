@@ -18,14 +18,12 @@ import org.slf4j.LoggerFactory;
 
 @Configuration
 public class PersonaConfig {
-    private static final Logger logger = LoggerFactory.getLogger(PersonaConfig.class);
     @Bean
     @Order(5)
     CommandLineRunner initDataPersona(PersonaRepository personaRepository,
                                       SexoRepository sexoRepository,
                                       UnidadAcademicaRepository unidadAcademicaRepository) {
         return args -> {
-            logger.debug("CACACACACA...");
 
             if (personaRepository.count() == 0) {
 //                Obtener ambos sexos

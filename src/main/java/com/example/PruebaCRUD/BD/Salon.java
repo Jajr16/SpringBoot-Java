@@ -19,7 +19,7 @@ public class Salon {
     private Integer Piso;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tipoSalon", nullable = false)
+    @JoinColumn(name = "idTS", nullable = false)
     private TipoSalon tipoSalon;
 
 
