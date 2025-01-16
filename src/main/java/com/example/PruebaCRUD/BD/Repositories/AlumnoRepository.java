@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface AlumnoRepository extends JpaRepository<Alumno, String> {
-    Optional<Alumno> findByBoleta(String Bolata);
+    Optional<Alumno> findByBoleta(String Boleta);
 }

@@ -2,6 +2,8 @@ package com.example.PruebaCRUD.BD;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "unidadacademica")
 public class UnidadAcademica {
@@ -10,14 +12,19 @@ public class UnidadAcademica {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idEscuela")
-    private Integer idEscuela;
+    @Column(name = "id_Escuela")
+    private Integer id_Escuela;
 
     @Column(name = "Nombre", nullable = false, unique = true, length = 100)
     private String nombre;
 
-    public UnidadAcademica (int id_escuela, String nombre) {
-        this.idEscuela = id_escuela;
+    @OneToMany(mappedBy = "idUA", cascade = CascadeType.PERSIST)
+    private List<EscuelaPrograma> detailsUA;
+
+
+
+    public UnidadAcademica (int idEscuela, String nombre) {
+        this.id_Escuela = idEscuela;
         this.nombre = nombre;
     }
 
@@ -26,12 +33,8 @@ public class UnidadAcademica {
     }
 
     // ########## GETTERS AND SETTERS ##########
-    public Integer getId_escuela() {
-        return idEscuela;
-    }
-
-    public void setId_escuela(Integer id_escuela) {
-        this.idEscuela = id_escuela;
+    public Integer getIdEscuela() {
+        return id_Escuela;
     }
 
     public String getNombre() {
@@ -40,5 +43,17 @@ public class UnidadAcademica {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public void setIdEscuela(Integer idEscuela) {
+        this.id_Escuela = idEscuela;
+    }
+
+    public List<EscuelaPrograma> getDetailsUA() {
+        return detailsUA;
+    }
+
+    public void setDetailsUA(List<EscuelaPrograma> detailsUA) {
+        this.detailsUA = detailsUA;
     }
 }

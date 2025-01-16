@@ -15,6 +15,7 @@ public class UnidadAcademicaConfig {
     CommandLineRunner initDataUA(UnidadAcademicaRepository unidadAcademicaRepository) {
         return args -> {
             if (unidadAcademicaRepository.count() == 0) {
+                System.out.println("=========== CREACIÓN DE UNIDADES ACADEMICAS (ORDER 1) ==============");
                 unidadAcademicaRepository.save(new UnidadAcademica("ESCOM"));
                 unidadAcademicaRepository.save(new UnidadAcademica(("ESCA")));
             }

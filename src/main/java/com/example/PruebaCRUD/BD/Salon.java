@@ -2,6 +2,8 @@ package com.example.PruebaCRUD.BD;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "salon")
 public class Salon {
@@ -19,6 +21,11 @@ public class Salon {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipoSalon", nullable = false)
     private TipoSalon tipoSalon;
+
+
+    //    ================= RELACIONES INVERSAS CON OTRAS TABLAS ========================
+    @OneToMany(mappedBy = "numSalonSETS", cascade = CascadeType.PERSIST)
+    private List<SalonETS> SETSDetails;
 
     public Salon() {}
 
@@ -59,5 +66,13 @@ public class Salon {
 
     public void setTipoSalon(TipoSalon tipoSalon) {
         this.tipoSalon = tipoSalon;
+    }
+
+    public List<SalonETS> getSETSDetails() {
+        return SETSDetails;
+    }
+
+    public void setSETSDetails(List<SalonETS> SETSDetails) {
+        this.SETSDetails = SETSDetails;
     }
 }

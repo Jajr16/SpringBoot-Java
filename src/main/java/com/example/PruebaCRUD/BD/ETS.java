@@ -3,6 +3,7 @@ package com.example.PruebaCRUD.BD;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "ets")
@@ -11,7 +12,7 @@ public class ETS {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idETS", nullable = false)
-    private Integer idETS;
+    private Integer id_ETS;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idPeriodo", nullable = false)
@@ -35,6 +36,19 @@ public class ETS {
     @Column(name = "Duracion", nullable = false)
     private Integer Duracion;
 
+
+    //    ================= RELACIONES INVERSAS CON OTRAS TABLAS ========================
+//    ##### TABLA APLICA ######
+    @OneToMany(mappedBy = "idETS", cascade = CascadeType.PERSIST)
+    private List<Aplica> ETS;
+
+//    ##### TABLA INSCRIPCION ETS ####
+    @OneToMany(mappedBy = "idETSIns", cascade = CascadeType.PERSIST)
+    private List<InscripcionETS> insETS;
+//    ##### TABLA SALONETS #####
+    @OneToMany(mappedBy = "idETSSETS", cascade = CascadeType.PERSIST)
+    private List<SalonETS> ETSSETTSDetails;
+
     public ETS() {}
 
     public ETS(periodoETS idPeriodo, Turno turno, Date fecha, Integer Cupo, UnidadAprendizaje idUA, Integer duracion) {
@@ -47,11 +61,11 @@ public class ETS {
     }
 
     public Integer getIdETS() {
-        return idETS;
+        return id_ETS;
     }
 
     public void setIdETS(Integer idETS) {
-        this.idETS = idETS;
+        this.id_ETS = idETS;
     }
 
     public periodoETS getIdPeriodo() {
@@ -100,5 +114,29 @@ public class ETS {
 
     public void setDuracion(Integer duracion) {
         Duracion = duracion;
+    }
+
+    public List<Aplica> getETS() {
+        return ETS;
+    }
+
+    public void setETS(List<Aplica> ETS) {
+        this.ETS = ETS;
+    }
+
+    public List<InscripcionETS> getInsETS() {
+        return insETS;
+    }
+
+    public void setInsETS(List<InscripcionETS> insETS) {
+        this.insETS = insETS;
+    }
+
+    public List<SalonETS> getETSSETTSDetails() {
+        return ETSSETTSDetails;
+    }
+
+    public void setETSSETTSDetails(List<SalonETS> ETSSETTSDetails) {
+        this.ETSSETTSDetails = ETSSETTSDetails;
     }
 }

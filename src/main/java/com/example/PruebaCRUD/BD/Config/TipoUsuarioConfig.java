@@ -14,9 +14,9 @@ public class TipoUsuarioConfig {
     CommandLineRunner initDataTipoU(TipoUsuarioRepository tipoUsuarioRepository) {
         return args -> {
             if (tipoUsuarioRepository.count() == 0) {
-                tipoUsuarioRepository.save(new TipoUsuario("Alumno"));
-                tipoUsuarioRepository.save(new TipoUsuario("Docente"));
-                tipoUsuarioRepository.save(new TipoUsuario("Personal Seguridad"));
+                tipoUsuarioRepository.save(new TipoUsuario(1, "Alumno"));
+                tipoUsuarioRepository.save(new TipoUsuario(2, "Docente"));
+                tipoUsuarioRepository.save(new TipoUsuario(3, "Personal Seguridad"));
             }
         };
     }

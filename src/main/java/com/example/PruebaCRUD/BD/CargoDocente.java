@@ -13,12 +13,12 @@ public class CargoDocente {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("RFC")
     @JoinColumn(name = "RFC", nullable = false)
-    private PersonalAcademico RFC;
+    private PersonalAcademico RFCCD;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("idCargo")
     @JoinColumn(name = "idCargo", nullable = false)
-    private Cargo idCargo;
+    private Cargo idCargoCD;
 
     public CargoDocente() {}
 
@@ -35,18 +35,18 @@ public class CargoDocente {
     }
 
     public PersonalAcademico getRFC() {
-        return RFC;
+        return RFCCD;
     }
 
     public void setRFC(PersonalAcademico RFC) {
-        this.RFC = RFC;
+        this.RFCCD = RFC;
     }
 
     public Cargo getIdCargo() {
-        return idCargo;
+        return idCargoCD;
     }
 
     public void setIdCargo(Cargo idCargo) {
-        this.idCargo = idCargo;
+        this.idCargoCD = idCargo;
     }
 }

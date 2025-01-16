@@ -13,12 +13,12 @@ public class SalonETS {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("numSalon")
     @JoinColumn(name = "numSalon", nullable = false)
-    private Salon numSalon;
+    private Salon numSalonSETS;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("idETS")
     @JoinColumn(name = "idETS", nullable = false)
-    private ETS idETS;
+    private ETS idETSSETS;
 
     public SalonETS() {}
 
@@ -35,18 +35,18 @@ public class SalonETS {
     }
 
     public Salon getNumSalon() {
-        return numSalon;
+        return numSalonSETS;
     }
 
     public void setNumSalon(Salon numSalon) {
-        this.numSalon = numSalon;
+        this.numSalonSETS = numSalon;
     }
 
     public ETS getIdETS() {
-        return idETS;
+        return idETSSETS;
     }
 
     public void setIdETS(ETS idETS) {
-        this.idETS = idETS;
+        this.idETSSETS = idETS;
     }
 }

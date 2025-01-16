@@ -1,5 +1,6 @@
 package com.example.PruebaCRUD.BD.PKCompuesta;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
@@ -7,7 +8,11 @@ import java.util.Objects;
 
 @Embeddable
 public class AplicaPK implements Serializable {
+
+    @Column(name = "idETS")
     private Integer idETS;
+
+    @Column(name = "DocenteRFC")
     private String DocenteRFC;
 
     public Integer getIdETS() {

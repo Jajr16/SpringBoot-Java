@@ -3,6 +3,8 @@ package com.example.PruebaCRUD.BD;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "personalacademico")
 public class PersonalAcademico {
@@ -22,6 +24,15 @@ public class PersonalAcademico {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TipoPA", nullable = false)
     private TipoPersonal TipoPA;
+
+    //    ================= RELACIONES INVERSAS CON OTRAS TABLAS ========================
+//    ##### TABLA APLICA ####
+    @OneToMany(mappedBy = "DocenteRFC", cascade = CascadeType.PERSIST)
+    private List<Aplica> AplicaPersA;
+
+//    ##### TABLA CARGO DOCENTE ####
+    @OneToMany(mappedBy = "RFCCD", cascade = CascadeType.PERSIST)
+    private List<CargoDocente> RFCCargoDocente;
 
     public PersonalAcademico() {}
 
@@ -62,5 +73,21 @@ public class PersonalAcademico {
 
     public void setTipoPA(TipoPersonal tipoPA) {
         TipoPA = tipoPA;
+    }
+
+    public List<Aplica> getAplicaPersA() {
+        return AplicaPersA;
+    }
+
+    public void setAplicaPersA(List<Aplica> aplicaPersA) {
+        AplicaPersA = aplicaPersA;
+    }
+
+    public List<CargoDocente> getRFCCargoDocente() {
+        return RFCCargoDocente;
+    }
+
+    public void setRFCCargoDocente(List<CargoDocente> RFCCargoDocente) {
+        this.RFCCargoDocente = RFCCargoDocente;
     }
 }

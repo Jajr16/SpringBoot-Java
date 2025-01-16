@@ -13,6 +13,7 @@ public class ProgramaAcademicoConfig {
     @Order(2)
     CommandLineRunner initDataProgAcad(ProgramaAcademicoRepository programaAcademicoRepository) {
         return args -> {
+            System.out.println("=========== CREACIÓN DE PROGRAMAS ACADEMICOS (ORDER2) ==============");
             if (programaAcademicoRepository.count() == 0) {
                 programaAcademicoRepository.save(new ProgramaAcademico("ISC-2024", "Ingeniería en Sistemas Computacionales", "Descripcion1"));
                 programaAcademicoRepository.save(new ProgramaAcademico("IIA-2024", "Ingeniería en Inteligencia Artificial", "Descripcion2"));

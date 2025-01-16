@@ -14,10 +14,10 @@ public class periodoETS {
     private Integer idPeriodo;
 
     @Column(name = "Periodo", nullable = false, length = 20)
-    private String Periodo;
+    private String periodo;
 
     @Column(name = "Tipo", nullable = false)
-    private char Tipo;
+    private char tipo;
 
     @Column(name = "Fecha_Inicio", nullable = false)
     @Temporal(TemporalType.DATE)
@@ -30,8 +30,8 @@ public class periodoETS {
     public periodoETS() {}
 
     public periodoETS(String periodo, char Tipo, Date FechaI, Date FechaF) {
-        this.Periodo = periodo;
-        this.Tipo = Tipo;
+        this.periodo = periodo;
+        this.tipo = Tipo;
         this.Fecha_Inicio = FechaI;
         this.Fecha_Fin = FechaF;
     }
@@ -45,19 +45,19 @@ public class periodoETS {
     }
 
     public String getPeriodo() {
-        return Periodo;
+        return periodo;
     }
 
     public void setPeriodo(String periodo) {
-        Periodo = periodo;
+        periodo = periodo;
     }
 
     public char getTipo() {
-        return Tipo;
+        return tipo;
     }
 
     public void setTipo(char tipo) {
-        Tipo = tipo;
+        tipo = tipo;
     }
 
     public Date getFecha_Inicio() {

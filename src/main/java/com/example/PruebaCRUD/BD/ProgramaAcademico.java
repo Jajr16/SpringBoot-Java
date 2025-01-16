@@ -3,6 +3,8 @@ package com.example.PruebaCRUD.BD;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "programaacademico")
 public class ProgramaAcademico {
@@ -15,21 +17,42 @@ public class ProgramaAcademico {
 
     @JsonProperty("Nombre")
     @Column(name = "Nombre", nullable = false)
-    private String Nombre; // Cambiado a minúscula
+    private String nombre; // Cambiado a minúscula
 
     @JsonProperty("Descripcion")
     @Column(name = "Descripcion", nullable = false)
     private String Descripcion; // Cambiado a minúscula
 
+    @OneToMany(mappedBy = "idPAcad", cascade = CascadeType.PERSIST)
+    private List<EscuelaPrograma> detailsEP;
+
+
+
     public ProgramaAcademico(String id_PA, String nombre, String descripcion) {
         this.idPA = id_PA;
-        this.Nombre = nombre;
+        this.nombre = nombre;
         this.Descripcion = descripcion;
     }
 
     public ProgramaAcademico(String nombre, String descripcion) {
-        this.Nombre = nombre;
+        this.nombre = nombre;
         this.Descripcion = descripcion;
+    }
+
+    public String getIdPA() {
+        return idPA;
+    }
+
+    public void setIdPA(String idPA) {
+        this.idPA = idPA;
+    }
+
+    public List<EscuelaPrograma> getDetailsEP() {
+        return detailsEP;
+    }
+
+    public void setDetailsEP(List<EscuelaPrograma> detailsEP) {
+        this.detailsEP = detailsEP;
     }
 
     public String getId_PA() {
@@ -41,11 +64,11 @@ public class ProgramaAcademico {
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        this.Nombre = nombre;
+        this.nombre = nombre;
     }
 
     public String getDescripcion() {

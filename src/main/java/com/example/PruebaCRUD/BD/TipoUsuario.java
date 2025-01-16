@@ -13,17 +13,17 @@ public class TipoUsuario {
     private Integer idTU;
 
     @Column(name = "Tipo", nullable = false, length = 18)
-    private String Tipo;
+    private String tipo;
 
     public TipoUsuario(){}
 
     public TipoUsuario(Integer idTU, String Tipo) {
         this.idTU = idTU;
-        this.Tipo = Tipo;
+        this.tipo = Tipo;
     }
 
     public TipoUsuario(String Tipo) {
-        this.Tipo = Tipo;
+        this.tipo = Tipo;
     }
 
     public Integer getIdTU() {
@@ -35,10 +35,10 @@ public class TipoUsuario {
     }
 
     public String getTipo() {
-        return Tipo;
+        return tipo;
     }
 
     public void setTipo(String tipo) {
-        Tipo = tipo;
+        tipo = tipo;
     }
 }

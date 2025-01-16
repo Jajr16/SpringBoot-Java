@@ -6,13 +6,15 @@ import jakarta.persistence.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 @Entity
 @Table(name = "alumno")
 public class Alumno {
 //    COLUMNS
     @Id
     @Column(name = "Boleta", nullable = false, length = 15)
-    private String Boleta;
+    private String boleta;
 
     @JsonProperty("CorreoI")
     @Column(name = "CorreoI", nullable = false, length = 100)
@@ -32,10 +34,15 @@ public class Alumno {
     @JoinColumn(name = "CURP", nullable=false)
     private Persona CURP;
 
+    //    ================= RELACIONES INVERSAS CON OTRAS TABLAS ========================
+
+    @OneToMany(mappedBy = "BoletaIns", cascade = CascadeType.PERSIST)
+    private List<InscripcionETS> inscETSAl;
+
     public Alumno() {}
 
     public Alumno(String Boleta, Persona CURP, String CorreoI, ProgramaAcademico idPA, String imagenCredencial) {
-        this.Boleta = Boleta;
+        this.boleta = Boleta;
         this.CURP = CURP;
         this.CorreoI = CorreoI;
         this.idPA = idPA;
@@ -43,18 +50,18 @@ public class Alumno {
     }
 
     public Alumno(String Boleta, Persona CURP, String CorreoI, ProgramaAcademico idPA) {
-        this.Boleta = Boleta;
+        this.boleta = Boleta;
         this.CURP = CURP;
         this.CorreoI = CorreoI;
         this.idPA = idPA;
     }
 
     public String getBoleta() {
-        return Boleta;
+        return boleta;
     }
 
     public void setBoleta(String boleta) {
-        Boleta = boleta;
+        boleta = boleta;
     }
 
     public String getCorreoI() {
@@ -87,5 +94,13 @@ public class Alumno {
 
     public void setCURP(Persona CURP) {
         this.CURP = CURP;
+    }
+
+    public List<InscripcionETS> getInscETSAl() {
+        return inscETSAl;
+    }
+
+    public void setInscETSAl(List<InscripcionETS> inscETSAl) {
+        this.inscETSAl = inscETSAl;
     }
 }

@@ -18,13 +18,13 @@ public class AsistenciaInscripcion {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("InscripcionETSBoleta")
-    @JoinColumn(name = "InscripcionETSBoleta", nullable = false)
+    @JoinColumn(name = "BoletaIns", nullable = false)
     private InscripcionETS Boleta;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("InscripcionETSIdETS")
-    @JoinColumn(name = "InscripcionETSIdETS", nullable = false)
-    private InscripcionETS idETS;
+    @JoinColumn(name = "idETSIns", nullable = false)
+    private InscripcionETS idETSAsisIns;
 
     @Column(name = "Asistio", nullable = false)
     private boolean Asistio;
@@ -69,14 +69,14 @@ public class AsistenciaInscripcion {
     }
 
     public InscripcionETS getIdETS() {
-        return idETS;
+        return idETSAsisIns;
     }
 
     public void setIdETS(InscripcionETS idETS) {
-        this.idETS = idETS;
+        this.idETSAsisIns = idETS;
     }
 
-    public boolean isAsistio() {
+    public boolean isAssistio() {
         return Asistio;
     }
 

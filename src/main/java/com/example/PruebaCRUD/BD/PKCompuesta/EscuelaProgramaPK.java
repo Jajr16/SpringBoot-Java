@@ -1,13 +1,19 @@
 package com.example.PruebaCRUD.BD.PKCompuesta;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 public class EscuelaProgramaPK implements Serializable {
+
+    @Column(name = "idEscuela")
     private Integer idEscuela;
+
+    @Column(name = "idPA")
     private String idPA;
 
     public Integer getIdEscuela() {

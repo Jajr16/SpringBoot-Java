@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface EscuelaProgramaRepository extends JpaRepository<EscuelaPrograma, EscuelaProgramaPK> {
-    List<EscuelaPrograma> findByIdEscuelaNombre(String nombre);
+    List<EscuelaPrograma> findByIdUANombre(String nombre);
 
-    List<EscuelaPrograma> findByIdPANombre(String nombre);
+    List<EscuelaPrograma> findByIdPAcadNombre(String nombre);
 
-    List<EscuelaPrograma> findByIdEscuelaNombreAndIdPANombre(String nombreEscuela, String nombrePrograma);
+    List<EscuelaPrograma> findByIdUANombreAndIdPAcadNombre(String nombreEscuela, String nombrePrograma);
 }
