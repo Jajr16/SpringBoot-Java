@@ -22,20 +22,21 @@ public class InscripcionETS {
     @JoinColumn(name = "idETS", nullable = false)
     private ETS idETSIns;
 
-//    ================= RELACIONES INVERSAS CON OTRAS TABLAS ========================
 
-    @OneToMany(mappedBy = "BoletaIns", cascade = CascadeType.PERSIST)
-    private List<AsistenciaInscripcion> AsistIns;
+    //    ================= RELACIONES INVERSAS CON OTRAS TABLAS ========================
 
-    @OneToMany(mappedBy = "idETSAsisIns", cascade = CascadeType.PERSIST)
-    private List<AsistenciaInscripcion> ETSAsisIns;
+    @OneToMany(mappedBy = "inscripcionETS", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AsistenciaInscripcion> asistencias;
 
+    // Constructor vacío
     public InscripcionETS() {}
 
+    // Constructor con ID
     public InscripcionETS(InscripcionETSPK id) {
         this.id = id;
     }
 
+    // Getters y Setters
     public InscripcionETSPK getId() {
         return id;
     }
@@ -44,35 +45,27 @@ public class InscripcionETS {
         this.id = id;
     }
 
-    public Alumno getBoleta() {
+    public Alumno getAlumno() {
         return BoletaIns;
     }
 
-    public void setBoleta(Alumno boleta) {
-        BoletaIns = boleta;
+    public void setAlumno(Alumno alumno) {
+        this.BoletaIns = alumno;
     }
 
-    public ETS getIdETS() {
+    public ETS getEts() {
         return idETSIns;
     }
 
-    public void setIdETS(ETS idETS) {
-        this.idETSIns = idETS;
+    public void setEts(ETS ets) {
+        this.idETSIns = ets;
     }
 
-    public List<AsistenciaInscripcion> getAsistIns() {
-        return AsistIns;
+    public List<AsistenciaInscripcion> getAsistencias() {
+        return asistencias;
     }
 
-    public void setAsistIns(List<AsistenciaInscripcion> asistIns) {
-        AsistIns = asistIns;
-    }
-
-    public List<AsistenciaInscripcion> getETSAsisIns() {
-        return ETSAsisIns;
-    }
-
-    public void setETSAsisIns(List<AsistenciaInscripcion> idETSAsisIns) {
-        this.ETSAsisIns = idETSAsisIns;
+    public void setAsistencias(List<AsistenciaInscripcion> asistencias) {
+        this.asistencias = asistencias;
     }
 }

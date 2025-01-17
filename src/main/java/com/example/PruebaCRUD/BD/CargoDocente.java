@@ -17,7 +17,7 @@ public class CargoDocente {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("idCargo")
-    @JoinColumn(name = "idCargo", nullable = false)
+    @JoinColumn(name = "id_cargo", nullable = false)
     private Cargo idCargoCD;
 
     public CargoDocente() {}

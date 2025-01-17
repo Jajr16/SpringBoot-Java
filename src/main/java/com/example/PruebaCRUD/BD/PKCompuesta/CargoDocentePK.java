@@ -12,7 +12,7 @@ public class CargoDocentePK implements Serializable {
     @Column(name = "RFC")
     private String RFC;
 
-    @Column(name = "idCargo")
+    @Column(name = "id_cargo")
     private Integer idCargo;
 
     public String getRFC() {

@@ -17,7 +17,7 @@ public class Aplica {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("DocenteRFC")
-    @JoinColumn(name = "RFC", nullable = false)
+    @JoinColumn(name = "Docente_RFC", nullable = false)
     private PersonalAcademico DocenteRFC;
 
     @Column(name = "Titular", nullable = false)

@@ -2,6 +2,8 @@ package com.example.PruebaCRUD.BD.PKCompuesta;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,13 +13,14 @@ import java.util.Objects;
 public class AsistenciaInscripcionPK implements Serializable {
 
     @Column(name = "FechaAsistencia")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date FechaAsistencia;
 
-    @Column(name = "InscripcionETSBoleta")
-    private String InscripcionETSBoleta;
+    @Column(name = "inscripcionets_boleta")
+    private String inscripcionETSBoleta;
 
-    @Column(name = "InscripcionETSIdETS")
-    private Integer InscripcionETSIdETS;
+    @Column(name = "inscripcionets_idets")
+    private Integer inscripcionETSIdETS;
 
     public Date getFechaAsistencia() {
         return FechaAsistencia;
@@ -28,19 +31,19 @@ public class AsistenciaInscripcionPK implements Serializable {
     }
 
     public String getInscripcionETSBoleta() {
-        return InscripcionETSBoleta;
+        return inscripcionETSBoleta;
     }
 
     public void setInscripcionETSBoleta(String inscripcionETSBoleta) {
-        InscripcionETSBoleta = inscripcionETSBoleta;
+        this.inscripcionETSBoleta = inscripcionETSBoleta;
     }
 
     public Integer getInscripcionETSIdETS() {
-        return InscripcionETSIdETS;
+        return inscripcionETSIdETS;
     }
 
     public void setInscripcionETSIdETS(Integer inscripcionETSIdETS) {
-        InscripcionETSIdETS = inscripcionETSIdETS;
+        this.inscripcionETSIdETS = inscripcionETSIdETS;
     }
 
     @Override
@@ -49,12 +52,12 @@ public class AsistenciaInscripcionPK implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         AsistenciaInscripcionPK that = (AsistenciaInscripcionPK) o;
         return Objects.equals(FechaAsistencia, that.FechaAsistencia)
-                && Objects.equals(InscripcionETSBoleta, that.InscripcionETSBoleta)
-                && Objects.equals(InscripcionETSIdETS, that.InscripcionETSIdETS);
+                && Objects.equals(inscripcionETSBoleta, that.inscripcionETSBoleta)
+                && Objects.equals(inscripcionETSIdETS, that.inscripcionETSIdETS);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(FechaAsistencia, InscripcionETSBoleta, InscripcionETSIdETS);
+        return Objects.hash(FechaAsistencia, inscripcionETSBoleta, inscripcionETSIdETS);
     }
 }

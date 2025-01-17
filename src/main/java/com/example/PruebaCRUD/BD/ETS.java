@@ -19,7 +19,7 @@ public class ETS {
     private periodoETS idPeriodo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idTurno", nullable = false)
+    @JoinColumn(name = "turno", nullable = false)
     private Turno Turno;
 
     @Column(name = "Fecha", nullable = false)

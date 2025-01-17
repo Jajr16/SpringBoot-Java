@@ -12,7 +12,7 @@ public class SalonETS {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("numSalon")
-    @JoinColumn(name = "numSalon", nullable = false)
+    @JoinColumn(name = "num_salon", nullable = false)
     private Salon numSalonSETS;
 
     @ManyToOne(fetch = FetchType.LAZY)

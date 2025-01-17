@@ -12,11 +12,11 @@ public class PersonalSeguridad {
     private Persona CURP;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idTurno", nullable = false)
+    @JoinColumn(name = "turno", nullable = false)
     private Turno Turno;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idCargo", nullable = false)
+    @JoinColumn(name = "cargo", nullable = false)
     private CargoPS Cargo;
 
     public PersonalSeguridad() {}

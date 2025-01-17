@@ -11,25 +11,18 @@ public class AsistenciaInscripcion {
     @EmbeddedId
     private AsistenciaInscripcionPK id;
 
-    @MapsId("FechaAsistencia")
-    @Column(name = "FechaAsistencia", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date FechaAsistencia;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("InscripcionETSBoleta")
-    @JoinColumn(name = "Boleta", nullable = false)
-    private InscripcionETS BoletaIns;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("InscripcionETSIdETS")
-    @JoinColumn(name = "idETS", nullable = false)
-    private InscripcionETS idETSAsisIns;
+    @MapsId("inscripcionETS") // Relacionamos el campo compuesto
+    @JoinColumns({
+            @JoinColumn(name = "inscripcionets_boleta", referencedColumnName = "Boleta", nullable = false),
+            @JoinColumn(name = "inscripcionets_idets", referencedColumnName = "idETS", nullable = false)
+    })
+    private InscripcionETS inscripcionETS;
 
     @Column(name = "Asistio", nullable = false)
     private boolean Asistio;
 
-    @Column(name = "ResultadoRN", nullable = false)
+    @Column(name = "resultado_rn", nullable = false)
     private boolean ResultadoRN;
 
     @Column(name = "Aceptado", nullable = false)
@@ -52,31 +45,15 @@ public class AsistenciaInscripcion {
         this.id = id;
     }
 
-    public Date getFechaAsistencia() {
-        return FechaAsistencia;
+    public InscripcionETS getInscripcionETS() {
+        return inscripcionETS;
     }
 
-    public void setFechaAsistencia(Date fechaAsistencia) {
-        FechaAsistencia = fechaAsistencia;
+    public void setInscripcionETS(InscripcionETS inscripcionETS) {
+        this.inscripcionETS = inscripcionETS;
     }
 
-    public InscripcionETS getBoleta() {
-        return BoletaIns;
-    }
-
-    public void setBoleta(InscripcionETS boleta) {
-        BoletaIns = boleta;
-    }
-
-    public InscripcionETS getIdETS() {
-        return idETSAsisIns;
-    }
-
-    public void setIdETS(InscripcionETS idETS) {
-        this.idETSAsisIns = idETS;
-    }
-
-    public boolean isAssistio() {
+    public boolean isAsistio() {
         return Asistio;
     }
 

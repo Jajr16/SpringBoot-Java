@@ -18,20 +18,20 @@ public class Persona {
     private String Nombre;
 
     @JsonProperty("ApellidoP")
-    @Column(name = "ApellidoP", nullable=false)
+    @Column(name = "Apellido_P", nullable=false)
     private String Apellido_P;
 
     @JsonProperty("ApellidoM")
-    @Column(name = "ApellidoM", nullable=false)
+    @Column(name = "Apellido_M", nullable=false)
     private String Apellido_M;
 
 //  ############ REFERENCIAS A OTRAS TABLAS #############
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idSexo", nullable = false)
+    @JoinColumn(name = "Sexo", nullable = false)
     private Sexo sexo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_Escuela", nullable = false)
+    @JoinColumn(name = "idEscuela", nullable = false)
     private UnidadAcademica unidadAcademica;
 
     public Persona() {
