@@ -3,9 +3,9 @@ package com.example.PruebaCRUD.BD.Config;
 import com.example.PruebaCRUD.BD.EscuelaPrograma;
 import com.example.PruebaCRUD.BD.PKCompuesta.EscuelaProgramaPK;
 import com.example.PruebaCRUD.BD.ProgramaAcademico;
-import com.example.PruebaCRUD.BD.Repositories.EscuelaProgramaRepository;
-import com.example.PruebaCRUD.BD.Repositories.UnidadAcademicaRepository;
-import com.example.PruebaCRUD.BD.Repositories.ProgramaAcademicoRepository;
+import com.example.PruebaCRUD.Repositories.EscuelaProgramaRepository;
+import com.example.PruebaCRUD.Repositories.UnidadAcademicaRepository;
+import com.example.PruebaCRUD.Repositories.ProgramaAcademicoRepository;
 import com.example.PruebaCRUD.BD.UnidadAcademica;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -62,23 +62,18 @@ public class EscuelaProgramaConfig {
                 reg1.setIdEscuela(ua1.getIdEscuela()); // Establece la clave foránea de la UnidadAcademica
                 reg1.setIdPA(pa1.getId_PA()); // Establece la clave foránea del ProgramaAcademico
 
-                System.out.println("Esta mierda completa es " +  + reg1.getIdEscuela() + " CON " +reg1.getIdPA());
                 EscuelaPrograma escuelaProgramareg1 = new EscuelaPrograma();
                 escuelaProgramareg1.setId(reg1);
                 escuelaProgramareg1.setIdEscuela(ua1);
                 escuelaProgramareg1.setIdPA(pa1);
-                System.out.println("AQUÍ EL PROGRAMA ACADEMICO DICE QUE ES: " + escuelaProgramareg1.getIdPA().getId_PA());
-                System.out.println("AQUÍ LA ESCUELA DICE QUE ES: " + escuelaProgramareg1.getIdEscuela().getIdEscuela());
+
                 escuelaProgramaRepository.save(escuelaProgramareg1);
 
-                System.out.println("SI LLEGA AQUÍ, LA SEGUNDA FASE");
                 EscuelaProgramaPK reg2 = new EscuelaProgramaPK();
-                System.out.println("Y ESTA MIERDA ES " + ua2.getIdEscuela());
 
 
                 reg2.setIdEscuela(ua2.getIdEscuela());
                 reg2.setIdPA(pa2.getId_PA());
-                System.out.println("Esta mierda completa es " + reg2.getIdEscuela() + "CON " +reg2.getIdPA());
 
                 EscuelaPrograma escuelaProgramareg2 = new EscuelaPrograma(reg2, ua2, pa2); // Asocia las entidades completas
                 escuelaProgramaRepository.save(escuelaProgramareg2);

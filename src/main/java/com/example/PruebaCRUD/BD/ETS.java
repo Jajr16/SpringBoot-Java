@@ -51,6 +51,16 @@ public class ETS {
 
     public ETS() {}
 
+//    public ETS(Integer idets, periodoETS idPeriodo, Turno turno, Date fecha, Integer Cupo, UnidadAprendizaje idUA, Integer duracion) {
+//        this.id_ETS = idets;
+//        this.idPeriodo = idPeriodo;
+//        this.Turno = turno;
+//        this.Fecha = fecha;
+//        this.Cupo = Cupo;
+//        this.idUA = idUA;
+//        this.Duracion = duracion;
+//    }
+
     public ETS(periodoETS idPeriodo, Turno turno, Date fecha, Integer Cupo, UnidadAprendizaje idUA, Integer duracion) {
         this.idPeriodo = idPeriodo;
         this.Turno = turno;

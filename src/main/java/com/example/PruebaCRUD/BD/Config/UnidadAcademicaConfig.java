@@ -1,7 +1,7 @@
 package com.example.PruebaCRUD.BD.Config;
 
 import com.example.PruebaCRUD.BD.UnidadAcademica;
-import com.example.PruebaCRUD.BD.Repositories.UnidadAcademicaRepository;
+import com.example.PruebaCRUD.Repositories.UnidadAcademicaRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

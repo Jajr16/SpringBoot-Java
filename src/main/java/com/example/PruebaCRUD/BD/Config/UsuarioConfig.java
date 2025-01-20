@@ -1,9 +1,9 @@
 package com.example.PruebaCRUD.BD.Config;
 
 import com.example.PruebaCRUD.BD.Persona;
-import com.example.PruebaCRUD.BD.Repositories.PersonaRepository;
-import com.example.PruebaCRUD.BD.Repositories.TipoUsuarioRepository;
-import com.example.PruebaCRUD.BD.Repositories.UsuarioRepository;
+import com.example.PruebaCRUD.Repositories.PersonaRepository;
+import com.example.PruebaCRUD.Repositories.TipoUsuarioRepository;
+import com.example.PruebaCRUD.Repositories.UsuarioRepository;
 import com.example.PruebaCRUD.BD.TipoUsuario;
 import com.example.PruebaCRUD.BD.Usuario;
 import org.springframework.boot.CommandLineRunner;
@@ -33,8 +33,8 @@ public class UsuarioConfig {
                 Persona Alfredo = personaRepository.findPersonaByCURP("1").orElseGet(null);
                 Persona Ale = personaRepository.findPersonaByCURP("2").orElseGet(null);
 
-                usuarioRepository.save(new Usuario("2022630467", "$2b$12$KejElPRgHbWDWF2BmlukSOMb8rqEzhNSVBbgndRPbhU.YqdDxI8US", Alumno, Alfredo));
-                usuarioRepository.save(new Usuario("2022325410", "$2b$12$KejElPRgHbWDWF2BmlukSOMb8rqEzhNSVBbgndRPbhU.YqdDxI8US", Alumno, Ale));
+                usuarioRepository.save(new Usuario("2022630467", "$2a$06$6kdBNCvQRuFhwi4bw73aD.KThSE74J6/O2D3fuTBI6EtHjhuu4RCm", Alumno, Alfredo));
+                usuarioRepository.save(new Usuario("2022325410", "$2a$06$6kdBNCvQRuFhwi4bw73aD.KThSE74J6/O2D3fuTBI6EtHjhuu4RCm", Alumno, Ale));
             }
         };
     }

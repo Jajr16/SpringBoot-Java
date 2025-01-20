@@ -4,7 +4,7 @@ import com.example.PruebaCRUD.BD.periodoETS;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import com.example.PruebaCRUD.BD.Repositories.periodoETSRepository;
+import com.example.PruebaCRUD.Repositories.periodoETSRepository;
 import org.springframework.core.annotation.Order;
 
 import java.text.SimpleDateFormat;

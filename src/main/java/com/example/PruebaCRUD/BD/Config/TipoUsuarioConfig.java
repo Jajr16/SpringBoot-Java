@@ -1,6 +1,6 @@
 package com.example.PruebaCRUD.BD.Config;
 
-import com.example.PruebaCRUD.BD.Repositories.TipoUsuarioRepository;
+import com.example.PruebaCRUD.Repositories.TipoUsuarioRepository;
 import com.example.PruebaCRUD.BD.TipoUsuario;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

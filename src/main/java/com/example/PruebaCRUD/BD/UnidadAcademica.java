@@ -18,8 +18,8 @@ public class UnidadAcademica {
     @Column(name = "Nombre", nullable = false, unique = true, length = 100)
     private String nombre;
 
-    @OneToMany(mappedBy = "idUA", cascade = CascadeType.PERSIST)
-    private List<EscuelaPrograma> detailsUA;
+//    @OneToMany(mappedBy = "idUA", cascade = CascadeType.PERSIST)
+//    private List<EscuelaPrograma> detailsUA;
 
 
     public UnidadAcademica (int idEscuela, String nombre) {
@@ -48,11 +48,11 @@ public class UnidadAcademica {
         this.id_Escuela = idEscuela;
     }
 
-    public List<EscuelaPrograma> getDetailsUA() {
-        return detailsUA;
-    }
-
-    public void setDetailsUA(List<EscuelaPrograma> detailsUA) {
-        this.detailsUA = detailsUA;
-    }
+//    public List<EscuelaPrograma> getDetailsUA() {
+//        return detailsUA;
+//    }
+//
+//    public void setDetailsUA(List<EscuelaPrograma> detailsUA) {
+//        this.detailsUA = detailsUA;
+//    }
 }

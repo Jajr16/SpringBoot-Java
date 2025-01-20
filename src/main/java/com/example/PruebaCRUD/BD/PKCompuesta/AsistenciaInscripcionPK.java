@@ -12,7 +12,7 @@ import java.util.Objects;
 @Embeddable
 public class AsistenciaInscripcionPK implements Serializable {
 
-    @Column(name = "FechaAsistencia")
+    @Column(name = "fecha_asistencia")
     @Temporal(TemporalType.TIMESTAMP)
     private Date FechaAsistencia;
 

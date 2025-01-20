@@ -13,15 +13,12 @@ public class Persona {
     @Column(name = "CURP", nullable=false, length = 18)
     private String CURP;
 
-    @JsonProperty("nombre")
     @Column(name = "Nombre", nullable=false)
     private String Nombre;
 
-    @JsonProperty("ApellidoP")
     @Column(name = "Apellido_P", nullable=false)
     private String Apellido_P;
 
-    @JsonProperty("ApellidoM")
     @Column(name = "Apellido_M", nullable=false)
     private String Apellido_M;
 

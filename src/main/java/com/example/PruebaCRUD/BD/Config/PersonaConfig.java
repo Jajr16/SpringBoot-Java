@@ -1,9 +1,9 @@
 package com.example.PruebaCRUD.BD.Config;
 
 import com.example.PruebaCRUD.BD.Persona;
-import com.example.PruebaCRUD.BD.Repositories.PersonaRepository;
-import com.example.PruebaCRUD.BD.Repositories.SexoRepository;
-import com.example.PruebaCRUD.BD.Repositories.UnidadAcademicaRepository;
+import com.example.PruebaCRUD.Repositories.PersonaRepository;
+import com.example.PruebaCRUD.Repositories.SexoRepository;
+import com.example.PruebaCRUD.Repositories.UnidadAcademicaRepository;
 import com.example.PruebaCRUD.BD.Sexo;
 import com.example.PruebaCRUD.BD.UnidadAcademica;
 import org.springframework.boot.CommandLineRunner;
@@ -12,9 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
 import java.util.List;
-import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Configuration
 public class PersonaConfig {

@@ -12,13 +12,17 @@ public class Turno {
     private Integer idTurno;
 
     @Column(name = "Nombre", nullable = false, length = 10)
-    private String Nombre;
+    private String nombre;
 
     public Turno() {}
 
     public Turno(Integer IdTurno, String Nombre) {
         this.idTurno = IdTurno;
-        this.Nombre = Nombre;
+        this.nombre = Nombre;
+    }
+
+    public Turno(String Nombre) {
+        this.nombre = Nombre;
     }
 
     public Integer getIdTurno() {
@@ -30,10 +34,10 @@ public class Turno {
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        Nombre = nombre;
+        this.nombre = nombre;
     }
 }

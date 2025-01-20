@@ -1,6 +1,5 @@
 package com.example.PruebaCRUD.BD;
 
-import com.example.PruebaCRUD.BD.Repositories.TipoUsuarioRepository;
 import jakarta.persistence.*;
 
 @Entity
