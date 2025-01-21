@@ -9,7 +9,7 @@ import java.util.Date;
 public class periodoETS {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idPeriodo", nullable = false)
     private Integer idPeriodo;
 

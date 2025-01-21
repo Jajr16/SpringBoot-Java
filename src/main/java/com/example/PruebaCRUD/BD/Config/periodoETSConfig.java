@@ -23,7 +23,7 @@ public class periodoETSConfig {
                 Date fechaInicio = dateFormat.parse("2024-10-04");
                 Date fechaFin = dateFormat.parse("2024-12-10");
 
-                pETSRepository.save(new periodoETS("2023", 'O', fechaInicio, fechaFin));
+                pETSRepository.save(new periodoETS("25/1", 'O', fechaInicio, fechaFin));
             }
         };
     }

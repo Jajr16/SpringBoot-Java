@@ -11,7 +11,7 @@ public class UnidadAcademica {
     public UnidadAcademica() {}
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_Escuela")
     private Integer id_Escuela;
 

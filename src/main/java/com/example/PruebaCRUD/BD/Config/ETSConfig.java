@@ -29,7 +29,7 @@ public class ETSConfig {
                 Turno Matutino = turnoRepository.findByNombre("Matutino").orElse(null);
                 Turno Vespertino = turnoRepository.findByNombre("Vespertino").orElse(null);
 
-                periodoETS periodo = periodoETSRepository.findByPeriodoAndTipo("2023", 'O').orElse(null);
+                periodoETS periodo = periodoETSRepository.findByPeriodoAndTipo("25/1", 'O').orElse(null);
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 Date fecha = dateFormat.parse("2024-10-04");

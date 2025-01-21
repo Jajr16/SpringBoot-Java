@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Turno {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idTurno", nullable = false)
     private Integer idTurno;
 
