@@ -18,7 +18,6 @@ public class LoginController {
 
     @PostMapping
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO request) {
-        System.out.println("AQUÍ DEBE DE SER " + request);
         LoginResponseDTO response = loginService.login(request.getUsuario(), request.getPassword());
         System.out.println(response);
         if (response.getError_Code() != 0) {

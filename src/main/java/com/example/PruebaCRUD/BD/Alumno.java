@@ -36,7 +36,7 @@ public class Alumno {
 
     //    ================= RELACIONES INVERSAS CON OTRAS TABLAS ========================
 
-    @OneToMany(mappedBy = "BoletaIns", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "boletaIns", cascade = CascadeType.PERSIST)
     private List<InscripcionETS> inscETSAl;
 
     public Alumno() {}

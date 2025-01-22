@@ -15,7 +15,7 @@ public class InscripcionETS {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("Boleta")
     @JoinColumn(name = "Boleta", nullable = false)
-    private Alumno BoletaIns;
+    private Alumno boletaIns;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("idETS")
@@ -46,11 +46,11 @@ public class InscripcionETS {
     }
 
     public Alumno getAlumno() {
-        return BoletaIns;
+        return boletaIns;
     }
 
     public void setAlumno(Alumno alumno) {
-        this.BoletaIns = alumno;
+        this.boletaIns = alumno;
     }
 
     public ETS getEts() {
