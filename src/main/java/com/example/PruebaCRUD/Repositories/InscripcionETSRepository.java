@@ -13,4 +13,5 @@ public interface InscripcionETSRepository extends JpaRepository<InscripcionETS, 
     @Query(value = "SELECT * FROM ListInscripcionesETS(:boleta)", nativeQuery = true)
     List<Object[]> callListInscripcionesETS(@Param("boleta") String boleta);
 
+    boolean existsByBoletaInsBoleta(@Param("boleta") String boleta);
 }

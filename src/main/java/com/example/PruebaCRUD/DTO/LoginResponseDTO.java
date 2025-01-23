@@ -2,7 +2,7 @@ package com.example.PruebaCRUD.DTO;
 
 public class LoginResponseDTO {
     private String Usuario;
-    private Integer Error_Code;
+    private Integer Error_code;
     private String Message;
     private String Rol;
 
@@ -10,22 +10,22 @@ public class LoginResponseDTO {
 
     public LoginResponseDTO(String Usuario, Integer Error_Code, String Message, String rol) {
         this.Usuario = Usuario;
-        this.Error_Code = Error_Code;
+        this.Error_code = Error_Code;
         this.Message = Message;
         this.Rol = rol;
     }
 
     public LoginResponseDTO(Integer Error_Code, String Message) {
-        this.Error_Code = Error_Code;
+        this.Error_code = Error_Code;
         this.Message = Message;
     }
 
     public Integer getError_Code() {
-        return Error_Code;
+        return Error_code;
     }
 
     public void setError_Code(Integer error_Code) {
-        Error_Code = error_Code;
+        Error_code = error_Code;
     }
 
     public String getMessage() {
@@ -55,7 +55,7 @@ public class LoginResponseDTO {
     @Override
     public String toString() {
         return "LoginDTO{" +
-                "Error_Code=" + Error_Code +
+                "Error_Code=" + Error_code +
                 ", Message='" + Message + '\'' +
                 ", Rol='" + Rol + '\'' +
                 '}';

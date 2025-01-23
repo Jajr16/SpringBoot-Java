@@ -149,4 +149,20 @@ public class ETS {
     public void setETSSETTSDetails(List<SalonETS> ETSSETTSDetails) {
         this.ETSSETTSDetails = ETSSETTSDetails;
     }
+
+    @Override
+    public String toString() {
+        return "ETS{" +
+                "id_ETS=" + id_ETS +
+                ", idPeriodo=" + idPeriodo +
+                ", Turno=" + Turno +
+                ", Fecha=" + Fecha +
+                ", Cupo=" + Cupo +
+                ", idUA=" + idUA +
+                ", Duracion=" + Duracion +
+                ", ETS=" + ETS +
+                ", insETS=" + insETS +
+                ", ETSSETTSDetails=" + ETSSETTSDetails +
+                '}';
+    }
 }

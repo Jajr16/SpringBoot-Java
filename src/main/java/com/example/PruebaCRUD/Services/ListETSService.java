@@ -24,7 +24,6 @@ public class ListETSService {
             return new ListETSResponseDTO("Ocurrió un error inesperado.");
         }
 
-        System.out.println("AQUÍ EL RESULTADO DE LA LISTA DE ETS ES "+results);
         Object[] result = results.get(0);
         Integer idets = (int) result[0];
         String periodo = (String) result[1];
@@ -35,6 +34,10 @@ public class ListETSService {
         String fechaString = fecha.toString();
 
         return new ListETSResponseDTO(idets, periodo, turno, fechaString, materia);
+    }
+
+    public Boolean confirmInscripcion(String boleta) {
+        return inscripcionETSRepository.existsByBoletaInsBoleta(boleta);
     }
 
 }

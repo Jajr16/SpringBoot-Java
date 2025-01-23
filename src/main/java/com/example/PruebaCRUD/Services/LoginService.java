@@ -15,6 +15,7 @@ public class LoginService {
     }
 
     public LoginResponseDTO login(String username, String password) {
+        System.out.println("EL USUARIO ES " + username);
         Object[] result = (Object[]) usuarioRepository.callLoginFunction(username, password);
 
         if (result == null) {
