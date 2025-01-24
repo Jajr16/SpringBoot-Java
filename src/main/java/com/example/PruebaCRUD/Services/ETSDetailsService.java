@@ -2,6 +2,7 @@ package com.example.PruebaCRUD.Services;
 
 import com.example.PruebaCRUD.BD.ETS;
 import com.example.PruebaCRUD.DTO.DetailETSDTO;
+import com.example.PruebaCRUD.DTO.ETSDTO;
 import com.example.PruebaCRUD.DTO.SalonesDTO;
 import com.example.PruebaCRUD.Repositories.ETSRepository;
 import com.example.PruebaCRUD.Repositories.SalonETSRepository;
@@ -24,28 +25,13 @@ public class ETSDetailsService {
 
     public DetailETSDTO detallesETS(Integer ets){
         System.out.println("Consultando ETS con id: " + ets);
-        Optional<DetailETSDTO> result = etsRepository.findById_ETS(ets);
+        Optional<ETSDTO> result = etsRepository.findById_ETS(ets);
 
         if (result.isEmpty()) {
             throw new RuntimeException("No se encontraron ETS");
         }
 
-        List<SalonesDTO> Salon = salonetsRepository.findByIdETSSETS(ets);
-
-        if(Salon.isEmpty()) {
-            return new DetailETSDTO(
-                    result.get().getIdETS(),
-                    result.get().getUnidadAprendizaje(),
-                    result.get().getTipoETS(),
-                    result.get().getIdPeriodo(),
-                    result.get().getTurno(),
-                    result.get().getFecha(),
-                    result.get().getCupo(),
-                    result.get().getDuracion()
-            );
-        }
-
-        return new DetailETSDTO(
+        ETSDTO detailETS =  new ETSDTO(
                 result.get().getIdETS(),
                 result.get().getUnidadAprendizaje(),
                 result.get().getTipoETS(),
@@ -53,7 +39,17 @@ public class ETSDetailsService {
                 result.get().getTurno(),
                 result.get().getFecha(),
                 result.get().getCupo(),
-                result.get().getDuracion(),
+                result.get().getDuracion()
+        );
+
+        List<SalonesDTO> Salon = salonetsRepository.findByIdETSSETS(ets);
+
+        if(Salon.isEmpty()) {
+            return new DetailETSDTO(detailETS);
+        }
+
+        return new DetailETSDTO(
+                detailETS,
                 Salon
         );
     }

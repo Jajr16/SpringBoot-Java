@@ -1,7 +1,7 @@
 package com.example.PruebaCRUD.Repositories;
 
 import com.example.PruebaCRUD.BD.ETS;
-import com.example.PruebaCRUD.DTO.DetailETSDTO;
+import com.example.PruebaCRUD.DTO.ETSDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface ETSRepository extends JpaRepository<ETS, Integer> {
 
     @Query("""
-            SELECT new com.example.PruebaCRUD.DTO.DetailETSDTO(
+            SELECT new com.example.PruebaCRUD.DTO.ETSDTO(
               ets.id_ETS,
               uapren.Nombre,
               etsp.tipo,
@@ -28,5 +28,5 @@ public interface ETSRepository extends JpaRepository<ETS, Integer> {
           INNER JOIN Turno as turno ON turno.idTurno = ets.Turno.idTurno
           WHERE ets.id_ETS = :idets
             """)
-    Optional<DetailETSDTO> findById_ETS(Integer idets);
+    Optional<ETSDTO> findById_ETS(Integer idets);
 }

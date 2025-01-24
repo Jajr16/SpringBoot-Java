@@ -1,0 +1,101 @@
+package com.example.PruebaCRUD.DTO;
+
+public class ETSDTO {
+    private int idETS;
+    private String UnidadAprendizaje;
+    private char tipoETS;
+    private String idPeriodo;
+    private String Turno;
+    private String Fecha;
+    private Integer Cupo;
+    private Integer Duracion;
+
+    public ETSDTO(int idETS, String UnidadAprendizaje, char tipoETS, String idPeriodo, String Turno, String Fecha, Integer Cupo, Integer Duracion) {
+        this.idETS = idETS;
+        this.UnidadAprendizaje = UnidadAprendizaje;
+        this.tipoETS = tipoETS;
+        this.idPeriodo = idPeriodo;
+        this.Turno = Turno;
+        this.Fecha = Fecha;
+        this.Cupo = Cupo;
+        this.Duracion = Duracion;
+    }
+
+    public int getIdETS() {
+        return idETS;
+    }
+
+    public void setIdETS(int idETS) {
+        this.idETS = idETS;
+    }
+
+    public String getUnidadAprendizaje() {
+        return UnidadAprendizaje;
+    }
+
+    public void setUnidadAprendizaje(String unidadAprendizaje) {
+        UnidadAprendizaje = unidadAprendizaje;
+    }
+
+    public char getTipoETS() {
+        return tipoETS;
+    }
+
+    public void setTipoETS(char tipoETS) {
+        this.tipoETS = tipoETS;
+    }
+
+    public String getIdPeriodo() {
+        return idPeriodo;
+    }
+
+    public void setIdPeriodo(String idPeriodo) {
+        this.idPeriodo = idPeriodo;
+    }
+
+    public String getTurno() {
+        return Turno;
+    }
+
+    public void setTurno(String turno) {
+        Turno = turno;
+    }
+
+    public String getFecha() {
+        return Fecha;
+    }
+
+    public void setFecha(String fecha) {
+        Fecha = fecha;
+    }
+
+    public Integer getCupo() {
+        return Cupo;
+    }
+
+    public void setCupo(Integer cupo) {
+        Cupo = cupo;
+    }
+
+    public Integer getDuracion() {
+        return Duracion;
+    }
+
+    public void setDuracion(Integer duracion) {
+        Duracion = duracion;
+    }
+
+    @Override
+    public String toString() {
+        return "ETSDTO{" +
+                "idETS=" + idETS +
+                ", UnidadAprendizaje='" + UnidadAprendizaje + '\'' +
+                ", tipoETS=" + tipoETS +
+                ", idPeriodo='" + idPeriodo + '\'' +
+                ", Turno='" + Turno + '\'' +
+                ", Fecha='" + Fecha + '\'' +
+                ", Cupo=" + Cupo +
+                ", Duracion=" + Duracion +
+                '}';
+    }
+}

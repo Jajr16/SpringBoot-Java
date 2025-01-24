@@ -6,7 +6,6 @@ public class ListETSResponseDTO {
     private String Turno;
     private String Fecha;
     private String UnidadAprendizaje;
-    private String error_message;
 
     public ListETSResponseDTO() {}
 
@@ -16,10 +15,6 @@ public class ListETSResponseDTO {
         this.Turno = Turno;
         this.Fecha = Fecha;
         this.UnidadAprendizaje = UnidadAprendizaje;
-    }
-
-    public ListETSResponseDTO(String error_message) {
-        this.error_message = error_message;
     }
 
     public Integer getIdETS() {
@@ -60,14 +55,6 @@ public class ListETSResponseDTO {
 
     public void setUnidadAprendizaje(String unidadAprendizaje) {
         UnidadAprendizaje = unidadAprendizaje;
-    }
-
-    public String getError_message() {
-        return error_message;
-    }
-
-    public void setError_message(String error_message) {
-        this.error_message = error_message;
     }
 
     @Override

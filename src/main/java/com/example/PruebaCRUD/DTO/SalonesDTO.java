@@ -46,4 +46,14 @@ public class SalonesDTO {
     public void setTipoSalon(String tipoSalon) {
         this.tipoSalon = tipoSalon;
     }
+
+    @Override
+    public String toString() {
+        return "SalonesDTO{" +
+                "numSalon=" + numSalon +
+                ", Edificio=" + Edificio +
+                ", Piso=" + Piso +
+                ", tipoSalon='" + tipoSalon + '\'' +
+                '}';
+    }
 }

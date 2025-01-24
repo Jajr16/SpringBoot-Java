@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("ETS/InscripcionAlumno")
 public class ListInscripcionesController {
@@ -17,8 +19,9 @@ public class ListInscripcionesController {
     }
 
     @GetMapping("/{boleta}")
-    public ResponseEntity<ListETSResponseDTO> inscripList(@PathVariable("boleta") String boleta) {
-        ListETSResponseDTO response = this.listETSService.inscripcionesETS(boleta);
+    public ResponseEntity<List<ListETSResponseDTO>> inscripList(@PathVariable("boleta") String boleta) {
+        List<ListETSResponseDTO> response = listETSService.inscripcionesETS(boleta);
+
         return ResponseEntity.ok(response);
     }
 }

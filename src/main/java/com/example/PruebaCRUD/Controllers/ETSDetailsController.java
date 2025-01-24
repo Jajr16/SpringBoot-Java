@@ -1,6 +1,7 @@
 package com.example.PruebaCRUD.Controllers;
 
 import com.example.PruebaCRUD.DTO.DetailETSDTO;
+import com.example.PruebaCRUD.DTO.ETSDTO;
 import com.example.PruebaCRUD.Repositories.ETSRepository;
 import com.example.PruebaCRUD.Services.ETSDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
