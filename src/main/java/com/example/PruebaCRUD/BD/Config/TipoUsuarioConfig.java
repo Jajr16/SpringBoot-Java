@@ -15,7 +15,7 @@ public class TipoUsuarioConfig {
         return args -> {
             if (tipoUsuarioRepository.count() == 0) {
                 tipoUsuarioRepository.save(new TipoUsuario(1, "Alumno"));
-                tipoUsuarioRepository.save(new TipoUsuario(2, "Docente"));
+                tipoUsuarioRepository.save(new TipoUsuario(2, "Personal Academico"));
                 tipoUsuarioRepository.save(new TipoUsuario(3, "Personal Seguridad"));
             }
         };

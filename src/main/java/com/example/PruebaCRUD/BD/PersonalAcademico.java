@@ -64,7 +64,7 @@ public class PersonalAcademico {
     }
 
     public void setCorreoI(String correoI) {
-        CorreoI = correoI;
+        this.CorreoI = correoI;
     }
 
     public TipoPersonal getTipoPA() {
@@ -72,7 +72,7 @@ public class PersonalAcademico {
     }
 
     public void setTipoPA(TipoPersonal tipoPA) {
-        TipoPA = tipoPA;
+        this.TipoPA = tipoPA;
     }
 
     public List<Aplica> getAplicaPersA() {
@@ -80,7 +80,7 @@ public class PersonalAcademico {
     }
 
     public void setAplicaPersA(List<Aplica> aplicaPersA) {
-        AplicaPersA = aplicaPersA;
+        this.AplicaPersA = aplicaPersA;
     }
 
     public List<CargoDocente> getRFCCargoDocente() {

@@ -10,7 +10,6 @@ import org.springframework.core.annotation.Order;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 @Configuration
 public class periodoETSConfig {
     @Bean
@@ -20,8 +19,8 @@ public class periodoETSConfig {
             if (pETSRepository.count() == 0) {
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                Date fechaInicio = dateFormat.parse("2024-10-04");
-                Date fechaFin = dateFormat.parse("2024-12-10");
+                Date fechaInicio = dateFormat.parse("2025-02-10");
+                Date fechaFin = dateFormat.parse("2025-05-10");
 
                 pETSRepository.save(new periodoETS("25/1", 'O', fechaInicio, fechaFin));
             }

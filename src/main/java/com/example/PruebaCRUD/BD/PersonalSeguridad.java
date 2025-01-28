@@ -1,15 +1,14 @@
 package com.example.PruebaCRUD.BD;
 
+import com.example.PruebaCRUD.BD.PKCompuesta.PersonalSeguridadPK;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "personalseguridad")
 public class PersonalSeguridad {
 
-    @Id
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "CURP", nullable = false)
-    private Persona CURP;
+    @EmbeddedId
+    private PersonalSeguridadPK id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "turno", nullable = false)
@@ -21,18 +20,18 @@ public class PersonalSeguridad {
 
     public PersonalSeguridad() {}
 
-    public PersonalSeguridad(Persona CURP, Turno turno, CargoPS Cargo) {
-        this.CURP = CURP;
+    public PersonalSeguridad(PersonalSeguridadPK id, Turno turno, CargoPS Cargo) {
+        this.id = id;
         this.Turno = turno;
         this.Cargo = Cargo;
     }
 
-    public Persona getCURP() {
-        return CURP;
+    public PersonalSeguridadPK getId() {
+        return id;
     }
 
-    public void setCURP(Persona CURP) {
-        this.CURP = CURP;
+    public void setId(PersonalSeguridadPK id) {
+        this.id = id;
     }
 
     public com.example.PruebaCRUD.BD.Turno getTurno() {

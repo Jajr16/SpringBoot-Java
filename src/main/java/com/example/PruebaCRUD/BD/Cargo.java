@@ -14,7 +14,7 @@ public class Cargo {
     private Integer id_cargo;
 
     @Column(name = "Cargo", nullable = false, length = 100)
-    private String Cargo;
+    private String cargo;
 
     //    ================= RELACIONES INVERSAS CON OTRAS TABLAS ========================
     @OneToMany(mappedBy = "idCargoCD", cascade = CascadeType.PERSIST)
@@ -24,7 +24,11 @@ public class Cargo {
 
     public Cargo(Integer idCargo, String Cargo) {
         this.id_cargo = idCargo;
-        this.Cargo = Cargo;
+        this.cargo = Cargo;
+    }
+
+    public Cargo(String Cargo) {
+        this.cargo = Cargo;
     }
 
     public Integer getIdCargo() {
@@ -36,11 +40,11 @@ public class Cargo {
     }
 
     public String getCargo() {
-        return Cargo;
+        return cargo;
     }
 
     public void setCargo(String cargo) {
-        Cargo = cargo;
+        this.cargo = cargo;
     }
 
     public List<CargoDocente> getCDDetails() {

@@ -12,13 +12,17 @@ public class CargoPS {
     private Integer idCargo;
 
     @Column(name = "Nombre", nullable = false)
-    private String Nombre;
+    private String nombre;
 
     public CargoPS() {}
 
     public CargoPS(Integer idCargo, String Nombre) {
         this.idCargo = idCargo;
-        this.Nombre = Nombre;
+        this.nombre = Nombre;
+    }
+
+    public CargoPS(String Nombre) {
+        this.nombre = Nombre;
     }
 
     public Integer getIdCargo() {
@@ -30,10 +34,10 @@ public class CargoPS {
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        Nombre = nombre;
+        this.nombre = nombre;
     }
 }
