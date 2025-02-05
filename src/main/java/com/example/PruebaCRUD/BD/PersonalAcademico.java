@@ -19,7 +19,7 @@ public class PersonalAcademico {
 
     @JsonProperty("CorreoI")
     @Column(name = "CorreoI", nullable = false, length = 100)
-    private String CorreoI;
+    private String correoi;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipoPA", nullable = false)
@@ -39,7 +39,7 @@ public class PersonalAcademico {
     public PersonalAcademico(String RFC, Persona CURP, String CorreoI, TipoPersonal TipoPA) {
         this.RFC = RFC;
         this.CURP = CURP;
-        this.CorreoI = CorreoI;
+        this.correoi = CorreoI;
         this.TipoPA = TipoPA;
     }
 
@@ -60,11 +60,11 @@ public class PersonalAcademico {
     }
 
     public String getCorreoI() {
-        return CorreoI;
+        return correoi;
     }
 
     public void setCorreoI(String correoI) {
-        this.CorreoI = correoI;
+        this.correoi = correoI;
     }
 
     public TipoPersonal getTipoPA() {

@@ -1,12 +1,13 @@
 package com.example.PruebaCRUD.Services;
 
 import com.example.PruebaCRUD.BD.Persona;
+import com.example.PruebaCRUD.DTO.AlumnoDTOSaes;
+import com.example.PruebaCRUD.DTO.DocentesDTOSaes;
 import com.example.PruebaCRUD.DTO.PersonaDTO;
-import com.example.PruebaCRUD.Repositories.PersonaRepository;
+import com.example.PruebaCRUD.DTO.PersonalSeguridadDTOSaes;
+import com.example.PruebaCRUD.Repositories.*;
 import com.example.PruebaCRUD.BD.Sexo;
-import com.example.PruebaCRUD.Repositories.SexoRepository;
 import com.example.PruebaCRUD.BD.UnidadAcademica;
-import com.example.PruebaCRUD.Repositories.UnidadAcademicaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,14 +24,36 @@ public class PersonaService {
     private final PersonaRepository personaRepository;
     private final SexoRepository sexoRepository;
     private final UnidadAcademicaRepository unidadAcademicaRepository;
+    private final AlumnoRepository alumnoRepository;
+    private final DocenteRepository docenteRepository;
+    private final PersonalSeguridadRepository personalSeguridadRepository;
 
     // Con esta inyección podremos hacer el CRUD de forma directa
     @Autowired
     public PersonaService(PersonaRepository personaRepository, SexoRepository sexoRepository,
-                          UnidadAcademicaRepository unidadAcademicaRepository) {
+                          UnidadAcademicaRepository unidadAcademicaRepository,
+                          AlumnoRepository alumnoRepository, DocenteRepository docenteRepository, PersonalSeguridadRepository personalSeguridadRepository) {
         this.personaRepository = personaRepository;
         this.sexoRepository = sexoRepository;
         this.unidadAcademicaRepository = unidadAcademicaRepository;
+        this.alumnoRepository = alumnoRepository;
+        this.docenteRepository = docenteRepository;
+        this.personalSeguridadRepository = personalSeguridadRepository;
+    }
+
+    // Función para traer a todos los alumnos
+    public List<AlumnoDTOSaes> getAlumnos() {
+        return alumnoRepository.findAllAsDTO();
+    }
+
+//    Función para traer a todos los docentes
+    public List<DocentesDTOSaes> getDocentes() {
+        return docenteRepository.findDocentes();
+    }
+
+//    Función para traer a todo el personal de seguridad
+    public List<PersonalSeguridadDTOSaes> getPS() {
+        return personalSeguridadRepository.findPersonalSeguridad();
     }
 
     // Esto traerá un listado de todas las personas registradas en la BD
@@ -97,7 +120,7 @@ public class PersonaService {
 
         personaRepository.save(persona);
         datos.put("data", persona);
-        datos.put("message", "La persona fue registrado exitosamente.");
+        datos.put("message", "La persona fue registrada exitosamente.");
 
         return new ResponseEntity<>(
                 datos,
@@ -105,6 +128,9 @@ public class PersonaService {
         );
     }
 
+    /**
+    * Función para eliminar una persona
+    * */
     public ResponseEntity<Object> deletePersona(String curp) {
         datos = new HashMap<>();
 

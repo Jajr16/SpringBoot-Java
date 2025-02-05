@@ -49,7 +49,7 @@ public class periodoETS {
     }
 
     public void setPeriodo(String periodo) {
-        periodo = periodo;
+        this.periodo = periodo;
     }
 
     public char getTipo() {
@@ -57,7 +57,7 @@ public class periodoETS {
     }
 
     public void setTipo(char tipo) {
-        tipo = tipo;
+        this.tipo = tipo;
     }
 
     public Date getFecha_Inicio() {
@@ -74,5 +74,16 @@ public class periodoETS {
 
     public void setFecha_Fin(Date fecha_Fin) {
         Fecha_Fin = fecha_Fin;
+    }
+
+    @Override
+    public String toString() {
+        return "periodoETS{" +
+                "idPeriodo=" + idPeriodo +
+                ", periodo='" + periodo + '\'' +
+                ", tipo=" + tipo +
+                ", Fecha_Inicio=" + Fecha_Inicio +
+                ", Fecha_Fin=" + Fecha_Fin +
+                '}';
     }
 }

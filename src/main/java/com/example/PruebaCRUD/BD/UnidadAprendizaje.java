@@ -11,10 +11,10 @@ public class UnidadAprendizaje {
     private String idUA;
 
     @Column(name = "Nombre", nullable = false, length = 150)
-    private String Nombre;
+    private String nombre;
 
     @Column(name = "Descripcion", nullable = false, length = 200)
-    private String Descirpcion;
+    private String Descripcion;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idPA", nullable = false)
@@ -24,8 +24,8 @@ public class UnidadAprendizaje {
 
     public UnidadAprendizaje(String idUA, String nombre, String Descripcion, ProgramaAcademico idPA) {
         this.idUA = idUA;
-        this.Nombre = nombre;
-        this.Descirpcion = Descripcion;
+        this.nombre = nombre;
+        this.Descripcion = Descripcion;
         this.idPA = idPA;
     }
 
@@ -38,19 +38,19 @@ public class UnidadAprendizaje {
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        Nombre = nombre;
+        this.nombre = nombre;
     }
 
     public String getDescirpcion() {
-        return Descirpcion;
+        return Descripcion;
     }
 
     public void setDescirpcion(String descirpcion) {
-        Descirpcion = descirpcion;
+        this.Descripcion = descirpcion;
     }
 
     public ProgramaAcademico getIdPA() {

@@ -3,6 +3,7 @@ package com.example.PruebaCRUD.Services;
 import com.example.PruebaCRUD.BD.ETS;
 import com.example.PruebaCRUD.DTO.DetailETSDTO;
 import com.example.PruebaCRUD.DTO.ETSDTO;
+import com.example.PruebaCRUD.DTO.ETSDTOSaes;
 import com.example.PruebaCRUD.DTO.SalonesDTO;
 import com.example.PruebaCRUD.Repositories.ETSRepository;
 import com.example.PruebaCRUD.Repositories.SalonETSRepository;
@@ -21,6 +22,10 @@ public class ETSDetailsService {
     public ETSDetailsService(SalonETSRepository salonetsRepository, ETSRepository etsRepository) {
         this.salonetsRepository = salonetsRepository;
         this.etsRepository = etsRepository;
+    }
+
+    public List<ETSDTOSaes> detailAdminETS() {
+        return etsRepository.findETS();
     }
 
     public DetailETSDTO detallesETS(Integer ets){

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/Persona")// Indicar la ruta de a donde quieres que vaya // Esto marca la función disponible para consulta
+@RequestMapping(path = "/Persona")// Indicar la ruta de a donde quieres que vaya // Esto marca la función disponible para consulta
 public class PersonaController {
     private final PersonaService personaService;
 
@@ -26,7 +26,6 @@ public class PersonaController {
 
     @PostMapping
     public ResponseEntity<Object> registrarPersona(@RequestBody Persona persona) {
-
         return this.personaService.newPersona(persona);
     }
 
