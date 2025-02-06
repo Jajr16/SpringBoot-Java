@@ -1,7 +1,7 @@
 package com.example.PruebaCRUD.Repositories;
 
 import com.example.PruebaCRUD.BD.Alumno;
-import com.example.PruebaCRUD.DTO.AlumnoDTOSaes;
+import com.example.PruebaCRUD.DTO.Saes.AlumnoDTOSaes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,7 +14,7 @@ public interface AlumnoRepository extends JpaRepository<Alumno, String> {
     Optional<Alumno> findByBoleta(String Boleta);
 
     @Query("""
-            SELECT new com.example.PruebaCRUD.DTO.AlumnoDTOSaes(
+            SELECT new com.example.PruebaCRUD.DTO.Saes.AlumnoDTOSaes(
                 CONCAT(p.Nombre, " ", p.Apellido_P, " ", p.Apellido_M) as nombre,
                 a.boleta,
                 pa.nombre,

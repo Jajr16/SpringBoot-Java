@@ -1,8 +1,7 @@
 package com.example.PruebaCRUD.Repositories;
 
 import com.example.PruebaCRUD.BD.periodoETS;
-import com.example.PruebaCRUD.DTO.PeriodosETSProjectionSaes;
-import com.example.PruebaCRUD.DTO.TimeToETSDTO;
+import com.example.PruebaCRUD.DTO.Saes.PeriodosETSProjectionSaes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

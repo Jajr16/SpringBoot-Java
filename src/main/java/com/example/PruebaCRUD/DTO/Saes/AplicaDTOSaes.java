@@ -1,0 +1,46 @@
+package com.example.PruebaCRUD.DTO.Saes;
+
+public class AplicaDTOSaes {
+    private Integer idETS;
+    private String docenteCURP;
+    private boolean titular;
+
+    public AplicaDTOSaes(Integer idETS, String docenteCURP, boolean titular) {
+        this.idETS = idETS;
+        this.docenteCURP = docenteCURP;
+        this.titular = titular;
+    }
+
+    public Integer getIdETS() {
+        return idETS;
+    }
+
+    public void setIdETS(Integer idETS) {
+        this.idETS = idETS;
+    }
+
+    public String getDocenteCURP() {
+        return docenteCURP;
+    }
+
+    public void setDocenteCURP(String docenteCURP) {
+        this.docenteCURP = docenteCURP;
+    }
+
+    public boolean isTitular() {
+        return titular;
+    }
+
+    public void setTitular(boolean titular) {
+        this.titular = titular;
+    }
+
+    @Override
+    public String toString() {
+        return "AplicaDTOSaes{" +
+                "idETS=" + idETS +
+                ", docenteCURP='" + docenteCURP + '\'' +
+                ", titular=" + titular +
+                '}';
+    }
+}

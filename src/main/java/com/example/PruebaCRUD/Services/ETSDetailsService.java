@@ -1,9 +1,8 @@
 package com.example.PruebaCRUD.Services;
 
-import com.example.PruebaCRUD.BD.ETS;
 import com.example.PruebaCRUD.DTO.DetailETSDTO;
 import com.example.PruebaCRUD.DTO.ETSDTO;
-import com.example.PruebaCRUD.DTO.ETSDTOSaes;
+import com.example.PruebaCRUD.DTO.Saes.ETSDTOSaes;
 import com.example.PruebaCRUD.DTO.SalonesDTO;
 import com.example.PruebaCRUD.Repositories.ETSRepository;
 import com.example.PruebaCRUD.Repositories.SalonETSRepository;

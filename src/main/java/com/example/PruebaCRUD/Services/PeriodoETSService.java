@@ -1,10 +1,9 @@
 package com.example.PruebaCRUD.Services;
 
 import com.example.PruebaCRUD.BD.periodoETS;
-import com.example.PruebaCRUD.DTO.PeriodosETSProjectionSaes;
+import com.example.PruebaCRUD.DTO.Saes.PeriodosETSProjectionSaes;
 import com.example.PruebaCRUD.DTO.TimeToETSDTO;
 import com.example.PruebaCRUD.Repositories.periodoETSRepository;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

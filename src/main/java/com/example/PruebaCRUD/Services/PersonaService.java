@@ -1,10 +1,11 @@
 package com.example.PruebaCRUD.Services;
 
 import com.example.PruebaCRUD.BD.Persona;
-import com.example.PruebaCRUD.DTO.AlumnoDTOSaes;
-import com.example.PruebaCRUD.DTO.DocentesDTOSaes;
-import com.example.PruebaCRUD.DTO.PersonaDTO;
-import com.example.PruebaCRUD.DTO.PersonalSeguridadDTOSaes;
+import com.example.PruebaCRUD.DTO.*;
+import com.example.PruebaCRUD.DTO.Saes.AlumnoDTOSaes;
+import com.example.PruebaCRUD.DTO.Saes.DocentesDTOSaes;
+import com.example.PruebaCRUD.DTO.Saes.DocentesDTOToETS;
+import com.example.PruebaCRUD.DTO.Saes.PersonalSeguridadDTOSaes;
 import com.example.PruebaCRUD.Repositories.*;
 import com.example.PruebaCRUD.BD.Sexo;
 import com.example.PruebaCRUD.BD.UnidadAcademica;
@@ -49,6 +50,11 @@ public class PersonaService {
 //    Función para traer a todos los docentes
     public List<DocentesDTOSaes> getDocentes() {
         return docenteRepository.findDocentes();
+    }
+
+//    Función para traer a todos los docentes
+    public List<DocentesDTOToETS> getDocentesToETS() {
+        return docenteRepository.findDocentesToSaes();
     }
 
 //    Función para traer a todo el personal de seguridad

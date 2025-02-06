@@ -2,7 +2,7 @@ package com.example.PruebaCRUD.Repositories;
 
 import com.example.PruebaCRUD.BD.ETS;
 import com.example.PruebaCRUD.DTO.ETSDTO;
-import com.example.PruebaCRUD.DTO.ETSDTOSaes;
+import com.example.PruebaCRUD.DTO.Saes.ETSDTOSaes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -33,7 +33,7 @@ public interface ETSRepository extends JpaRepository<ETS, Integer> {
     Optional<ETSDTO> findById_ETS(Integer idets);
 
     @Query("""
-            SELECT new com.example.PruebaCRUD.DTO.ETSDTOSaes(
+            SELECT new com.example.PruebaCRUD.DTO.Saes.ETSDTOSaes(
               ets.id_ETS,
               uapren.idUA,
               uapren.nombre,

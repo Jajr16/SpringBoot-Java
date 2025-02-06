@@ -1,4 +1,4 @@
-package com.example.PruebaCRUD.DTO;
+package com.example.PruebaCRUD.DTO.Saes;
 
 public class DocentesDTOSaes {
     private String nombre;
