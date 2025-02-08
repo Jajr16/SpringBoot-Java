@@ -10,9 +10,17 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Interfaz que funcionará como la capa de persistencia entre el sistema y la base de datos.
+ * Extiende de JpaRepository (ayuda a gestionar los datos de una BD)
+ */
 @Repository
 public interface ETSRepository extends JpaRepository<ETS, Integer> {
 
+    /**
+     * En lugar de hacer la notación de findBy que nos proporciona JPA, se realiza una consulta más detallada y
+     * personalizable con las clases del proyecto
+     */
     @Query("""
             SELECT new com.example.PruebaCRUD.DTO.ETSDTO(
               ets.id_ETS,

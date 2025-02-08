@@ -9,21 +9,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Service
+  /**
+ * Clase que contendrá la lógica que para realizar las funciones principales de los endpoints
+ */
+@Service // Anotación que indica que esta clase es un servicio de negocio
 public class ListETSService {
     private final InscripcionETSRepository inscripcionETSRepository;
 
-    @Autowired
+    @Autowired // Notación que permite inyectar dependencias en este caso, InscripcionETSRepository
     public ListETSService(InscripcionETSRepository inscripcionETSRepository) {
         this.inscripcionETSRepository = inscripcionETSRepository;
     }
 
     public List<ListETSResponseDTO> inscripcionesETS(String boleta) {
         List<Object[]> results = inscripcionETSRepository.callListInscripcionesETS(boleta);
-
-//        if (results == null) {
-//            return new ListETSResponseDTO("Ocurrió un error inesperado.");
-//        }
 
         List<ListETSResponseDTO> responseList = new ArrayList<>();
 

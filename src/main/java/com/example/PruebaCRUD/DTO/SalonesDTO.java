@@ -1,11 +1,16 @@
 package com.example.PruebaCRUD.DTO;
 
+/**
+ * Clase DTO la cuál sirve para pasar o recibir datos entre un cliente y un servidor, en este caso, ayudará a pasar
+ * datos de la tabla Salon
+ */
 public class SalonesDTO {
     private Integer numSalon;
     private Integer Edificio;
     private Integer Piso;
     private String tipoSalon;
 
+    // ==================== CONSTRUCTORES =====================
     public SalonesDTO(){}
 
     public SalonesDTO(Integer numSalon, Integer Edificio, Integer piso, String tipoSalon) {
@@ -15,6 +20,7 @@ public class SalonesDTO {
         this.tipoSalon = tipoSalon;
     }
 
+    // ==================== SETTERS AND GETTERS ====================
     public Integer getNumSalon() {
         return numSalon;
     }

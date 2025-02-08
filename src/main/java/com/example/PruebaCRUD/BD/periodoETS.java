@@ -4,13 +4,17 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
-@Entity
-@Table(name = "periodoets")
+/**
+ *  Clase para crear una tabla en la base de datos
+ */
+@Entity // Notación para indicar que esta clase es una entidad (sirve para JPAQL)
+@Table(name = "periodoets") // Notación que relaciona el nombre de la tabla que se le asigna con la de la BD
 public class periodoETS {
 
-    @Id
+    @Id // Indica que es la llave primaria de la tabla
+    // Indica que esta columna se generará automáticamente (autoincrementandose)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idPeriodo", nullable = false)
+    @Column(name = "idPeriodo", nullable = false) // Notación que indica que la variable será una columna
     private Integer idPeriodo;
 
     @Column(name = "Periodo", nullable = false, length = 20)
@@ -20,13 +24,14 @@ public class periodoETS {
     private char tipo;
 
     @Column(name = "Fecha_Inicio", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.DATE) // Notación para indicarle que es una variable Date
     private Date Fecha_Inicio;
 
     @Column(name = "Fecha_Fin", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.DATE) // Notación para indicarle que es una variable Date
     private Date Fecha_Fin;
 
+    // ==================== CONSTRUCTORES =====================
     public periodoETS() {}
 
     public periodoETS(String periodo, char Tipo, Date FechaI, Date FechaF) {
@@ -36,6 +41,7 @@ public class periodoETS {
         this.Fecha_Fin = FechaF;
     }
 
+    // ==================== SETTERS AND GETTERS ====================
     public Integer getIdPeriodo() {
         return idPeriodo;
     }

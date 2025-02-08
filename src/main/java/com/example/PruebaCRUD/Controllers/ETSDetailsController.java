@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("SalonETS/")
+@RestController // Notación que defina el controlador REST (Solicitudes HTTP)
+@RequestMapping("SalonETS/") // Mapear la url a este método
 public class ETSDetailsController {
     private final ETSDetailsService etsDetailsService;
 
-    @Autowired
+    @Autowired // Notación que permite inyectar dependencias, en este caso, PeriodoETSService
     public ETSDetailsController(ETSDetailsService etsDetailsService) {
         this.etsDetailsService = etsDetailsService;
     }
 
-    @GetMapping("/{ets}")
+    @GetMapping("/{ets}") // Notación para manejar solicitudes GET
     public ResponseEntity<DetailETSDTO> detallesETS(@PathVariable("ets") Integer ets) {
         DetailETSDTO response = this.etsDetailsService.detallesETS(ets);
         return ResponseEntity.ok(response);

@@ -2,18 +2,23 @@ package com.example.PruebaCRUD.BD;
 
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "cargops")
+/**
+ *  Clase para crear una tabla en la base de datos
+ */
+@Entity // Notación para indicar que esta clase es una entidad (sirve para JPAQL)
+@Table(name = "cargops") // Notación que relaciona el nombre de la tabla que se le asigna con la de la BD
 public class CargoPS {
 
-    @Id
+    @Id // Indica que es la llave primaria de la tabla
+    // Indica que esta columna se generará automáticamente (autoincrementandose)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idCargo", nullable = false)
+    @Column(name = "idCargo", nullable = false) // Indica que la variable es una columna
     private Integer idCargo;
 
     @Column(name = "Nombre", nullable = false)
     private String nombre;
 
+    // ==================== CONSTRUCTORES =====================
     public CargoPS() {}
 
     public CargoPS(Integer idCargo, String Nombre) {
@@ -25,6 +30,7 @@ public class CargoPS {
         this.nombre = Nombre;
     }
 
+    // ==================== SETTERS AND GETTERS ====================
     public Integer getIdCargo() {
         return idCargo;
     }

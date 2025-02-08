@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
-@RequestMapping("/inscripciones")
+@RestController // Notación que defina el controlador REST (Solicitudes HTTP)
+@RequestMapping("/inscripciones") // Mapear la url a este método
 public class InscripcionesController {
     private final ListETSService listETSService;
 
-    @Autowired
+    @Autowired // Notación que permite inyectar dependencias, en este caso, PeriodoETSService
     public InscripcionesController(ListETSService listETSService) {
         this.listETSService = listETSService;
     }
 
-    @GetMapping("/confirm/{boleta}")
+    @GetMapping("/confirm/{boleta}") // Notación para manejar solicitudes GET
     public Map<String, Boolean>  confirmIns(@PathVariable("boleta") String boleta) {
         boolean message = listETSService.confirmInscripcion(boleta);
 

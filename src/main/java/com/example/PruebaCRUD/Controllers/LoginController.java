@@ -8,17 +8,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping(path = "/login")
+@RestController // Notación que defina el controlador REST (Solicitudes HTTP)
+@RequestMapping(path = "/login") // Mapear la url a este método
 public class LoginController {
     private final LoginService loginService;
 
-    @Autowired
+    @Autowired // Notación que permite inyectar dependencias, en este caso, PeriodoETSService
     public LoginController(LoginService loginService) {
         this.loginService = loginService;
     }
 
-    @PostMapping
+    @PostMapping // Notación para manejar solicitudes POST
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO request) {
         LoginResponseDTO response = loginService.login(request.getUsuario(), request.getPassword());
         System.out.println(response);

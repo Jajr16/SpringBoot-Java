@@ -6,15 +6,20 @@ import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Embeddable
-public class AplicaPK implements Serializable {
+/**
+ * Clase que auyda a construir la llave primaria de la tabla Aplica
+ */
+@Embeddable // Especifica que esta clase debe de estar incrustada en otra dentro de otra entidad
+public class AplicaPK implements Serializable { // Serializable indica que la clase se va a pasar a una base de
+    // datos externa, convirtiendose a una secuencia de bytes
 
-    @Column(name = "idETS")
+    @Column(name = "idETS") // Notación que indica que la variable será una columna
     private Integer idETS;
 
     @Column(name = "DocenteRFC")
     private String DocenteRFC;
 
+    // SETTERS AND GETTERS
     public Integer getIdETS() {
         return idETS;
     }
@@ -30,6 +35,7 @@ public class AplicaPK implements Serializable {
     public void setDocenteRFC(String docenteRFC) {
         DocenteRFC = docenteRFC;
     }
+
 
     @Override
     public boolean equals(Object o) {

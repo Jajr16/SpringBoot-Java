@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
 
-@RestController
-@RequestMapping("/ImagePDF")
+@RestController // Notación que defina el controlador REST (Solicitudes HTTP)
+@RequestMapping("/ImagePDF") // Mapear la url a este método
 public class ScrapingController {
     private final Scraping scraping = new Scraping();
 
-    @GetMapping
+    @GetMapping // Notación para manejar solicitudes GET
     public ResponseEntity<FileSystemResource> getCalendarImage() {
         try {
             // URL del sitio web y selector CSS

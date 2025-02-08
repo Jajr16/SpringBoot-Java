@@ -7,15 +7,20 @@ import jakarta.persistence.JoinColumn;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Embeddable
-public class EscuelaProgramaPK implements Serializable {
+/**
+ *  Clase que auyda a construir la llave primaria de la tabla EscuelaPrograma
+ */
+@Embeddable // Especifica que esta clase debe de estar incrustada en otra dentro de otra entidad
+public class EscuelaProgramaPK implements Serializable { // Serializable indica que la clase se va a pasar a una base de
+    // datos externa, convirtiendose a una secuencia de bytes
 
-    @Column(name = "idEscuela")
+    @Column(name = "idEscuela") // Notación que indica que la variable será una columna
     private Integer idEscuela;
 
     @Column(name = "idPA")
     private String idPA;
 
+    // SETTERS AND GETTERS
     public Integer getIdEscuela() {
         return idEscuela;
     }

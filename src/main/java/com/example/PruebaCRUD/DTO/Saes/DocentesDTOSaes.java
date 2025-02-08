@@ -1,16 +1,22 @@
 package com.example.PruebaCRUD.DTO.Saes;
 
+/**
+ * Clase DTO la cuál sirve para pasar o recibir datos entre un cliente y un servidor, en este caso, ayudará a pasar
+ * datos de la tabla PersonalAcademico (en este caso un docente)
+ */
 public class DocentesDTOSaes {
     private String nombre;
 //    private String cargo;
     private String correo;
 
+    // ==================== CONSTRUCTORES =====================
     public DocentesDTOSaes(String nombre, String correo) {
         this.nombre = nombre;
 //        this.cargo = cargo;
         this.correo = correo;
     }
 
+    // ==================== SETTERS AND GETTERS ====================
     public String getNombre() {
         return nombre;
     }

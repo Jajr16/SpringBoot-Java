@@ -5,15 +5,25 @@ import com.example.PruebaCRUD.Repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
+/**
+ * Clase que contendrá la lógica que para realizar las funciones principales de los endpoints
+ */
+@Service // Anotación que indica que esta clase es un servicio de negocio
 public class LoginService {
     private final UsuarioRepository usuarioRepository;
 
-    @Autowired
+    @Autowired // Notación que permite inyectar dependencias
     public LoginService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
 
+    /**
+     * Lógica del logeo de los usuarios en la app.
+     *
+     * @param username Nombre de usuario para el login
+     * @param password Contraseña del usuario
+     * @return LoginResponseDTO con el nombre de usuario, un mensaje y el rol del usuario
+     */
     public LoginResponseDTO login(String username, String password) {
         System.out.println("EL USUARIO ES " + username);
         Object[] result = (Object[]) usuarioRepository.callLoginFunction(username, password);

@@ -9,11 +9,15 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-@Embeddable
-public class AsistenciaInscripcionPK implements Serializable {
+/**
+ *  Clase que auyda a construir la llave primaria de la tabla AsistenciaInscripcion
+ */
+@Embeddable // Especifica que esta clase debe de estar incrustada en otra dentro de otra entidad
+public class AsistenciaInscripcionPK implements Serializable { // Serializable indica que la clase se va a pasar a una base de
+    // datos externa, convirtiendose a una secuencia de bytes
 
-    @Column(name = "fecha_asistencia")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "fecha_asistencia") // Notación que indica que la variable será una columna
+    @Temporal(TemporalType.TIMESTAMP) // Notación para indicarle que es una variable DateTime
     private Date FechaAsistencia;
 
     @Column(name = "inscripcionets_boleta")
@@ -22,6 +26,7 @@ public class AsistenciaInscripcionPK implements Serializable {
     @Column(name = "inscripcionets_idets")
     private Integer inscripcionETSIdETS;
 
+    // SETTERS AND GETTERS
     public Date getFechaAsistencia() {
         return FechaAsistencia;
     }

@@ -2,11 +2,16 @@ package com.example.PruebaCRUD.DTO;
 
 import java.util.List;
 
+/**
+ * Clase DTO la cuál sirve para pasar o recibir datos entre un cliente y un servidor, en este caso, ayudará a pasar
+ * datos para enlistar datos del ETS y del salón
+ */
 public class DetailETSDTO {
 
     private ETSDTO ets;
     private List<SalonesDTO> Salon;
 
+    // ==================== CONSTRUCTORES =====================
     public DetailETSDTO(ETSDTO ets, List<SalonesDTO> Salon) {
         this.ets = ets;
         this.Salon = Salon;
@@ -16,6 +21,7 @@ public class DetailETSDTO {
         this.ets = ets;
     }
 
+    // ==================== SETTERS AND GETTERS ====================
     public ETSDTO getEts() {
         return ets;
     }

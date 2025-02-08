@@ -1,5 +1,9 @@
 package com.example.PruebaCRUD.DTO.Saes;
 
+/**
+ * Clase DTO la cuál sirve para pasar o recibir datos entre un cliente y un servidor, en este caso, ayudará a pasar
+ * datos de la tabla ETS
+ */
 public class ETSDTOSaes {
     private int idETS;
     private String idUA;
@@ -12,6 +16,7 @@ public class ETSDTOSaes {
     private Integer duracion;
     private String programaAcademico;
 
+    // ==================== CONSTRUCTORES =====================
     public ETSDTOSaes(int idETS, String idUA, String UA, char tipoETS, String idPeriodo, String turno, String fecha,
                       Integer cupo, Integer duracion, String programaAcademico) {
         this.idETS = idETS;
@@ -26,6 +31,7 @@ public class ETSDTOSaes {
         this.programaAcademico = programaAcademico;
     }
 
+    // ==================== SETTERS AND GETTERS ====================
     public int getIdETS() {
         return idETS;
     }

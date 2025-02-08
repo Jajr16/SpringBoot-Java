@@ -1,29 +1,29 @@
 package com.example.PruebaCRUD.BD;
 
-import com.example.PruebaCRUD.BD.Config.PersonaConfig;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-@Entity
-@Table(name = "alumno")
+/**
+ *  Clase para crear una tabla en la base de datos
+ */
+@Entity // Notación para indicar que esta clase es una entidad (sirve para JPAQL)
+@Table(name = "alumno") // Notación que relaciona el nombre de la tabla que se le asigna con la de la BD
 public class Alumno {
-//    COLUMNS
-    @Id
-    @Column(name = "Boleta", nullable = false, length = 15)
+    // COLUMNS
+    @Id // Notación que indica que es una llave primaria en la BD
+    @Column(name = "Boleta", nullable = false, length = 15) // Notación que indica que la variable será una columna
     private String boleta;
 
-    @JsonProperty("CorreoI")
+    @JsonProperty("CorreoI") // Notación que indica el nombre de esta variable en un json
     @Column(name = "CorreoI", nullable = false, length = 100)
     private String CorreoI;
 
     @Column(name = "imagenCredencial", nullable = false, length = 200)
     private String imagenCredencial;
 
-//    FOREIGNKEYS
+    //    FOREIGNKEYS
     @JsonProperty("idPA")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idPA", nullable = false)
@@ -31,7 +31,7 @@ public class Alumno {
 
     @JsonProperty("CURP")
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "CURP", nullable=false)
+    @JoinColumn(name = "CURP", nullable = false)
     private Persona CURP;
 
     //    ================= RELACIONES INVERSAS CON OTRAS TABLAS ========================
@@ -39,7 +39,9 @@ public class Alumno {
     @OneToMany(mappedBy = "boletaIns", cascade = CascadeType.PERSIST)
     private List<InscripcionETS> inscETSAl;
 
-    public Alumno() {}
+    // ==================== CONSTRUCTORES =====================
+    public Alumno() {
+    }
 
     public Alumno(String Boleta, Persona CURP, String CorreoI, ProgramaAcademico idPA, String imagenCredencial) {
         this.boleta = Boleta;
@@ -56,6 +58,7 @@ public class Alumno {
         this.idPA = idPA;
     }
 
+    // ==================== GETTERS AND SETTERS ====================
     public String getBoleta() {
         return boleta;
     }

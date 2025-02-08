@@ -1,16 +1,22 @@
 package com.example.PruebaCRUD.DTO;
 
+/**
+ * Clase DTO la cuál sirve para pasar o recibir datos entre un cliente y un servidor, en este caso, ayudará a pasar
+ * datos de la tabla Persona
+ */
 public class PersonaDTO {
     private String nombre;
     private String sexo;
     private String escuela;
 
+    // ==================== CONSTRUCTORES =====================
     public PersonaDTO(String nombre, String sexo, String escuela) {
         this.nombre = nombre;
         this.sexo = sexo;
         this.escuela = escuela;
     }
 
+    // ==================== SETTERS AND GETTERS ====================
     public String getNombre() {
         return nombre;
     }

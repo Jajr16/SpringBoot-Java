@@ -18,7 +18,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Optional;
 
-@Service
+ /**
+ * Clase que contendrá la lógica que para realizar las funciones principales de los endpoints
+ */
+@Service // Anotación que indica que esta clase es un servicio de negocio
 public class ETSService {
     HashMap<String, Object> datos = new HashMap<>();
 
@@ -32,7 +35,7 @@ public class ETSService {
     private final DocenteRepository docenteRepository;
     private final PersonaRepository personaRepository;
 
-    @Autowired
+    @Autowired // Notación que permite inyectar dependencias
     public ETSService(SalonRepository salonRepository, ETSRepository etsRepository,
                       SalonETSRepository salonETSRepository, com.example.PruebaCRUD.Repositories.periodoETSRepository
                                   periodoETSRepository, TurnoRepository turnoRepository, UnidadAprendizajeRepository
@@ -49,9 +52,9 @@ public class ETSService {
         this.personaRepository = personaRepository;
     }
 
-    @Transactional
+    @Transactional // Notación que indica que si algo falla, hace un rollback a todas las transacciones ya hechas
     public ResponseEntity<Object> newETS(NewETSDTOSaes ets) throws Exception {
-        datos = new HashMap<>();
+        datos = new HashMap<>(); // Variable que contendrá los datos a devolver al cliente
 
         if (ets.getCupo() == null || ets.getFecha() == null || ets.getDuracion() == null
                 || ets.getIdPeriodo() == null
@@ -67,19 +70,24 @@ public class ETSService {
             );
         }
 
+        // Busca registros de acuerdo a cada columna indicada en findBy
         Optional<periodoETS> pets = periodoETSRepository.findById(ets.getIdPeriodo());
         Optional<Turno> turno = turnoRepository.findByNombre(ets.getTurno());
         Optional<UnidadAprendizaje> uapren = unidadAprendizajeRepository.findById(ets.getIdUA());
 
+        // Formato de fecha para operar con la BD
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate fechaDate = LocalDate.parse(ets.getFecha(), formatter);
         Date fecha = java.sql.Date.valueOf(fechaDate);
 
+        // Se crea una nueva instancia de ETS con los datos recibidos
         ETS nets = new ETS(pets.get(), turno.get(), fecha, ets.getCupo(), uapren.get(), ets.getDuracion());
 
+        // Se crea un nuevo registro de ETS
         ETS newETS = etsRepository.save(nets);
 
-        if (ets.getDocenteCURP() != null) {
+        if (ets.getDocenteCURP() != null) { // Si el docente asignado al ETS no es nulo entra aquí
+            // Busca un registro que coincida con la persona que el cliente mandó (tanto que exista como que sea docente)
             Optional<Persona> persona = personaRepository.findPersonaByCURP(AES.Desencriptar(ets.getDocenteCURP()));
             Optional<PersonalAcademico> docente = docenteRepository.findByCURP(persona.get());
 
@@ -89,21 +97,35 @@ public class ETSService {
                 return new ResponseEntity<>(datos, HttpStatus.NOT_FOUND);
             }
 
+            /**
+             * Para llevar a cabo un regsitro de una tabla con llaves foráneas y llave primaria compuesta
+             * debes de llenar todas las variables que contiene la clase principal
+             * Aplica, estos incluyen:
+             *      - AplicaPK (Instancia de otra clase)
+             *      - PersonalAcademico (Instancia de otra clase)
+             *      - ETS (Instancia de otra clase)
+             */
             AplicaPK napk = new AplicaPK();
-            napk.setDocenteRFC(docente.get().getRFC());
-            napk.setIdETS(newETS.getIdETS());
+            napk.setDocenteRFC(docente.get().getRFC()); // Se asigna el RFC
+            napk.setIdETS(newETS.getIdETS()); // Se asigna el ETS
 
+            /**
+             * Se hace la instancia de Aplica (tabla princiapl), como se mencionó, se deben de asignar todas
+             * las variables de dicha clase, las cuales son instancias de otras clases.
+             */
             Aplica newaplica = new Aplica();
             newaplica.setId(napk);
             newaplica.setDocenteRFC(docente.get());
             newaplica.setIdETS(newETS);
             newaplica.setTitular(ets.isTitular());
 
+            // Se guarda el registro anterior
             aplicaRepository.save(newaplica);
 
         }
 
-        if (ets.getSalon() != null) {
+        if (ets.getSalon() != null) {// Si el salon asignado al ETS no es nulo entra aquí
+            // Busca un registro que coincida con el salón que el cliente mandó
             Optional<Salon> salon = salonRepository.findByNumSalon(ets.getSalon());
 
             if (salon.isEmpty()) {
@@ -112,18 +134,32 @@ public class ETSService {
                 return new ResponseEntity<>(datos, HttpStatus.NOT_FOUND);
             }
 
+            /**
+             * Para llevar a cabo un regsitro de una tabla con llaves foráneas y llave primaria compuesta
+             * debes de llenar todas las variables que contiene la clase princiapl
+             * SalonETS, estos incluyen:
+             *      - SalonETSPK (Instancia de otra clase)
+             *      - Salon (Instancia de otra clase)
+             *      - ETS (Instancia de otra clase)
+             */
             SalonETSPK setspk = new SalonETSPK();
             setspk.setIdETS(newETS.getIdETS());
             setspk.setNumSalon(salon.get().getNumSalon());
 
+            /**
+             * Se hace la instancia de SalonETS (tabla princiapl), como se mencionó, se deben de asignar todas
+             * las variables de dicha clase, las cuales son instancias de otras clases.
+             */
             SalonETS newSalonETS = new SalonETS();
             newSalonETS.setId(setspk);
             newSalonETS.setNumSalon(salon.get());
             newSalonETS.setIdETS(newETS);
 
+            // Se guarda el registro anterior
             salonETSRepository.save(newSalonETS);
         }
 
+        // Se regresa un mensaje al cliente
         datos.put("message", "El ETS fue registrado exitosamente.");
 
         return new ResponseEntity<>(

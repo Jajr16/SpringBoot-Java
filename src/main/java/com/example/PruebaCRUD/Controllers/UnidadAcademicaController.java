@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
-@RequestMapping(path = "api/UA")
+@RestController // Notación que defina el controlador REST (Solicitudes HTTP)
+@RequestMapping(path = "api/UA") // Mapear la url a este método
 public class UnidadAcademicaController {
     private final UnidadAcademicaService unidadAcademicaService;
 
-    @Autowired
+    @Autowired // Notación que permite inyectar dependencias, en este caso, PeriodoETSService
     public UnidadAcademicaController(UnidadAcademicaService unidadAcademicaService) {
         this.unidadAcademicaService = unidadAcademicaService;
     }
 
-    @GetMapping
+    @GetMapping // Notación para manejar solicitudes GET
     public List<UnidadAcademica> getUA() {
         return this.unidadAcademicaService.getUA();
     }

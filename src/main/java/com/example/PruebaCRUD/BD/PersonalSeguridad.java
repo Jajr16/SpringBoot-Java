@@ -3,8 +3,11 @@ package com.example.PruebaCRUD.BD;
 import com.example.PruebaCRUD.BD.PKCompuesta.PersonalSeguridadPK;
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "personalseguridad")
+/**
+ *  Clase para crear una tabla en la base de datos
+ */
+@Entity // Notación para indicar que esta clase es una entidad (sirve para JPAQL)
+@Table(name = "personalseguridad") // Notación que relaciona el nombre de la tabla que se le asigna con la de la BD
 public class PersonalSeguridad {
 
     @EmbeddedId

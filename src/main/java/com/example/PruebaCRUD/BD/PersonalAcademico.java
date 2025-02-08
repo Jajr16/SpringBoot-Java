@@ -5,24 +5,32 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity
-@Table(name = "personalacademico")
+/**
+ *  Clase para crear una tabla en la base de datos
+ */
+@Entity // Notación para indicar que esta clase es una entidad (sirve para JPAQL)
+@Table(name = "personalacademico") // Notación que relaciona el nombre de la tabla que se le asigna con la de la BD
 public class PersonalAcademico {
 
-    @Id
-    @Column(name = "RFC", nullable = false, length = 13)
+    @Id // Indica que es la llave primaria de la tabla
+    @Column(name = "RFC", nullable = false, length = 13) // Notación que indica que la variable será una columna
     private String RFC;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // Notación para indicar una relación entre tablas
+    // Notación para especificar el nombre de la columna que tendrá la relación
     @JoinColumn(name = "CURP", nullable = false)
     private Persona CURP;
 
-    @JsonProperty("CorreoI")
+    @JsonProperty("CorreoI") // Notación que indica el nombre de esta variable en un json
     @Column(name = "CorreoI", nullable = false, length = 100)
     private String correoi;
 
+    /**
+     * Relación en la BD de la tabla actual con la clase de la instancia. LAZY indica que las consultas a la tabla
+     * principal no van a obtener los datos de la tabla relacionada
+     */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tipoPA", nullable = false)
+    @JoinColumn(name = "tipoPA", nullable = false) // Notación para especificar el nombre de la columna que tendrá la relación
     private TipoPersonal TipoPA;
 
     //    ================= RELACIONES INVERSAS CON OTRAS TABLAS ========================
@@ -34,6 +42,7 @@ public class PersonalAcademico {
     @OneToMany(mappedBy = "RFCCD", cascade = CascadeType.PERSIST)
     private List<CargoDocente> RFCCargoDocente;
 
+    // ==================== CONSTRUCTORES =====================
     public PersonalAcademico() {}
 
     public PersonalAcademico(String RFC, Persona CURP, String CorreoI, TipoPersonal TipoPA) {
@@ -43,6 +52,7 @@ public class PersonalAcademico {
         this.TipoPA = TipoPA;
     }
 
+    // ==================== SETTERS AND GETTERS ====================
     public String getRFC() {
         return RFC;
     }

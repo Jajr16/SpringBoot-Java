@@ -5,16 +5,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity
-@Table(name = "tipousuario")
+/**
+ *  Clase para crear una tabla en la base de datos
+ */
+@Entity // Notación para indicar que esta clase es una entidad (sirve para JPAQL)
+@Table(name = "tipousuario") // Notación que relaciona el nombre de la tabla que se le asigna con la de la BD
 public class TipoUsuario {
-    @Id
-    @Column(name = "idTU", nullable = false)
+
+    @Id // Indica que es la llave primaria de la tabla
+    @Column(name = "idTU", nullable = false) // Notación que indica que la variable será una columna
     private Integer idTU;
 
     @Column(name = "Tipo", nullable = false, length = 18)
     private String tipo;
 
+     // ==================== CONSTRUCTORES =====================
     public TipoUsuario(){}
 
     public TipoUsuario(Integer idTU, String Tipo) {
@@ -26,6 +31,7 @@ public class TipoUsuario {
         this.tipo = Tipo;
     }
 
+    // ==================== SETTERS AND GETTERS ====================
     public Integer getIdTU() {
         return idTU;
     }

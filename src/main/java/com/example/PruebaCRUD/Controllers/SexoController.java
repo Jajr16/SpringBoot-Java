@@ -9,19 +9,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
-@RequestMapping(path = "api/sexo")
+@RestController // Notación que defina el controlador REST (Solicitudes HTTP)
+@RequestMapping(path = "api/sexo") // Mapear la url a este método
 public class SexoController {
     private final SexoService sexoService;
 
-    @Autowired
+    @Autowired // Notación que permite inyectar dependencias, en este caso, PeriodoETSService
     public SexoController(SexoService sexoService) {
         this.sexoService = sexoService;
     }
 
-    @GetMapping
-    public List<Sexo> getSexo() {
-        return this.sexoService.getSexo();
-    }
+    @GetMapping // Notación para manejar solicitudes GET
+    public List<Sexo> getSexo() { return this.sexoService.getSexo(); }
 
 }

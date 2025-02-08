@@ -5,6 +5,7 @@ import com.example.PruebaCRUD.DTO.Saes.DocentesDTOSaes;
 import com.example.PruebaCRUD.DTO.Saes.DocentesDTOToETS;
 import com.example.PruebaCRUD.DTO.Saes.PersonalSeguridadDTOSaes;
 import com.example.PruebaCRUD.Services.PersonaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,16 +13,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/saes")
+/**
+ * Clase API que tendrá los endpoints
+ */
+@RestController // Notación que defina el controlador REST (Solicitudes HTTP)
+@RequestMapping("/saes") // Mapear la url a este método
 public class PersonaControllerSaes {
     private final PersonaService personaService;
 
+    @Autowired // Notación que permite inyectar dependencias, en este caso, PeriodoETSService
     public PersonaControllerSaes(PersonaService personaService) {
         this.personaService = personaService;
     }
 
-    @GetMapping("/alumnos")
+    @GetMapping("/alumnos") // Notación para manejar solicitudes GET
     public ResponseEntity<List<AlumnoDTOSaes>> getAlumnos(){
         List<AlumnoDTOSaes> response = this.personaService.getAlumnos();
         System.out.println(response);

@@ -6,11 +6,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+/**
+ * Clase que contendrá la lógica que para realizar las funciones principales de los endpoints
+ */
+@Service // Anotación que indica que esta clase es un servicio de negocio
 public class SalonService {
     private final SalonRepository salonRepository;
 
-    @Autowired
+    @Autowired // Notación que permite inyectar dependencias
     public SalonService(SalonRepository salonRepository) {
         this.salonRepository = salonRepository;
     }

@@ -18,7 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+ /**
+ * Clase que contendrá la lógica que para realizar las funciones principales de los endpoints
+ */
+@Service // Anotación que indica que esta clase es un servicio de negocio
 public class PersonaService {
     HashMap<String, Object> datos = new HashMap<>();
 
@@ -30,7 +33,7 @@ public class PersonaService {
     private final PersonalSeguridadRepository personalSeguridadRepository;
 
     // Con esta inyección podremos hacer el CRUD de forma directa
-    @Autowired
+    @Autowired // Notación que permite inyectar dependencias
     public PersonaService(PersonaRepository personaRepository, SexoRepository sexoRepository,
                           UnidadAcademicaRepository unidadAcademicaRepository,
                           AlumnoRepository alumnoRepository, DocenteRepository docenteRepository, PersonalSeguridadRepository personalSeguridadRepository) {
@@ -84,6 +87,7 @@ public class PersonaService {
             );
         }
 
+        // Se comprueba que no haya un registro existente con los datos recibidos
         Optional<Persona> res = personaRepository.findPersonaByCURP(persona.getCURP());
 
         if (res.isPresent()) {
@@ -96,6 +100,7 @@ public class PersonaService {
             );
         }
 
+        // Se comprueba que exista un registro del sexo de la persona con los datos recibidos
         Optional<Sexo> sexOpt = sexoRepository.findByNombre(persona.getSexo().getNombre());
         if (sexOpt.isEmpty()) {
             datos.put("Error", true);
@@ -109,6 +114,7 @@ public class PersonaService {
         }
         persona.setSexo(sexOpt.get());
 
+        // Se comprueba que la Unidad Académica recibida exista
         Optional<UnidadAcademica> uaOP =
                 unidadAcademicaRepository.findByNombre(persona.getUnidadAcademica().getNombre());
         if (uaOP.isEmpty()) {
