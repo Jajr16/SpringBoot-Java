@@ -23,4 +23,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
      */
     @Query(value = "SELECT * FROM login(:username, :password)", nativeQuery = true)
     Object callLoginFunction(@Param("username") String username, @Param("password") String password);
+
+    @Query(value = "SELECT p.id_escuela FROM Persona p INNER JOIN Usuario u ON p.curp = u.curp" +
+            " WHERE u.usuario = (:user)", nativeQuery = true)
+    Integer findEscuela(@Param("user") String user);
 }

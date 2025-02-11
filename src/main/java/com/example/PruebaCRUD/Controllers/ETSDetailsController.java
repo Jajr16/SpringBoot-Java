@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Clase API que tendrá los endpoints
+ */
 @RestController // Notación que defina el controlador REST (Solicitudes HTTP)
 @RequestMapping("SalonETS/") // Mapear la url a este método
 public class ETSDetailsController {

@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Clase API que tendrá los endpoints
+ */
 @RestController // Notación que defina el controlador REST (Solicitudes HTTP)
 @RequestMapping("/inscripciones") // Mapear la url a este método
 public class InscripcionesController {

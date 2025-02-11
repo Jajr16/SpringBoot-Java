@@ -20,7 +20,7 @@ public class Alumno {
     @Column(name = "CorreoI", nullable = false, length = 100)
     private String CorreoI;
 
-    @Column(name = "imagenCredencial", nullable = false, length = 200)
+    @Column(name = "imagenCredencial", nullable = false)
     private String imagenCredencial;
 
     //    FOREIGNKEYS
@@ -64,7 +64,7 @@ public class Alumno {
     }
 
     public void setBoleta(String boleta) {
-        boleta = boleta;
+        this.boleta = boleta;
     }
 
     public String getCorreoI() {

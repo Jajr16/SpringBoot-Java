@@ -13,5 +13,5 @@ import java.util.Optional;
 @Repository
 public interface PersonalAcademicoRepository extends JpaRepository<PersonalAcademico, String> {
     // Notación findBy(Columna con primera mayúscula) proporcionada por JPA
-    Optional<PersonalAcademico> findByRFC(String RFC);
+    Optional<PersonalAcademico> findByrFC(String RFC);
 }

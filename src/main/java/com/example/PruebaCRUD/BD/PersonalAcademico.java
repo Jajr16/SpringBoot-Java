@@ -14,7 +14,7 @@ public class PersonalAcademico {
 
     @Id // Indica que es la llave primaria de la tabla
     @Column(name = "RFC", nullable = false, length = 13) // Notación que indica que la variable será una columna
-    private String RFC;
+    private String rFC;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // Notación para indicar una relación entre tablas
     // Notación para especificar el nombre de la columna que tendrá la relación
@@ -35,7 +35,7 @@ public class PersonalAcademico {
 
     //    ================= RELACIONES INVERSAS CON OTRAS TABLAS ========================
 //    ##### TABLA APLICA ####
-    @OneToMany(mappedBy = "DocenteRFC", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "docenteRFC", cascade = CascadeType.PERSIST)
     private List<Aplica> AplicaPersA;
 
 //    ##### TABLA CARGO DOCENTE ####
@@ -46,7 +46,7 @@ public class PersonalAcademico {
     public PersonalAcademico() {}
 
     public PersonalAcademico(String RFC, Persona CURP, String CorreoI, TipoPersonal TipoPA) {
-        this.RFC = RFC;
+        this.rFC = RFC;
         this.CURP = CURP;
         this.correoi = CorreoI;
         this.TipoPA = TipoPA;
@@ -54,11 +54,11 @@ public class PersonalAcademico {
 
     // ==================== SETTERS AND GETTERS ====================
     public String getRFC() {
-        return RFC;
+        return rFC;
     }
 
     public void setRFC(String RFC) {
-        this.RFC = RFC;
+        this.rFC = RFC;
     }
 
     public Persona getCURP() {

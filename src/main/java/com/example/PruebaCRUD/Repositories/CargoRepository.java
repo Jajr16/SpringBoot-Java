@@ -1,9 +1,11 @@
 package com.example.PruebaCRUD.Repositories;
 
 import com.example.PruebaCRUD.BD.Cargo;
+import com.example.PruebaCRUD.DTO.Saes.CargoProjectionSaes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -14,4 +16,6 @@ import java.util.Optional;
 public interface CargoRepository extends JpaRepository<Cargo, Integer> {
     // Notación findBy(Columna con primera mayúscula) proporcionada por JPA
     Optional<Cargo> findByCargo(String cargo);
+
+    List<CargoProjectionSaes> findAllBy();
 }

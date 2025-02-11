@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Clase API que tendrá los endpoints
+ */
 @RestController // Notación que defina el controlador REST (Solicitudes HTTP)
 @RequestMapping(path = "/Persona")// Indicar la ruta de a donde quieres que vaya // Esto marca la función disponible para consulta
 public class PersonaController {

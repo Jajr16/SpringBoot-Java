@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Clase API que tendrá los endpoints
+ */
 @RestController // Notación que defina el controlador REST (Solicitudes HTTP)
-@RequestMapping(path = "api/UA") // Mapear la url a este método
+@RequestMapping(path = "/saes") // Mapear la url a este método
 public class UnidadAcademicaController {
     private final UnidadAcademicaService unidadAcademicaService;
 
@@ -19,7 +22,7 @@ public class UnidadAcademicaController {
         this.unidadAcademicaService = unidadAcademicaService;
     }
 
-    @GetMapping // Notación para manejar solicitudes GET
+    @GetMapping("/UAcademica") // Notación para manejar solicitudes GET
     public List<UnidadAcademica> getUA() {
         return this.unidadAcademicaService.getUA();
     }

@@ -2,29 +2,32 @@ package com.example.PruebaCRUD.DTO.Saes;
 
 /**
  * Clase DTO la cuál sirve para pasar o recibir datos entre un cliente y un servidor, en este caso, ayudará a pasar
- * datos de la tabla PersonalSeguridad (En esta ocasión es para el Request de crear un nuevo Personal de Seguridad)
+ * datos de la tabla ETS
  */
-public class NewPersonalSeguridadDTOSaes {
+public class NewDocentesDTOSaes {
+
     private String curp;
+    private String rfc;
     private String nombre;
-    private String apellido_P;
-    private String apellido_M;
+    private String apellido_p;
+    private String apellido_m;
     private String sexo;
-    private String cargoPS;
+    private String correo;
+    private String cargo;
     private String turno;
     private String user;
 
     // ==================== CONSTRUCTORES =====================
-    public NewPersonalSeguridadDTOSaes() {}
-
-    public NewPersonalSeguridadDTOSaes(String curp, String nombre, String apellido_P, String apellido_M, String sexo,
-                                       String cargoPS, String turno, String user) {
+    public NewDocentesDTOSaes(String curp, String rfc, String nombre, String apellido_p, String apellido_m, String sexo,
+                              String correo, String cargo, String turno, String user) {
         this.curp = curp;
+        this.rfc = rfc;
         this.nombre = nombre;
-        this.apellido_P = apellido_P;
-        this.apellido_M = apellido_M;
+        this.apellido_p = apellido_p;
+        this.apellido_m = apellido_m;
         this.sexo = sexo;
-        this.cargoPS = cargoPS;
+        this.correo = correo;
+        this.cargo = cargo;
         this.turno = turno;
         this.user = user;
     }
@@ -39,6 +42,14 @@ public class NewPersonalSeguridadDTOSaes {
         this.curp = curp;
     }
 
+    public String getRfc() {
+        return rfc;
+    }
+
+    public void setRfc(String rfc) {
+        this.rfc = rfc;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -47,20 +58,20 @@ public class NewPersonalSeguridadDTOSaes {
         this.nombre = nombre;
     }
 
-    public String getApellido_P() {
-        return apellido_P;
+    public String getApellido_p() {
+        return apellido_p;
     }
 
-    public void setApellido_P(String apellido_P) {
-        this.apellido_P = apellido_P;
+    public void setApellido_p(String apellido_p) {
+        this.apellido_p = apellido_p;
     }
 
-    public String getApellido_M() {
-        return apellido_M;
+    public String getApellido_m() {
+        return apellido_m;
     }
 
-    public void setApellido_M(String apellido_M) {
-        this.apellido_M = apellido_M;
+    public void setApellido_m(String apellido_m) {
+        this.apellido_m = apellido_m;
     }
 
     public String getSexo() {
@@ -71,12 +82,20 @@ public class NewPersonalSeguridadDTOSaes {
         this.sexo = sexo;
     }
 
-    public String getCargoPS() {
-        return cargoPS;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setCargoPS(String cargoPS) {
-        this.cargoPS = cargoPS;
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
     }
 
     public String getTurno() {
@@ -97,13 +116,15 @@ public class NewPersonalSeguridadDTOSaes {
 
     @Override
     public String toString() {
-        return "NewPersonalSeguridadDTOSaes{" +
+        return "NewDocentesDTOSaes{" +
                 "curp='" + curp + '\'' +
+                ", rfc='" + rfc + '\'' +
                 ", nombre='" + nombre + '\'' +
-                ", apellido_P='" + apellido_P + '\'' +
-                ", apellido_M='" + apellido_M + '\'' +
+                ", apellido_p='" + apellido_p + '\'' +
+                ", apellido_m='" + apellido_m + '\'' +
                 ", sexo='" + sexo + '\'' +
-                ", cargoPS='" + cargoPS + '\'' +
+                ", correo='" + correo + '\'' +
+                ", cargo='" + cargo + '\'' +
                 ", turno='" + turno + '\'' +
                 ", user='" + user + '\'' +
                 '}';

@@ -1,10 +1,12 @@
 package com.example.PruebaCRUD.Services;
 
+import com.example.PruebaCRUD.BD.ProgramaAcademico;
 import com.example.PruebaCRUD.Repositories.ProgramaAcademicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 
 // El Service es el CRUD de la clase
 /**

@@ -2,6 +2,8 @@ package com.example.PruebaCRUD.Repositories;
 
 import com.example.PruebaCRUD.BD.ProgramaAcademico;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -14,4 +16,10 @@ import java.util.Optional;
 public interface ProgramaAcademicoRepository extends JpaRepository<ProgramaAcademico, String> {
     // Notación findBy(Columna con primera mayúscula) proporcionada por JPA
     Optional<ProgramaAcademico> findByIdPA(String Nombre);
+
+    @Query(value = """
+            SELECT pa.* FROM programaacademico pa INNER JOIN escuelaprograma ep ON ep.idpa = pa.idpa
+            WHERE ep.id_escuela = (:escuela) AND ep.idpa = (:programaacademico)
+            """, nativeQuery = true)
+    Optional<ProgramaAcademico>findBy(@Param("escuela") Integer escuela, @Param("programaacademico") String pa);
 }

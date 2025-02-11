@@ -17,14 +17,14 @@ public class TipoPersonal {
     private Integer tipoPA;
 
     @Column(name = "Cargo", nullable = false, length = 100)
-    private String Cargo;
+    private String cargo;
 
     // ==================== CONSTRUCTORES =====================
     public TipoPersonal() {}
 
     public TipoPersonal(Integer tipoPA, String Cargo) {
         this.tipoPA = tipoPA;
-        this.Cargo = Cargo;
+        this.cargo = Cargo;
     }
 
     // ==================== SETTERS AND GETTERS ====================
@@ -37,10 +37,10 @@ public class TipoPersonal {
     }
 
     public String getCargo() {
-        return Cargo;
+        return cargo;
     }
 
     public void setCargo(String cargo) {
-        Cargo = cargo;
+        this.cargo = cargo;
     }
 }

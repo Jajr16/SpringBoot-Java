@@ -22,4 +22,5 @@ public class UnidadAcademicaService {
     public List<UnidadAcademica> getUA() {
         return this.unidadAcademicaRepository.findAll();
     }
+
 }

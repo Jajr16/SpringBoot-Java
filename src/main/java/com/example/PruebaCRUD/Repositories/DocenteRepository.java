@@ -6,6 +6,7 @@ import com.example.PruebaCRUD.DTO.Saes.DocentesDTOSaes;
 import com.example.PruebaCRUD.DTO.Saes.DocentesDTOToETS;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,9 +28,9 @@ public interface DocenteRepository extends JpaRepository<PersonalAcademico, Stri
                 pera.correoi
                 ) FROM PersonalAcademico as pera
             INNER JOIN Persona p ON pera.CURP.CURP = p.CURP
-            INNER JOIN CargoDocente cd ON cd.RFCCD.RFC = pera.RFC
+            INNER JOIN CargoDocente cd ON cd.RFCCD.rFC = pera.rFC
             INNER JOIN Cargo c ON c.id_cargo = cd.idCargoCD.id_cargo
-            WHERE pera.TipoPA.Cargo = 'Docente'
+            WHERE pera.TipoPA.cargo = 'Docente'
             """)
     List<DocentesDTOSaes> findDocentes();
 
@@ -39,11 +40,17 @@ public interface DocenteRepository extends JpaRepository<PersonalAcademico, Stri
                 CONCAT(p.Nombre, " ", p.Apellido_P, " ", p.Apellido_M) as nombre
                 ) FROM PersonalAcademico as pera
             INNER JOIN Persona p ON pera.CURP.CURP = p.CURP
-            INNER JOIN CargoDocente cd ON cd.RFCCD.RFC = pera.RFC
+            INNER JOIN CargoDocente cd ON cd.RFCCD.rFC = pera.rFC
             INNER JOIN Cargo c ON c.id_cargo = cd.idCargoCD.id_cargo
-            WHERE pera.TipoPA.Cargo = 'Docente'
+            WHERE pera.TipoPA.cargo = 'Docente'
             """)
     List<DocentesDTOToETS> findDocentesToSaes();
+
+    @Query(value = """
+            SELECT 1 FROM personalacademico pa INNER JOIN tipopersonal tp ON pa.tipopa = tp.tipopa WHERE
+            pa.curp = (:curp) AND tp.cargo = 'Docente'
+            """, nativeQuery = true)
+    Optional<PersonalAcademico> existsByCURP(@Param("curp") String curp);
 
     // Notación findBy(Columna con primera mayúscula) proporcionada por JPA
     Optional<PersonalAcademico> findByCURP(Persona persona);
