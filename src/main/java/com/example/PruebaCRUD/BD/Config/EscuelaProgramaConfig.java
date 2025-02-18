@@ -12,65 +12,77 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
-@Configuration
+/**
+ * Archivo de configuración con la función de prellenar las tablas de la base de datos
+ */
+@Configuration // Indica que la clase es de configuración (en este caso para prellenar una tabla de la BD)
 public class EscuelaProgramaConfig {
-
-    @Bean
-    @Order(3)
+    /**
+     *
+     * @param escuelaProgramaRepository Reporitorio Spring de EscuelaPrograma el cual servirá para manipular dicha tabla
+     *                                  en la BD
+     * @param unidadAcademicaRepository Reporitorio Spring de UnidadAcademica el cual servirá para manipular dicha tabla
+     *                                  en la BD
+     * @param programaAcademicoRepository Reporitorio Spring de ProgramaAcademico el cual servirá para manipular dicha
+     *                                   tabla en la BD
+     *
+     */
+    @Bean // Define objetos administrados por Spring e indica que retornará dicho objeto
+    @Order(3) // Orden en el que se ejecutará este fragmento de código
     CommandLineRunner initDataEP(EscuelaProgramaRepository escuelaProgramaRepository,
                                  UnidadAcademicaRepository unidadAcademicaRepository,
                                  ProgramaAcademicoRepository programaAcademicoRepository) {
         return args -> {
 
-            System.out.println("=========== CREACIÓN DE UNIDADES ACADEMICAS (ORDER3)==============");
+            // Busca registros de UnidadAcademica por su nombre, en caso de no encontrarlo devuelve null
             UnidadAcademica ua1 = unidadAcademicaRepository.findByNombre("ESCOM").orElse(null);
-            if (ua1 == null) {
-                System.out.println("=============== ENTRÓ EN LA CREACIÓN DE LA ESCUELA 'ESCOM' ====================");
+            if (ua1 == null) { // Si no encuentra regsitros entra aquí
+                // Guarda un nuevo registro de UnidadAcademica
                 ua1 = unidadAcademicaRepository.save(new UnidadAcademica(1, "ESCOM"));
-                System.out.println("=============== SE CREÓ 'ESCOM' ====================");
             }
 
+            // Busca registros de UnidadAcademica por su nombre, en caso de no encontrarlo devuelve null
             UnidadAcademica ua2 = unidadAcademicaRepository.findByNombre("ESCA").orElse(null);
-            if (ua2 == null) {
-                System.out.println("=============== ENTRÓ EN LA CREACIÓN DE LA ESCUELA 'ESCA' ====================");
+            if (ua2 == null) { // Si no encuentra regsitros entra aquí
+                // Guarda un nuevo registro de UnidadAcademica
                 ua2 = unidadAcademicaRepository.save(new UnidadAcademica(2, "ESCA"));
-                System.out.println("=============== SE CREÓ 'ESCA' ====================");
             }
 
-
-            System.out.println("=========== CREACIÓN DE PROGRAMAS ACADEMICOS (ORDER3) ==============");
+            // Busca registros de ProgramaAcademico por su ID, en caso de no encontrarlo devuelve null
             ProgramaAcademico pa1 = programaAcademicoRepository.findByIdPA("ISC-2024").orElse(null);
-            if (pa1 == null) {
-                System.out.println("=============== ENTRÓ EN LA CREACIÓN DE 'ISC' ====================");
-                pa1 = programaAcademicoRepository.save(new ProgramaAcademico("ISC-2024", "Ingeniería en Sistemas Computacionales", "Descripcion1"));
-                System.out.println("=============== SE CREÓ 'ISC' ====================");
+            if (pa1 == null) { // Si no encuentra registros entra aquí
+                // Guarda un nuevo registro de ProgramaAcademico
+                pa1 = programaAcademicoRepository.save(new ProgramaAcademico("ISC-2024",
+                        "Ingeniería en Sistemas Computacionales", "Descripcion1"));
             }
 
+            // Busca registros de ProgramaAcademico por su ID, en caso de no encontrarlo devuelve null
             ProgramaAcademico pa2 = programaAcademicoRepository.findByIdPA("IIA-2024").orElse(null);
-            if (pa2 == null) {
-                System.out.println("=============== ENTRÓ EN LA CREACIÓN DE 'IIA' ====================");
-                pa2 = programaAcademicoRepository.save(new ProgramaAcademico("IIA-2024", "Ingeniería en Inteligencia Artificial", "Descripcion2"));
-                System.out.println("=============== SE CREÓ 'IIA' ====================");
+            if (pa2 == null) { // Si no encuentra registros entra aquí
+                // Guarda un nuevo registro de ProgramaAcademico
+                pa2 = programaAcademicoRepository.save(new ProgramaAcademico("IIA-2024",
+                        "Ingeniería en Inteligencia Artificial", "Descripcion2"));
             }
 
-            System.out.println("=========== CREACIÓN DE LAS RELACIONES DE ESCUELA_PROGRAMA ==============");
 
             // Ahora, se crean las entidades EscuelaPrograma con las relaciones válidas
             if (escuelaProgramaRepository.count() == 0) {
+                // Se crea una instancia de la clase EscuelaProgramaPK (Llave primaria compuesta de EscuelaPrograma)
                 EscuelaProgramaPK reg1 = new EscuelaProgramaPK();
 
                 reg1.setIdEscuela(ua1.getIdEscuela()); // Establece la clave foránea de la UnidadAcademica
                 reg1.setIdPA(pa1.getId_PA()); // Establece la clave foránea del ProgramaAcademico
 
+                // Se crea una instancia de la clase EscuelaPrograma
                 EscuelaPrograma escuelaProgramareg1 = new EscuelaPrograma();
-                escuelaProgramareg1.setId(reg1);
-                escuelaProgramareg1.setIdEscuela(ua1);
-                escuelaProgramareg1.setIdPA(pa1);
+                escuelaProgramareg1.setId(reg1); // Se asigna la llave primaria compuesta
+                escuelaProgramareg1.setIdEscuela(ua1); // Se asigna la escuela
+                escuelaProgramareg1.setIdPA(pa1); // Se asigna el Programa Academico
 
-                escuelaProgramaRepository.save(escuelaProgramareg1);
+                escuelaProgramaRepository.save(escuelaProgramareg1); // Guarda el nuevo registro
+
 
                 EscuelaProgramaPK reg2 = new EscuelaProgramaPK();
-
 
                 reg2.setIdEscuela(ua2.getIdEscuela());
                 reg2.setIdPA(pa2.getId_PA());

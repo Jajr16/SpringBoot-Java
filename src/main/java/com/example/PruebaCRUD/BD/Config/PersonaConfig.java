@@ -13,33 +13,48 @@ import org.springframework.core.annotation.Order;
 
 import java.util.List;
 
-@Configuration
+/**
+ * Archivo de configuración con la función de prellenar las tablas de la base de datos
+ */
+@Configuration // Indica que la clase es de configuración (en este caso para prellenar una tabla de la BD)
 public class PersonaConfig {
-    @Bean
-    @Order(5)
+    /**
+     *
+     * @param personaRepository Repositorio Spring de Persona para manipular dicha tabla en la BD
+     * @param sexoRepository Repositorio Spring de Sexo para manipular dicha tabla en la BD
+     * @param unidadAcademicaRepository Repositorio Spring de UnidadAcademica para manipular dicha tabla en la BD
+     *
+     */
+    @Bean // Define objetos administrados por Spring e indica que retornará dicho objeto
+    @Order(5) // Orden en el que se ejecutará este fragmento de código
     CommandLineRunner initDataPersona(PersonaRepository personaRepository,
                                       SexoRepository sexoRepository,
                                       UnidadAcademicaRepository unidadAcademicaRepository) {
         return args -> {
-
+            // Si no encuentra ningún registro entra aquí
             if (personaRepository.count() == 0) {
-//                Obtener ambos sexos
+                // Se obtienen todos los registros de la tabla
                 List<Sexo> sexos = sexoRepository.findAll();
-                Sexo masculino = sexos.stream().filter(s -> s.getNombre().equalsIgnoreCase("Masculino")).findFirst().orElseGet(() ->
+                // Se filtra por nombre para obtener los registros por separado
+                Sexo masculino = sexos.stream().filter(s -> s.getNombre().equalsIgnoreCase("Masculino"))
+                        .findFirst().orElseGet(() ->
                         sexoRepository.save(new Sexo("Masculino"))
                 );
-                Sexo femenino = sexos.stream().filter(s -> s.getNombre().equalsIgnoreCase("Femenino")).findFirst().orElseGet(() ->
+                Sexo femenino = sexos.stream().filter(s -> s.getNombre().equalsIgnoreCase("Femenino"))
+                        .findFirst().orElseGet(() ->
                         sexoRepository.save(new Sexo("Femenino"))
                 );
 
+                // Se busca un registro de UnidadAcademica por nombre, en caso de no encontrarlo se crea
                 UnidadAcademica ESCOM = unidadAcademicaRepository.findByNombre("ESCOM").orElseGet(() ->
                     unidadAcademicaRepository.save(new UnidadAcademica("ESCOM"))
                 );
-
+                // Se busca un registro de UnidadAcademica por nombre, en caso de no encontrarlo se crea
                 UnidadAcademica ESCA = unidadAcademicaRepository.findByNombre("ESCA").orElseGet(() ->
                         unidadAcademicaRepository.save(new UnidadAcademica(("ESCA")))
                 );
 
+                // Se guardan todos los registros con ayuda de los datos anteriores
                 personaRepository.save(new Persona("1", "José Alfredo", "Jiménez", "Rodríguez", masculino, ESCOM));
                 personaRepository.save(new Persona("2", "Alejandra", "De la cruz", "De la cruz", femenino, ESCOM));
                 personaRepository.save(new Persona("3", "Luis Antonio", "Flores", "Esquivel", masculino, ESCOM));

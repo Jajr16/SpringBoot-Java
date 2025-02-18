@@ -1,11 +1,16 @@
 package com.example.PruebaCRUD.DTO;
 
+/**
+ * Clase DTO la cuál sirve para pasar o recibir datos entre un cliente y un servidor, en este caso, ayudará a pasar
+ * datos de la respuesta del proceso de Login
+ */
 public class LoginResponseDTO {
     private String Usuario;
     private Integer Error_code;
     private String Message;
     private String Rol;
 
+    // ==================== CONSTRUCTORES =====================
     public LoginResponseDTO() {}
 
     public LoginResponseDTO(String Usuario, Integer Error_Code, String Message, String rol) {
@@ -20,6 +25,7 @@ public class LoginResponseDTO {
         this.Message = Message;
     }
 
+    // ==================== SETTERS AND GETTERS ====================
     public Integer getError_Code() {
         return Error_code;
     }

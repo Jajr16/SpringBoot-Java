@@ -12,40 +12,60 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
-@Configuration
+/**
+ * Archivo de configuración con la función de prellenar las tablas de la base de datos
+ */
+@Configuration // Indica que la clase es de configuración (en este caso para prellenar una tabla de la BD)
 public class InscripcionETSConfig {
-    @Bean
-    @Order(13)
+    /**
+     *
+     * @param alumnoRepository Repositorio Spring de Alumno para manipular dicha tabla en la BD
+     * @param etsRepository Repositorio Spring de ETS para manipular dicha tabla en la BD
+     * @param inscripcionETSRepository Repositorio Spring de InscripcionETS para manipular dicha tabla en la BD
+     *
+     */
+    @Bean // Define objetos administrados por Spring e indica que retornará dicho objeto
+    @Order(13) // Orden en el que se ejecutará este fragmento de código
     CommandLineRunner initDataInscripcionETS(AlumnoRepository alumnoRepository,
                                              ETSRepository etsRepository,
                                              InscripcionETSRepository inscripcionETSRepository) {
         return args -> {
-            System.out.println("=========== CREACIÓN DE INSCRIPCIONES (ORDER13) ==============");
+            // Busca registros de Alumno por Boleta, en caso de no encontrarlo devuelve null
             Alumno alfredo = alumnoRepository.findByBoleta("2022630467").orElse(null);
 
-            if (alfredo == null) {
-                System.out.println("=========== NO HAY ALUMNOS ==============");
-            }
-
+            // Busca registros de ETS por ID, en caso de no encontrarlo devuelve null
             ETS ets1 = etsRepository.findById(1).orElse(null);
             ETS ets2 = etsRepository.findById(2).orElse(null);
             ETS ets3 = etsRepository.findById(3).orElse(null);
 
-            System.out.println("=========== PRIMER REGISTRO ==============");
+            // PRIMER REGISTRO
+            /**
+             * Para llevar a cabo un regsitro de una tabla con llaves foráneas y llave primaria compuesta
+             * debes de llenar todas las variables que contiene la clase princiapl InscripcionETS, estos incluyen:
+             *      - InscripcionETSPK (Instancia de otra clase)
+             *      - Alumno (Instancia de otra clase)
+             *      - ETS (Instancia de otra clase)
+             */
+            // Instancia de la llave primaria de InscripcionETS (Aquí se deben de llenar las variables normales)
             InscripcionETSPK ietspk1 = new InscripcionETSPK();
-            assert ets1 != null;
-            ietspk1.setIdETS(ets1.getIdETS());
-            assert alfredo != null;
-            ietspk1.setBoleta(alfredo.getBoleta());
+            assert ets1 != null; // Afirma que la variable Ulises no sea null
+            ietspk1.setIdETS(ets1.getIdETS()); // Se asigna el ID del ETS
+            assert alfredo != null; // Afirma que la variable Ulises no sea null
+            ietspk1.setBoleta(alfredo.getBoleta()); // Se asigna la Boleta del Alumno
 
+            /**
+             * Se hace la instancia de InscripcionETS (tabla princiapl), como se mencionó, se deben de asignar todas
+             * las variables de dicha clase, las cuales son instancias de otras clases.
+             */
             InscripcionETS ins1 = new InscripcionETS();
             ins1.setId(ietspk1);
             ins1.setAlumno(alfredo);
             ins1.setEts(ets1);
 
+            // Se guarda el registro anterior
             inscripcionETSRepository.save(ins1);
 
-            System.out.println("=========== SEGUNDO REGISTRO ==============");
+            // SEGUNDO REGISTRO
             InscripcionETSPK ietspk2 = new InscripcionETSPK();
             assert ets2 != null;
             ietspk2.setIdETS(ets2.getIdETS());
@@ -58,7 +78,7 @@ public class InscripcionETSConfig {
 
             inscripcionETSRepository.save(ins2);
 
-            System.out.println("=========== TERCER REGISTRO ==============");
+            // TERCER REGISTRO
             InscripcionETSPK ietspk3 = new InscripcionETSPK();
             assert ets3 != null;
             ietspk3.setIdETS(ets3.getIdETS());

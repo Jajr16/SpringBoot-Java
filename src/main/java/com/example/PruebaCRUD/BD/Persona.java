@@ -3,43 +3,53 @@ package com.example.PruebaCRUD.BD;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+/**
+ *  Clase para crear una tabla en la base de datos
+ */
 // Para decirle que es una entidad y una tabla dentro de la BD, se pone esto
 @Entity
-@Table(name = "persona")
+@Table(name = "persona") // Notación que relaciona el nombre de la tabla que se le asigna con la de la BD
 public class Persona {
-    // Si ocupamos que se ponga como id se pone @Id, si queremos que se genere automaticamente: @GeneratedValue(strategy = Generation.Type.IDENTITY)
-    //@Column(unique = true)
-    @Id
-    @Column(name = "CURP", nullable=false, length = 18)
+    // Si ocupamos que se ponga como id se pone @Id, si queremos que se genere automaticamente:
+    // @GeneratedValue(strategy = Generation.Type.IDENTITY)
+    @Id // Indica que es la llave primaria de la tabla
+    @Column(name = "CURP", nullable = false, length = 18) // Notación que indica que la variable será una columna
     private String CURP;
 
-    @Column(name = "Nombre", nullable=false)
+    @Column(name = "Nombre", nullable = false)
     private String Nombre;
 
-    @Column(name = "Apellido_P", nullable=false)
+    @Column(name = "Apellido_P", nullable = false)
     private String Apellido_P;
 
-    @Column(name = "Apellido_M", nullable=false)
+    @Column(name = "Apellido_M", nullable = false)
     private String Apellido_M;
 
-//  ############ REFERENCIAS A OTRAS TABLAS #############
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Sexo", nullable = false)
+    //  ############ REFERENCIAS A OTRAS TABLAS #############
+    /**
+     * Relación en la BD de la tabla actual con la clase de la instancia. LAZY indica que las consultas a la tabla
+     * principal no van a obtener los datos de la tabla relacionada
+     */
+    @ManyToOne(fetch = FetchType.LAZY) // Relaciona esta variable con la de la clase de la llave primaria
+    @JoinColumn(name = "Sexo", nullable = false) // Notación para especificar el nombre de la columna que tendrá la relación
     private Sexo sexo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idEscuela", nullable = false)
     private UnidadAcademica unidadAcademica;
 
+    // ==================== CONSTRUCTORES =====================
     public Persona() {
     }
+
     /**
      * Dar de alta a una persona, ya sea personal de seguridad, alumno o personal académico
-     * @param CURP identificación de la persona
-     * @param nombre Nombre de la persona
-     * @param apellido_p Apellido paterno de la persona
-     * @param apellido_m Apellido materno de la persona
-     * @param sexo Sexo de la persona
+     *
+     * @param CURP            identificación de la persona
+     * @param nombre          Nombre de la persona
+     * @param apellido_p      Apellido paterno de la persona
+     * @param apellido_m      Apellido materno de la persona
+     * @param sexo            Sexo de la persona
      * @param unidadAcademica Escuela a la que pertenece la persona
      */
     public Persona(String CURP, String nombre, String apellido_p, String apellido_m, Sexo sexo, UnidadAcademica unidadAcademica) {
@@ -59,6 +69,7 @@ public class Persona {
         this.unidadAcademica = unidadAcademica;
     }
 
+    // ==================== SETTERS AND GETTERS ====================
     public String getCURP() {
         return CURP;
     }

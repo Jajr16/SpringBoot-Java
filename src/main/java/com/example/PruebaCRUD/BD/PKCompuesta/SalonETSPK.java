@@ -6,14 +6,19 @@ import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Embeddable
-public class SalonETSPK implements Serializable {
-    @Column(name = "numSalon")
+/**
+ *  Clase que auyda a construir la llave primaria de la tabla SalonETS
+ */
+@Embeddable // Especifica que esta clase debe de estar incrustada en otra dentro de otra entidad
+public class SalonETSPK implements Serializable { // Serializable indica que la clase se va a pasar a una base de
+    // datos externa, convirtiendose a una secuencia de bytes
+    @Column(name = "numSalon") // Notación que indica que la variable será una columna
     private Integer numSalon;
 
     @Column(name = "idETS")
     private Integer idETS;
 
+    // SETTERS AND GETTERS
     public Integer getNumSalon() {
         return numSalon;
     }

@@ -5,16 +5,23 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity
-@Table(name = "inscripcionets")
+/**
+ *  Clase para crear una tabla en la base de datos
+ */
+@Entity // Notación para indicar que esta clase es una entidad (sirve para JPAQL)
+@Table(name = "inscripcionets") // Notación que relaciona el nombre de la tabla que se le asigna con la de la BD
 public class InscripcionETS {
 
-    @EmbeddedId
-    private InscripcionETSPK id;
+    @EmbeddedId // Indica que una clase la va a tomar como llave primaria (usualmente por tener llave compuesta)
+    private InscripcionETSPK id; // Lave primaria compuesta de InscripcionETS
 
+    /**
+     * Relación en la BD de la tabla actual con la clase de la instancia. LAZY indica que las consultas a la tabla
+     * principal no van a obtener los datos de la tabla relacionada
+     */
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("Boleta")
-    @JoinColumn(name = "Boleta", nullable = false)
+    @MapsId("Boleta") // Relaciona esta variable con la de la clase de la llave primaria
+    @JoinColumn(name = "Boleta", nullable = false) // Notación para especificar el nombre de la columna que tendrá la relación
     private Alumno boletaIns;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,6 +35,7 @@ public class InscripcionETS {
     @OneToMany(mappedBy = "inscripcionETS", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AsistenciaInscripcion> asistencias;
 
+    // ==================== CONSTRUCTORES =====================
     // Constructor vacío
     public InscripcionETS() {}
 
@@ -41,6 +49,7 @@ public class InscripcionETS {
         return id;
     }
 
+    // ==================== SETTERS AND GETTERS ====================
     public void setId(InscripcionETSPK id) {
         this.id = id;
     }

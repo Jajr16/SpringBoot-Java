@@ -5,16 +5,23 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 
-@Entity
-@Table(name = "escuelaprograma")
+/**
+ *  Clase para crear una tabla en la base de datos
+ */
+@Entity // Notación para indicar que esta clase es una entidad (sirve para JPAQL)
+@Table(name = "escuelaprograma") // Notación que relaciona el nombre de la tabla que se le asigna con la de la BD
 public class EscuelaPrograma implements Serializable {
 
-    @EmbeddedId
-    private EscuelaProgramaPK id;
+    @EmbeddedId // Indica que una clase la va a tomar como llave primaria (usualmente por tener llave compuesta)
+    private EscuelaProgramaPK id; // Lave primaria compuesta de Aplica
 
+    /**
+     * Relación en la BD de la tabla actual con la clase de la instancia. LAZY indica que las consultas a la tabla
+     * principal no van a obtener los datos de la tabla relacionada
+     */
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("idEscuela")
-    @JoinColumn(name = "id_Escuela", nullable = false)
+    @MapsId("idEscuela") // Relaciona esta variable con la de la clase de la llave primaria
+    @JoinColumn(name = "id_Escuela", nullable = false) // Notación para especificar el nombre de la columna que tendrá la relación
     private UnidadAcademica idUA;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -22,8 +29,7 @@ public class EscuelaPrograma implements Serializable {
     @JoinColumn(name = "idPA", nullable = false)
     private ProgramaAcademico idPAcad;
 
-
-
+    // ==================== CONSTRUCTORES =====================
     public EscuelaPrograma(){}
 
     public EscuelaPrograma(EscuelaProgramaPK id) {
@@ -41,6 +47,7 @@ public class EscuelaPrograma implements Serializable {
         this.idPAcad = idPA;
     }
 
+    // ==================== SETTERS AND GETTERS ====================
     public EscuelaProgramaPK getId() {
         return id;
     }

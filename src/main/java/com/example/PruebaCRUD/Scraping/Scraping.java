@@ -15,9 +15,15 @@ import java.net.URL;
 
 public class Scraping {
 
-    private static final String IMAGE_PATH = "./src/main/java/com/example/PruebaCRUD/Scraping/images/calendario.png"; // Ruta donde guardarás la imagen
-    private static final String PDF_PATH = "./src/main/java/com/example/PruebaCRUD/Scraping/files/calendario.pdf";   // Ruta donde guardarás el PDF
+    private static final String IMAGE_PATH = "./src/main/java/com/example/PruebaCRUD/Scraping/images/calendario.png";
+    private static final String PDF_PATH = "./src/main/java/com/example/PruebaCRUD/Scraping/files/calendario.pdf";
 
+    /**
+     *
+     * @param url Link de la página a la que se ahrá WebScraping
+     * @param cssQuery CSS del elemento que vamos a obtener para descargar el calendario
+     * @return la ruta de la imagen que vamos a descargar
+     */
     public String processPdfToImage(String url, String cssQuery) {
         try {
 
@@ -29,6 +35,7 @@ public class Scraping {
             // Verificar si la imagen ya existe
             File imageFile = new File(IMAGE_PATH);
 
+            // Certificado SSL para poder realizar el web scraping sin errores
             SSLConfig.configureSSL();
 
             // Hacer scraping para obtener la URL del PDF
@@ -39,6 +46,7 @@ public class Scraping {
                 throw new RuntimeException("No se encontró un enlace al PDF válido.");
             }
 
+            // Obtener el href del elemento para descargar el PDF
             String pdfUrl = linkElement.attr("href");
 
             // Descargar el PDF

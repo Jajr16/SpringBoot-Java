@@ -8,17 +8,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("ETS/InscripcionAlumno")
+/**
+ * Clase API que tendrá los endpoints
+ */
+@RestController // Notación que defina el controlador REST (Solicitudes HTTP)
+@RequestMapping("ETS/InscripcionAlumno") // Mapear la url a este método
 public class ListInscripcionesController {
     private final ListETSService listETSService;
 
-    @Autowired
+    @Autowired // Notación que permite inyectar dependencias, en este caso, PeriodoETSService
     public ListInscripcionesController(ListETSService listETSService) {
         this.listETSService = listETSService;
     }
 
-    @GetMapping("/{boleta}")
+    @GetMapping("/{boleta}") // Notación para manejar solicitudes GET
     public ResponseEntity<List<ListETSResponseDTO>> inscripList(@PathVariable("boleta") String boleta) {
         List<ListETSResponseDTO> response = listETSService.inscripcionesETS(boleta);
 

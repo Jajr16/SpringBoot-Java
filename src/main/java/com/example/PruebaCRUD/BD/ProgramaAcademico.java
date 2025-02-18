@@ -5,17 +5,18 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity
-@Table(name = "programaacademico")
+/**
+ *  Clase para crear una tabla en la base de datos
+ */
+@Entity // Notación para indicar que esta clase es una entidad (sirve para JPAQL)
+@Table(name = "programaacademico") // Notación que relaciona el nombre de la tabla que se le asigna con la de la BD
 public class ProgramaAcademico {
 
-    public ProgramaAcademico() {}
-
-    @Id
-    @Column(name = "idPA", nullable = false, length = 20)
+    @Id // Indica que es la llave primaria de la tabla
+    @Column(name = "idPA", nullable = false, length = 20) // Notación que indica que la variable será una columna
     private String idPA;
 
-    @JsonProperty("Nombre")
+    @JsonProperty("Nombre") // Notación que indica el nombre de esta variable en un json
     @Column(name = "Nombre", nullable = false)
     private String nombre; // Cambiado a minúscula
 
@@ -23,10 +24,11 @@ public class ProgramaAcademico {
     @Column(name = "Descripcion", nullable = false)
     private String Descripcion; // Cambiado a minúscula
 
-    @OneToMany(mappedBy = "idPAcad", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "idPAcad", cascade = CascadeType.PERSIST) // Notación para indicar una relación entre tablas
     private List<EscuelaPrograma> detailsEP;
 
-
+    // ==================== CONSTRUCTORES =====================
+    public ProgramaAcademico() {}
 
     public ProgramaAcademico(String id_PA, String nombre, String descripcion) {
         this.idPA = id_PA;
@@ -39,6 +41,7 @@ public class ProgramaAcademico {
         this.Descripcion = descripcion;
     }
 
+    // ==================== SETTERS AND GETTERS ====================
     public String getIdPA() {
         return idPA;
     }

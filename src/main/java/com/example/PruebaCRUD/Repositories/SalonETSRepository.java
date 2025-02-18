@@ -8,9 +8,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+/**
+ * Interfaz que funcionará como la capa de persistencia entre el sistema y la base de datos.
+ * Extiende de JpaRepository (ayuda a gestionar los datos de una BD)
+ */
 @Repository
 public interface SalonETSRepository extends JpaRepository<SalonETS, SalonETSPK> {
+    /**
+     * En lugar de hacer la notación de findBy que nos proporciona JPA, se realiza una consulta más detallada y
+     * personalizable con las clases del proyecto
+     */
     @Query("""
             SELECT new com.example.PruebaCRUD.DTO.SalonesDTO(
                          salon.numSalon,\s
