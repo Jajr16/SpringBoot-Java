@@ -39,6 +39,6 @@ public class TipoUsuario {
     }
 
     public void setTipo(String tipo) {
-        tipo = tipo;
+        this.tipo = tipo;
     }
 }

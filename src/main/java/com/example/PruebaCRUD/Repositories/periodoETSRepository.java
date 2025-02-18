@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface periodoETSRepository extends JpaRepository<periodoETS, String> {
+
     Optional<periodoETS> findByPeriodoAndTipo(String periodo, char tipo);
 
     List<periodoETS> findByPeriodo(String periodo);

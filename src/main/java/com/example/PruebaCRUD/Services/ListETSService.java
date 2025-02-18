@@ -48,5 +48,4 @@ public class ListETSService {
     public Boolean confirmInscripcion(String boleta) {
         return inscripcionETSRepository.existsByBoletaInsBoleta(boleta);
     }
-
 }
