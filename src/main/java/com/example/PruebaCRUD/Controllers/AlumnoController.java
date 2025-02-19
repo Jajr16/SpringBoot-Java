@@ -25,6 +25,7 @@ public class AlumnoController {
     public List<String> obtenerAlumnosInscritos(
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha,
             @RequestParam String periodo) {
+        System.out.println("LA PERRA FECHA ES " + fecha);
         return alumnoService.obtenerAlumnosInscritos(fecha, periodo);
     }
 }
