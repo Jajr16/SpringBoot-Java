@@ -14,6 +14,6 @@ public interface AplicaRepository2 extends JpaRepository<Aplica, AplicaPK> {
     List<Object[]> callListAplica(@Param("docente_rfc") String docente_rfc);
 
     // Notación existsBy(Columna con primera mayúscula) proporcionada por JPA
-    boolean existsByDocenteRFCRFC(@Param("docente_rfc") String docente_rfc);
+    boolean existsByDocenteRFCRfc(@Param("docente_rfc") String docente_rfc);
 
 }

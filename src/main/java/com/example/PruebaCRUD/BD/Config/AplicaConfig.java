@@ -24,12 +24,12 @@ public class AplicaConfig {
     @Bean // Define objetos administrados por Spring e indica que retornará dicho objeto
     @Order(22) // Orden en el que se ejecutará este fragmento de código
 
-    CommandLineRunner initDataAplica(ETSRepository etsRepository, AplicaRepository aplicaRepository, DocentemRepository docentemRepository
-                                             ) {
+    CommandLineRunner initDataAplica(ETSRepository etsRepository, AplicaRepository aplicaRepository,
+                                     DocentemRepository docentemRepository) {
 
         return args -> {
 
-            PersonalAcademico docente = docentemRepository.findByRFC("D").orElse(null);
+            PersonalAcademico docente = docentemRepository.findByRfc("D").orElse(null);
 
             // Busca registros de ETS por ID, en caso de no encontrarlo devuelve null
             ETS ets1 = etsRepository.findById(1).orElse(null);

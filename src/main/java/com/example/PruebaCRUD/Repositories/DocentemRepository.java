@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface DocentemRepository extends JpaRepository<PersonalAcademico, String> {
 
-    Optional<PersonalAcademico> findByRFC(String s);
+    Optional<PersonalAcademico> findByRfc(String s);
 }

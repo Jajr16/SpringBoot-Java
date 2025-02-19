@@ -44,7 +44,7 @@ public class ListETSService2 {
     }
 
     public Boolean confirmInscripcion(String docente_rfc) {
-        return aplicaRepository2.existsByDocenteRFCRFC(docente_rfc);
+        return aplicaRepository2.existsByDocenteRFCRfc(docente_rfc);
     }
 
 }

@@ -28,7 +28,7 @@ public interface DocenteRepository extends JpaRepository<PersonalAcademico, Stri
                 pera.correoi
                 ) FROM PersonalAcademico as pera
             INNER JOIN Persona p ON pera.CURP.CURP = p.CURP
-            INNER JOIN CargoDocente cd ON cd.RFCCD.rFC = pera.rFC
+            INNER JOIN CargoDocente cd ON cd.RFCCD.rfc = pera.rfc
             INNER JOIN Cargo c ON c.id_cargo = cd.idCargoCD.id_cargo
             WHERE pera.TipoPA.cargo = 'Docente'
             """)
@@ -40,7 +40,7 @@ public interface DocenteRepository extends JpaRepository<PersonalAcademico, Stri
                 CONCAT(p.Nombre, " ", p.Apellido_P, " ", p.Apellido_M) as nombre
                 ) FROM PersonalAcademico as pera
             INNER JOIN Persona p ON pera.CURP.CURP = p.CURP
-            INNER JOIN CargoDocente cd ON cd.RFCCD.rFC = pera.rFC
+            INNER JOIN CargoDocente cd ON cd.RFCCD.rfc = pera.rfc
             INNER JOIN Cargo c ON c.id_cargo = cd.idCargoCD.id_cargo
             WHERE pera.TipoPA.cargo = 'Docente'
             """)
