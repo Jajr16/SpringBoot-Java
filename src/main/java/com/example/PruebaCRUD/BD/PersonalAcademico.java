@@ -13,8 +13,8 @@ import java.util.List;
 public class PersonalAcademico {
 
     @Id // Indica que es la llave primaria de la tabla
-    @Column(name = "RFC", nullable = false, length = 13) // Notación que indica que la variable será una columna
-    private String rFC;
+    @Column(name = "rfc", nullable = false, length = 13) // Notación que indica que la variable será una columna
+    private String rfc;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // Notación para indicar una relación entre tablas
     // Notación para especificar el nombre de la columna que tendrá la relación
@@ -46,7 +46,7 @@ public class PersonalAcademico {
     public PersonalAcademico() {}
 
     public PersonalAcademico(String RFC, Persona CURP, String CorreoI, TipoPersonal TipoPA) {
-        this.rFC = RFC;
+        this.rfc = RFC;
         this.CURP = CURP;
         this.correoi = CorreoI;
         this.TipoPA = TipoPA;
@@ -54,11 +54,11 @@ public class PersonalAcademico {
 
     // ==================== SETTERS AND GETTERS ====================
     public String getRFC() {
-        return rFC;
+        return rfc;
     }
 
     public void setRFC(String RFC) {
-        this.rFC = RFC;
+        this.rfc = RFC;
     }
 
     public Persona getCURP() {

@@ -1,28 +1,27 @@
 package com.example.PruebaCRUD.Services;
 
-import com.example.PruebaCRUD.DTO.ListETSResponseDTO;
+import com.example.PruebaCRUD.Repositories.AplicaRepository2;
 import com.example.PruebaCRUD.Repositories.InscripcionETSRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.example.PruebaCRUD.DTO.ListETSResponseDTO;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-  /**
- * Clase que contendrá la lógica que para realizar las funciones principales de los endpoints
- */
-@Service // Anotación que indica que esta clase es un servicio de negocio
-public class ListETSService {
-    private final InscripcionETSRepository inscripcionETSRepository;
+@Service
+public class ListETSService2 {
 
-    @Autowired // Notación que permite inyectar dependencias en este caso, InscripcionETSRepository
-    public ListETSService(InscripcionETSRepository inscripcionETSRepository) {
-        this.inscripcionETSRepository = inscripcionETSRepository;
+    private final AplicaRepository2 aplicaRepository2;
+
+    @Autowired
+    public ListETSService2(AplicaRepository2 aplicaRepository2) {
+        this.aplicaRepository2 = aplicaRepository2;
     }
 
-    public List<ListETSResponseDTO> inscripcionesETS(String boleta) {
-        List<Object[]> results = inscripcionETSRepository.callListInscripcionesETS(boleta);
+    public List<ListETSResponseDTO> inscripcionesETS(String docente_rfc) {
+        List<Object[]> results = aplicaRepository2.callListAplica(docente_rfc);
 
         List<ListETSResponseDTO> responseList = new ArrayList<>();
 
@@ -44,7 +43,8 @@ public class ListETSService {
         return responseList;
     }
 
-    public Boolean confirmInscripcion(String boleta) {
-        return inscripcionETSRepository.existsByBoletaInsBoleta(boleta);
+    public Boolean confirmInscripcion(String docente_rfc) {
+        return aplicaRepository2.existsByDocenteRFCRfc(docente_rfc);
     }
+
 }

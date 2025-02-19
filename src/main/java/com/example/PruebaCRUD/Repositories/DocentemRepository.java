@@ -1,12 +1,14 @@
 package com.example.PruebaCRUD.Repositories;
 
-import com.example.PruebaCRUD.BD.TipoUsuario;
+import com.example.PruebaCRUD.BD.PersonalAcademico;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface TipoUsuarioRepository extends JpaRepository<TipoUsuario, Integer> {
-    Optional<TipoUsuario> findByTipo(String Tipo);
+public interface DocentemRepository extends JpaRepository<PersonalAcademico, String> {
+
+    Optional<PersonalAcademico> findByRfc(String s);
 }

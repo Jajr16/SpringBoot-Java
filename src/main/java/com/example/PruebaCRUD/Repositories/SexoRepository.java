@@ -1,10 +1,11 @@
 package com.example.PruebaCRUD.Repositories;
 
-import com.example.PruebaCRUD.BD.Sexo;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import com.example.PruebaCRUD.BD.Sexo;
 
 /**
  * Interfaz que funcionará como la capa de persistencia entre el sistema y la base de datos.

@@ -106,4 +106,5 @@ public class Alumno {
     public void setInscETSAl(List<InscripcionETS> inscETSAl) {
         this.inscETSAl = inscETSAl;
     }
+
 }

@@ -34,10 +34,10 @@ public class CargoDocenteConfig {
         return args -> {
             if (cargoDocenteRepository.count() == 0) {  // Si aún no hay ningún registro en la tabla cargodocente entra aquí
                 // Busca el registro de cada personal academico por RFC, en caso de no encontrarlo devuelve null
-                PersonalAcademico Ulises = personalAcademicoRepository.findByrFC("D").orElse(null);
-                PersonalAcademico Saul = personalAcademicoRepository.findByrFC("E").orElse(null);
-                PersonalAcademico Chadwick = personalAcademicoRepository.findByrFC("F").orElse(null);
-                PersonalAcademico Andres = personalAcademicoRepository.findByrFC("G").orElse(null);
+                PersonalAcademico Ulises = personalAcademicoRepository.findByRfc("D").orElse(null);
+                PersonalAcademico Saul = personalAcademicoRepository.findByRfc("E").orElse(null);
+                PersonalAcademico Chadwick = personalAcademicoRepository.findByRfc("F").orElse(null);
+                PersonalAcademico Andres = personalAcademicoRepository.findByRfc("G").orElse(null);
 
                 // Busca el registro de cada Cargo del personal academico, en caso de no encontrarlo devuelve null
                 Cargo Docente = cargoRepository.findByCargo("Docente").orElse(null);
