@@ -25,7 +25,7 @@ public class Aplica {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("DocenteRFC")
     @JoinColumn(name = "Docente_RFC", nullable = false)
-    private PersonalAcademico DocenteRFC;
+    private PersonalAcademico docenteRFC;
 
     @Column(name = "Titular", nullable = false)
     private boolean Titular;
@@ -55,11 +55,12 @@ public class Aplica {
     }
 
     public PersonalAcademico getDocenteRFC() {
-        return DocenteRFC;
+        return docenteRFC;
     }
 
+
     public void setDocenteRFC(PersonalAcademico docenteRFC) {
-        DocenteRFC = docenteRFC;
+        this.docenteRFC = docenteRFC;
     }
 
     public boolean isTitular() {

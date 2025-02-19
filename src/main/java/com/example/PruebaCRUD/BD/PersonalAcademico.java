@@ -35,7 +35,7 @@ public class PersonalAcademico {
 
     //    ================= RELACIONES INVERSAS CON OTRAS TABLAS ========================
 //    ##### TABLA APLICA ####
-    @OneToMany(mappedBy = "DocenteRFC", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "docenteRFC", cascade = CascadeType.PERSIST)
     private List<Aplica> AplicaPersA;
 
 //    ##### TABLA CARGO DOCENTE ####
