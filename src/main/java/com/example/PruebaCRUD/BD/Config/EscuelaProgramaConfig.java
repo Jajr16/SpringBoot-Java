@@ -84,10 +84,10 @@ public class EscuelaProgramaConfig {
 
                 EscuelaProgramaPK reg2 = new EscuelaProgramaPK();
 
-                reg2.setIdEscuela(ua2.getIdEscuela());
+                reg2.setIdEscuela(ua1.getIdEscuela());
                 reg2.setIdPA(pa2.getId_PA());
 
-                EscuelaPrograma escuelaProgramareg2 = new EscuelaPrograma(reg2, ua2, pa2); // Asocia las entidades completas
+                EscuelaPrograma escuelaProgramareg2 = new EscuelaPrograma(reg2, ua1, pa2); // Asocia las entidades completas
                 escuelaProgramaRepository.save(escuelaProgramareg2);
             }
         };

@@ -10,7 +10,7 @@ public class AlumnoDTOSaes {
     private String programaAcademico;
     private String correo;
 
-     // ==================== CONSTRUCTORES =====================
+    // ==================== CONSTRUCTORES =====================
     public AlumnoDTOSaes(String nombre, String boleta, String pa, String correo) {
         this.nombre = nombre;
         this.boleta = boleta;

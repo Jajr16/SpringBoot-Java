@@ -1,5 +1,6 @@
 package com.example.PruebaCRUD.Services;
 
+import com.example.PruebaCRUD.DTO.Saes.ListInsAlumnProjectionSaes;
 import com.example.PruebaCRUD.Repositories.AlumnoRepository;
 import com.example.PruebaCRUD.Repositories.InscripcionETSRepository;
 import com.example.PruebaCRUD.Repositories.periodoETSRepository;
@@ -31,5 +32,9 @@ public class AlumnoService {
             lista.add(alumno);
         }
         return lista;
+    }
+
+    public List<ListInsAlumnProjectionSaes> getAlumnos(String usuario) {
+        return this.alumnoRepository.findAlumnosSaes(usuario);
     }
 }

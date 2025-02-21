@@ -1,15 +1,16 @@
 package com.example.PruebaCRUD.Controllers;
 
 import com.example.PruebaCRUD.BD.Usuario;
+import com.example.PruebaCRUD.DTO.Saes.ListInsETSProjectionSaes;
 import com.example.PruebaCRUD.Repositories.UsuarioRepository;
+import com.example.PruebaCRUD.Services.InscripcionETSService;
 import com.example.PruebaCRUD.Services.ListETSService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -20,7 +21,6 @@ import java.util.Optional;
 @RequestMapping("/inscripciones") // Mapear la url a este método
 public class InscripcionesController {
     private final ListETSService listETSService;
-
     private final UsuarioRepository usuarioRepository;
 
     @Autowired // Notación que permite inyectar dependencias, en este caso, PeriodoETSService

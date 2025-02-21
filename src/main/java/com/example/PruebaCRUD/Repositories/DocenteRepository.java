@@ -24,7 +24,7 @@ public interface DocenteRepository extends JpaRepository<PersonalAcademico, Stri
      */
     @Query("""
             SELECT new com.example.PruebaCRUD.DTO.Saes.DocentesDTOSaes(
-                CONCAT(p.Nombre, " ", p.Apellido_P, " ", p.Apellido_M) as nombre,
+                CONCAT(p.nombre, " ", p.apellido_p, " ", p.apellido_m) as nombre,
                 pera.correoi
                 ) FROM PersonalAcademico as pera
             INNER JOIN Persona p ON pera.CURP.CURP = p.CURP
@@ -37,7 +37,7 @@ public interface DocenteRepository extends JpaRepository<PersonalAcademico, Stri
     @Query("""
             SELECT new com.example.PruebaCRUD.DTO.Saes.DocentesDTOToETS(
                 p.CURP,
-                CONCAT(p.Nombre, " ", p.Apellido_P, " ", p.Apellido_M) as nombre
+                CONCAT(p.nombre, " ", p.apellido_p, " ", p.apellido_m) as nombre
                 ) FROM PersonalAcademico as pera
             INNER JOIN Persona p ON pera.CURP.CURP = p.CURP
             INNER JOIN CargoDocente cd ON cd.RFCCD.rfc = pera.rfc
