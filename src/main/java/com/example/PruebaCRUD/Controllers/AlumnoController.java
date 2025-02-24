@@ -1,14 +1,11 @@
 package com.example.PruebaCRUD.Controllers;
 
-import com.example.PruebaCRUD.BD.Alumno;
-import com.example.PruebaCRUD.BD.InscripcionETS;
-import com.example.PruebaCRUD.BD.periodoETS;
+import com.example.PruebaCRUD.DTO.AlumnoDTO;
 import com.example.PruebaCRUD.Services.AlumnoService;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -21,11 +18,11 @@ public class AlumnoController {
         this.alumnoService = alumnoService;
     }
 
-    @GetMapping("/inscritosETS/{ETSid}")
-    public List<String> obtenerAlumnosInscritos(
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha,
-            @RequestParam String periodo) {
-        System.out.println("LA PERRA FECHA ES " + fecha);
-        return alumnoService.obtenerAlumnosInscritos(fecha, periodo);
+    @GetMapping("/inscritosETS/{fecha}/{periodo}")
+    public List<AlumnoDTO> findAlumnosInscritosETS(
+            @PathVariable("fecha") Date fecha,
+            @PathVariable("periodo") Integer periodo
+    ) {
+        return alumnoService.findAlumnosInscritosETS(fecha, periodo);
     }
 }
