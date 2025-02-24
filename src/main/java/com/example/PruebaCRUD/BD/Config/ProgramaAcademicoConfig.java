@@ -23,10 +23,10 @@ public class ProgramaAcademicoConfig {
         return args -> {
             if (programaAcademicoRepository.count() == 0) { // Si no encuentra ningún registro entra aquí
                 // Guarda los nuevos registros de ProgramaAcademico
-                programaAcademicoRepository.save(new ProgramaAcademico("ISC-2024",
-                        "Ingeniería en Sistemas Computacionales", "Descripcion1"));
                 programaAcademicoRepository.save(new ProgramaAcademico("IIA-2024",
                         "Ingeniería en Inteligencia Artificial", "Descripcion2"));
+                programaAcademicoRepository.save(new ProgramaAcademico("ISC-2024",
+                        "Ingeniería en Sistemas Computacionales", "Descripcion1"));
             }
         };
     }

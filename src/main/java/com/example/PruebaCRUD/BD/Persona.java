@@ -17,13 +17,13 @@ public class Persona {
     private String CURP;
 
     @Column(name = "Nombre", nullable = false)
-    private String Nombre;
+    private String nombre;
 
     @Column(name = "Apellido_P", nullable = false)
-    private String Apellido_P;
+    private String apellido_p;
 
     @Column(name = "Apellido_M", nullable = false)
-    private String Apellido_M;
+    private String apellido_m;
 
     //  ############ REFERENCIAS A OTRAS TABLAS #############
     /**
@@ -54,17 +54,17 @@ public class Persona {
      */
     public Persona(String CURP, String nombre, String apellido_p, String apellido_m, Sexo sexo, UnidadAcademica unidadAcademica) {
         this.CURP = CURP;
-        this.Nombre = nombre;
-        this.Apellido_P = apellido_p;
-        this.Apellido_M = apellido_m;
+        this.nombre = nombre;
+        this.apellido_p = apellido_p;
+        this.apellido_m = apellido_m;
         this.sexo = sexo;
         this.unidadAcademica = unidadAcademica;
     }
 
     public Persona(String nombre, String apellido_p, String apellido_m, Sexo sexo, UnidadAcademica unidadAcademica) {
-        this.Nombre = nombre;
-        this.Apellido_P = apellido_p;
-        this.Apellido_M = apellido_m;
+        this.nombre = nombre;
+        this.apellido_p = apellido_p;
+        this.apellido_m = apellido_m;
         this.sexo = sexo;
         this.unidadAcademica = unidadAcademica;
     }
@@ -79,27 +79,27 @@ public class Persona {
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        Nombre = nombre;
+        this.nombre = nombre;
     }
 
     public String getApellido_P() {
-        return Apellido_P;
+        return apellido_p;
     }
 
     public void setApellido_P(String apellido_P) {
-        Apellido_P = apellido_P;
+        this.apellido_p = apellido_P;
     }
 
     public String getApellido_M() {
-        return Apellido_M;
+        return apellido_m;
     }
 
     public void setApellido_M(String apellido_M) {
-        Apellido_M = apellido_M;
+        this.apellido_m = apellido_M;
     }
 
     public Sexo getSexo() {

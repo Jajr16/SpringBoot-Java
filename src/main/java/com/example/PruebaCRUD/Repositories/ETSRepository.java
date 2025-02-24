@@ -3,6 +3,7 @@ package com.example.PruebaCRUD.Repositories;
 import com.example.PruebaCRUD.BD.ETS;
 import com.example.PruebaCRUD.DTO.ETSDTO;
 import com.example.PruebaCRUD.DTO.Saes.ETSDTOSaes;
+import com.example.PruebaCRUD.DTO.Saes.ListInsETSProjectionSaes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -60,4 +61,32 @@ public interface ETSRepository extends JpaRepository<ETS, Integer> {
           INNER JOIN Turno as turno ON turno.idTurno = ets.Turno.idTurno
             """)
     List<ETSDTOSaes> findETS();
+
+    @Query("""
+                SELECT 
+                    DISTINCT ua.nombre as nombre, ua.idUA as idUA
+                FROM ETS e
+                INNER JOIN UnidadAprendizaje ua ON e.idUA.idUA = ua.idUA
+                INNER JOIN ProgramaAcademico pa ON ua.idPA.idPA = pa.idPA
+                INNER JOIN EscuelaPrograma ep ON pa.idPA = ep.idPAcad.idPA
+                WHERE ep.idUA.id_Escuela = (SELECT p.unidadAcademica.id_Escuela FROM Persona p
+                                            INNER JOIN Usuario u ON p.CURP = u.CURP.CURP
+                                            WHERE u.usuario = :usuario)
+            """)
+    List<ListInsETSProjectionSaes> findETSL(String usuario);
+
+    @Query("""
+            SELECT e FROM ETS e 
+            INNER JOIN UnidadAprendizaje ua ON e.idUA.idUA = ua.idUA
+            INNER JOIN ProgramaAcademico pa ON ua.idPA.idPA = pa.idPA
+            INNER JOIN EscuelaPrograma ep ON pa.idPA = ep.idPAcad.idPA
+            WHERE 
+            e.idPeriodo.idPeriodo = :periodo AND
+            e.Turno.nombre = :turno AND
+            e.idUA.idUA = :UAprendizaje AND
+            ep.idUA.id_Escuela = (SELECT p.unidadAcademica.id_Escuela FROM Persona p
+                                            INNER JOIN Usuario u ON p.CURP = u.CURP.CURP
+                                            WHERE u.usuario = :user)
+            """)
+    Optional<ETS> findByPTUA(String periodo, String turno, String UAprendizaje, String user);
 }

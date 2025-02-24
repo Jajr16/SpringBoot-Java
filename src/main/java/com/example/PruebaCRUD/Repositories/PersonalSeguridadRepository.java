@@ -22,7 +22,7 @@ public interface PersonalSeguridadRepository extends JpaRepository<PersonalSegur
      */
     @Query("""
             SELECT new com.example.PruebaCRUD.DTO.Saes.PersonalSeguridadDTOSaes(
-                CONCAT(p.Nombre, " ", p.Apellido_P, " ", p.Apellido_M) as nombre,
+                CONCAT(p.nombre, " ", p.apellido_p, " ", p.apellido_m) as nombre,
                 t.nombre,
                 c.nombre
             ) FROM PersonalSeguridad ps

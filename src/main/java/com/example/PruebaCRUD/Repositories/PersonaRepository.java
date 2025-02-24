@@ -25,7 +25,7 @@ public interface PersonaRepository extends JpaRepository<Persona, String> {
      */
     @Query("""
             SELECT new com.example.PruebaCRUD.DTO.PersonaDTO(
-                CONCAT(p.Nombre, " ", p.Apellido_P, " ", p.Apellido_M) as nombre,
+                CONCAT(p.nombre, " ", p.apellido_p, " ", p.apellido_m) as nombre,
                 p.sexo.nombre,
                 p.unidadAcademica.nombre
             ) FROM Persona as p
