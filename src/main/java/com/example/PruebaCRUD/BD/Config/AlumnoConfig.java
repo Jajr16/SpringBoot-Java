@@ -34,11 +34,11 @@ public class AlumnoConfig {
             if (alumnoRepository.count() == 0) { // Si aún no hay ningún registro en la tabla alumno entra aquí
                 // Busca el registro de cada uno de los Alumnos por CURP, en caso de no encontrarlo devuelve null
                 Persona Alfredo = personaRepository.findPersonaByCURP("1").orElseGet(null);
-                Persona Ale = personaRepository.findPersonaByCURP("2").orElseGet(null);
-                Persona Flores = personaRepository.findPersonaByCURP("3").orElseGet(null);
-                Persona Daniel = personaRepository.findPersonaByCURP("4").orElseGet(null);
-                Persona Luis = personaRepository.findPersonaByCURP("5").orElseGet(null);
-                Persona Roman = personaRepository.findPersonaByCURP("6").orElseGet(null);
+//                Persona Ale = personaRepository.findPersonaByCURP("2").orElseGet(null);
+//                Persona Flores = personaRepository.findPersonaByCURP("3").orElseGet(null);
+//                Persona Daniel = personaRepository.findPersonaByCURP("4").orElseGet(null);
+//                Persona Luis = personaRepository.findPersonaByCURP("5").orElseGet(null);
+//                Persona Roman = personaRepository.findPersonaByCURP("6").orElseGet(null);
 
                 // Busca el registro de cada programa académico por su ID, en caso de no encontrarlo devuelve null
                 ProgramaAcademico IA = programaAcademicoRepository.findByIdPA("IIA-2024").orElseGet(null);
