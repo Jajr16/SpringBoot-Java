@@ -2,6 +2,7 @@ package com.example.PruebaCRUD.Repositories;
 
 import com.example.PruebaCRUD.BD.InscripcionETS;
 import com.example.PruebaCRUD.BD.PKCompuesta.InscripcionETSPK;
+import com.example.PruebaCRUD.DTO.AlumnoDTO;
 import com.example.PruebaCRUD.DTO.Saes.InscripcionesDTOSaes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,14 +18,19 @@ public interface InscripcionETSRepository extends JpaRepository<InscripcionETS, 
 
     boolean existsByBoletaInsBoleta(@Param("boleta") String boleta);
 
-    @Query("SELECT a.boleta, p.nombre, p.apellido_p, p.apellido_m " +
+    @Query("SELECT DISTINCT new com.example.PruebaCRUD.DTO.AlumnoDTO(" +
+            "a.boleta, " +
+            "p.nombre, " +
+            "p.apellido_p as apellidoP, " +
+            "p.apellido_m as apellidoM) " +
             "FROM InscripcionETS ie " +
             "JOIN ie.boletaIns a " +
             "JOIN a.CURP p " +
             "JOIN ie.idETSIns e " +
             "JOIN e.idPeriodo pe " +
-            "WHERE e.Fecha = :fecha AND pe.idPeriodo = :periodo")
-    List<Object[]> findAlumnosInscritosETS(@Param("fecha") Date fecha, @Param("periodo") Integer periodo);
+            "WHERE e.Fecha = :fecha AND pe.periodo = :periodo")
+    List<AlumnoDTO> findAlumnosInscritosETS(@Param("fecha") Date fecha, @Param("periodo") String periodo);
+
 
     boolean existsById(InscripcionETSPK id);
 

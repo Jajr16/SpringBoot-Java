@@ -1,15 +1,20 @@
 package com.example.PruebaCRUD.Services;
 
 import com.example.PruebaCRUD.DTO.AlumnoDTO;
+import com.example.PruebaCRUD.DTO.ListAlumnosDTO;
 import com.example.PruebaCRUD.DTO.Saes.ListInsAlumnProjectionSaes;
 import com.example.PruebaCRUD.Repositories.AlumnoRepository;
 import com.example.PruebaCRUD.Repositories.InscripcionETSRepository;
 import com.example.PruebaCRUD.Repositories.periodoETSRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -17,34 +22,55 @@ public class AlumnoService {
 
     private final AlumnoRepository alumnoRepository;
     private final InscripcionETSRepository inscripcionETSRepository;
+    private final periodoETSRepository periodRepo;
 
     @Autowired
-    public AlumnoService(AlumnoRepository alumnoRepository, InscripcionETSRepository inscripcionETSRepository) {
+    public AlumnoService(AlumnoRepository alumnoRepository, InscripcionETSRepository inscripcionETSRepository, periodoETSRepository periodRepo) {
         this.alumnoRepository = alumnoRepository;
         this.inscripcionETSRepository = inscripcionETSRepository;
+        this.periodRepo = periodRepo;
     }
 
-    public List<AlumnoDTO> findAlumnosInscritosETS(java.sql.Date fecha, Integer periodo) {
-        List<Object[]> results = inscripcionETSRepository.findAlumnosInscritosETS(fecha, periodo);
-        List<AlumnoDTO> responseList = new ArrayList<>();
+    public List<AlumnoDTO>findAlumnosInscritosETS() {
 
-        // Iterar sobre cada resultado y mapearlo a un DTO
-        for (Object[] result : results) {
-            String boleta = (String) result[0];
-            String Nombre = (String) result[1];
-            String Apellido_P = (String) result[2];
-            String Apellido_M = (String) result[3];
-            java.sql.Date fechabd = (Date) result[4];  // La fecha que viene de la BD
-            Integer periodobd = (Integer) result[5]; // El periodo desde la BD
+        Integer año = LocalDate.now().getYear();
+        Integer mes = LocalDate.now().getMonthValue();
 
-            // Convertir fecha e idPeriodo a String
-            String fechaStr = fechabd.toString();
-            String periodoStr = periodobd.toString();
+        LocalDate today = LocalDate.now();
 
-            // Crear un DTO con los valores convertidos y agregarlo a la lista de respuestas
-            responseList.add(new AlumnoDTO(boleta, Nombre, Apellido_P, Apellido_M, fechaStr, periodoStr));
+        //Se inicializa la variable que servirá para armar el periodo en el estamos actualmente
+        String periodo = "";
+
+        // Obtiene los últimos dos dígitos del año actual
+        String año_abreviado = año.toString().substring(2);
+
+        // Se arma el periodo
+        if (mes >= 8 || mes <= 1) {
+            periodo = año_abreviado.concat("/1");
+        } else {
+            periodo = año_abreviado.concat("/2");
         }
-        return responseList;
+
+
+        String fechaString = periodRepo.findFechaByPeriodo(periodo);
+
+
+        if (fechaString == null) { // Si la fecha obtenida es null
+            List<AlumnoDTO> lista = new ArrayList<>();  // Usamos ArrayList como implementación de List
+            AlumnoDTO error = new AlumnoDTO(1);  // Suponiendo que 1 es un ID de error
+            lista.add(error);  // Añadimos el error a la lista
+            return lista;  // Retornamos la lista que contiene el error
+        }
+
+
+        Date fechaETS;
+        fechaETS = Date.valueOf(fechaString); // Convierte a Date solo si no es null
+
+
+
+        List<AlumnoDTO> results = inscripcionETSRepository.findAlumnosInscritosETS(fechaETS, periodo);
+        System.out.println("Aqui es results" + results);
+        return results;
     }
 
     public List<ListInsAlumnProjectionSaes> getAlumnos(String usuario) {

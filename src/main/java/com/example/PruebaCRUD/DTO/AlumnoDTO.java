@@ -3,23 +3,37 @@ package com.example.PruebaCRUD.DTO;
 public class AlumnoDTO {
 
     private String boleta;
-    private String Nombre;
-    private String Apellido_P;
-    private String Apellido_M;
-    private String fecha;  // Nuevo campo para la fecha
-    private String periodo; // Nuevo campo para el periodo
+    private String nombre;
+    private String apellidoP;
+    private String apellidoM;
+    private Integer error;
+
+
 
     // Constructor actualizado
-    public AlumnoDTO(String boleta, String Nombre, String Apellido_P, String Apellido_M, String fecha, String periodo) {
+    public AlumnoDTO(String boleta, String nombre, String apellidoP, String apellidoM) {
         this.boleta = boleta;
-        this.Nombre = Nombre;
-        this.Apellido_P = Apellido_P;
-        this.Apellido_M = Apellido_M;
-        this.fecha = fecha;
-        this.periodo = periodo;
+        this.nombre = nombre;
+        this.apellidoP = apellidoP;
+        this.apellidoM = apellidoM;
     }
 
+    public AlumnoDTO(String boleta, String Nombre, String Apellido_P, String Apellido_M, Integer error) {
+        this.boleta = boleta;
+        this.nombre = Nombre;
+        this.apellidoP = apellidoP;
+        this.apellidoM = apellidoM;
+        this.error = error;
+    }
+
+    public AlumnoDTO( Integer error) {
+        this.error = error;
+    }
+
+
     // Getters y Setters
+
+
     public String getBoleta() {
         return boleta;
     }
@@ -29,55 +43,45 @@ public class AlumnoDTO {
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
-    public void setNombre(String Nombre) {
-        this.Nombre = Nombre;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String getApellido_P() {
-        return Apellido_P;
+    public String getApellidoP() {
+        return apellidoP;
     }
 
-    public void setApellido_P(String Apellido_P) {
-        this.Apellido_P = Apellido_P;
+    public void setApellidoP(String apellidoP) {
+        this.apellidoP = apellidoP;
     }
 
-    public String getApellido_M() {
-        return Apellido_M;
+    public String getApellidoM() {
+        return apellidoM;
     }
 
-    public void setApellido_M(String Apellido_M) {
-        this.Apellido_M = Apellido_M;
+    public void setApellidoM(String apellidoM) {
+        this.apellidoM = apellidoM;
     }
 
-    public String getFecha() {
-        return fecha;
+    public Integer getError() {
+        return error;
     }
 
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
+    public void setError(Integer error) {
+        this.error = error;
     }
 
-    public String getPeriodo() {
-        return periodo;
-    }
-
-    public void setPeriodo(String periodo) {
-        this.periodo = periodo;
-    }
-
-    // toString (opcional)
     @Override
     public String toString() {
-        return "AlumnoDTO{" +
+        return "{" +
                 "boleta='" + boleta + '\'' +
-                ", Nombre='" + Nombre + '\'' +
-                ", Apellido_P='" + Apellido_P + '\'' +
-                ", Apellido_M='" + Apellido_M + '\'' +
-                ", fecha='" + fecha + '\'' +
-                ", periodo='" + periodo + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", apellidoP='" + apellidoP + '\'' +
+                ", apellidoM='" + apellidoM + '\'' +
+                ", error=" + error +
                 '}';
     }
 }
