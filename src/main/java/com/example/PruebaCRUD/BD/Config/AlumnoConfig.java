@@ -46,11 +46,11 @@ public class AlumnoConfig {
 
                 // Guarda nuevos registros con nuevas instancias de Alumno y con los registros obtenidos anteriormente
                 alumnoRepository.save(new Alumno("2022630467", Alfredo, "1@gmail.com", IA, "IMG" ));
-                //alumnoRepository.save(new Alumno("1234567890", Ale, "2@gmail.com", IA, "IMG" ));
-                //alumnoRepository.save(new Alumno("0987654321", Flores, "3@gmail.com", IA, "IMG" ));
-                //alumnoRepository.save(new Alumno("0123456789", Daniel, "4@gmail.com", IA, "IMG" ));
-                //alumnoRepository.save(new Alumno("1111111111", Luis, "5@gmail.com", IA, "IMG" ));
-                //alumnoRepository.save(new Alumno("0000000000", Roman, "6@gmail.com", ISC, "IMG" ));
+//                alumnoRepository.save(new Alumno("1234567890", Ale, "2@gmail.com", IA, "IMG" ));
+//                alumnoRepository.save(new Alumno("0987654321", Flores, "3@gmail.com", IA, "IMG" ));
+//                alumnoRepository.save(new Alumno("0123456789", Daniel, "4@gmail.com", IA, "IMG" ));
+//                alumnoRepository.save(new Alumno("1111111111", Luis, "5@gmail.com", IA, "IMG" ));
+//                alumnoRepository.save(new Alumno("0000000000", Roman, "6@gmail.com", ISC, "IMG" ));
             }
         };
     }
