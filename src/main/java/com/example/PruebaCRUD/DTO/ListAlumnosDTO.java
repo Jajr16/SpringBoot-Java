@@ -3,30 +3,30 @@ package com.example.PruebaCRUD.DTO;
 public class ListAlumnosDTO {
 
     private Integer idETS;
-    private String Boleta;
-    private String CURP;
-    private String NombreA;
-    private String ApellidoP;
-    private String ApellidoM;
-    private String Sexo;
-    private String Correo;
-    private String Carrera;
-    private Boolean Aceptado; // Nueva propiedad agregada
+    private String boleta;
+    private String cURP;
+    private String nombreA;
+    private String apellidoP;
+    private String apellidoM;
+    private String sexo;
+    private String correo;
+    private String carrera;
+    private Boolean aceptado; // Nueva propiedad agregada
 
     // Constructor
     public ListAlumnosDTO(Integer idETS, String Boleta, String CURP, String NombreA,
                           String ApellidoP, String ApellidoM, String Sexo,
                           String Correo, String Carrera, Boolean Aceptado) {
         this.idETS = idETS;
-        this.Boleta = Boleta;
-        this.CURP = CURP;
-        this.NombreA = NombreA;
-        this.ApellidoP = ApellidoP;
-        this.ApellidoM = ApellidoM;
-        this.Sexo = Sexo;
-        this.Correo = Correo;
-        this.Carrera = Carrera;
-        this.Aceptado = Aceptado;
+        this.boleta = Boleta;
+        this.cURP = CURP;
+        this.nombreA = NombreA;
+        this.apellidoP = ApellidoP;
+        this.apellidoM = ApellidoM;
+        this.sexo = Sexo;
+        this.correo = Correo;
+        this.carrera = Carrera;
+        this.aceptado = Aceptado;
     }
 
     // Getters and Setters
@@ -39,90 +39,90 @@ public class ListAlumnosDTO {
     }
 
     public String getBoleta() {
-        return Boleta;
+        return boleta;
     }
 
     public void setBoleta(String boleta) {
-        Boleta = boleta;
+        boleta = boleta;
     }
 
     public String getCURP() {
-        return CURP;
+        return cURP;
     }
 
     public void setCURP(String CURP) {
-        this.CURP = CURP;
+        this.cURP = CURP;
     }
 
     public String getNombreA() {
-        return NombreA;
+        return nombreA;
     }
 
     public void setNombreA(String nombreA) {
-        NombreA = nombreA;
+        nombreA = nombreA;
     }
 
     public String getApellidoP() {
-        return ApellidoP;
+        return apellidoP;
     }
 
     public void setApellidoP(String apellidoP) {
-        ApellidoP = apellidoP;
+        apellidoP = apellidoP;
     }
 
     public String getApellidoM() {
-        return ApellidoM;
+        return apellidoM;
     }
 
     public void setApellidoM(String apellidoM) {
-        ApellidoM = apellidoM;
+        apellidoM = apellidoM;
     }
 
     public String getSexo() {
-        return Sexo;
+        return sexo;
     }
 
     public void setSexo(String sexo) {
-        Sexo = sexo;
+        sexo = sexo;
     }
 
     public String getCorreo() {
-        return Correo;
+        return correo;
     }
 
     public void setCorreo(String correo) {
-        Correo = correo;
+        correo = correo;
     }
 
     public String getCarrera() {
-        return Carrera;
+        return carrera;
     }
 
     public void setCarrera(String carrera) {
-        Carrera = carrera;
+        carrera = carrera;
     }
 
     public Boolean getAceptado() {
-        return Aceptado;
+        return aceptado;
     }
 
     public void setAceptado(Boolean aceptado) {
-        Aceptado = aceptado;
+        aceptado = aceptado;
     }
 
     @Override
     public String toString() {
         return "ListAlumnosDTO{" +
                 "idETS=" + idETS +
-                ", Boleta='" + Boleta + '\'' +
-                ", CURP='" + CURP + '\'' +
-                ", NombreA='" + NombreA + '\'' +
-                ", ApellidoP='" + ApellidoP + '\'' +
-                ", ApellidoM='" + ApellidoM + '\'' +
-                ", Sexo='" + Sexo + '\'' +
-                ", Correo='" + Correo + '\'' +
-                ", Carrera='" + Carrera + '\'' +
-                ", Aceptado=" + Aceptado +
+                ", Boleta='" + boleta + '\'' +
+                ", CURP='" + cURP + '\'' +
+                ", NombreA='" + nombreA + '\'' +
+                ", ApellidoP='" + apellidoP + '\'' +
+                ", ApellidoM='" + apellidoM + '\'' +
+                ", Sexo='" + sexo + '\'' +
+                ", Correo='" + correo + '\'' +
+                ", Carrera='" + carrera + '\'' +
+                ", Aceptado=" + aceptado +
                 '}';
     }
 }
