@@ -137,10 +137,11 @@ public class PersonaService {
         }
 
         Optional<Persona> exists = this.personaRepository.findPersonaByCURP(newAlumnoDTOSaes.getCurp());
+        Optional<Alumno> existsA = this.alumnoRepository.findByBoleta(newAlumnoDTOSaes.getBoleta());
 
-        if (exists.isPresent()) {
+        if (exists.isPresent() || existsA.isPresent()) {
             datos.put("Error", true);
-            datos.put("message", "Esa persona ya ha sido registrada con anterioridad.");
+            datos.put("message", "Ese alumno ya ha sido registrado con anterioridad.");
 
             return new ResponseEntity<>(
                     datos,
