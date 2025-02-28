@@ -49,14 +49,14 @@ public class InscripcionesController {
             String tipoUsuario = usuarioOpt.get().getTipoU().getTipo(); // Obtener tipo de usuario
 
             // Validación flexible: acepta cualquier rol que contenga 'Docente' o 'Seguridad'
-            if (tipoUsuario.toLowerCase().contains("docente") ||
-                    tipoUsuario.toLowerCase().contains("seguridad")) {
+            if (tipoUsuario.toLowerCase().contains("personal academico") ||
+                    tipoUsuario.toLowerCase().contains("seguridad") || tipoUsuario.toLowerCase().contains("alumno")) {
 
                 response.put("username", username);
                 response.put("tipoUsuario", tipoUsuario);
                 response.put("mensaje", "Usuario válido");
             } else {
-                response.put("error", "El usuario no corresponde a un Docente o Seguridad");
+                response.put("error", "El usuario no corresponde a ningún rol");
             }
         } else {
             response.put("error", "Usuario no encontrado");
