@@ -10,9 +10,11 @@ public class ListETSResponseDTO {
     private String Turno;
     private String Fecha;
     private String UnidadAprendizaje;
+    private Boolean inscrito;
 
     // ==================== CONSTRUCTORES =====================
     public ListETSResponseDTO() {}
+
 
     public ListETSResponseDTO(Integer idETS, String Periodo, String Turno, String Fecha, String UnidadAprendizaje) {
         this.idETS = idETS;
@@ -20,6 +22,16 @@ public class ListETSResponseDTO {
         this.Turno = Turno;
         this.Fecha = Fecha;
         this.UnidadAprendizaje = UnidadAprendizaje;
+    }
+
+    public ListETSResponseDTO(Integer idETS, String Periodo, String Turno, String Fecha, String UnidadAprendizaje,
+                              Boolean inscrito) {
+        this.idETS = idETS;
+        this.idPeriodo = Periodo;
+        this.Turno = Turno;
+        this.Fecha = Fecha;
+        this.UnidadAprendizaje = UnidadAprendizaje;
+        this.inscrito = inscrito;
     }
 
     // ==================== SETTERS AND GETTERS ====================
@@ -44,7 +56,7 @@ public class ListETSResponseDTO {
     }
 
     public void setTurno(String turno) {
-        Turno = turno;
+        this.Turno = turno;
     }
 
     public String getFecha() {
@@ -52,7 +64,7 @@ public class ListETSResponseDTO {
     }
 
     public void setFecha(String fecha) {
-        Fecha = fecha;
+        this.Fecha = fecha;
     }
 
     public String getUnidadAprendizaje() {
@@ -60,7 +72,15 @@ public class ListETSResponseDTO {
     }
 
     public void setUnidadAprendizaje(String unidadAprendizaje) {
-        UnidadAprendizaje = unidadAprendizaje;
+        this.UnidadAprendizaje = unidadAprendizaje;
+    }
+
+    public Boolean getInscrito() {
+        return inscrito;
+    }
+
+    public void setInscrito(Boolean inscrito) {
+        this.inscrito = inscrito;
     }
 
     @Override
@@ -69,8 +89,9 @@ public class ListETSResponseDTO {
                 "idETS=" + idETS +
                 ", idPeriodo='" + idPeriodo + '\'' +
                 ", Turno='" + Turno + '\'' +
-                ", Fecha= '" + Fecha + '\'' +
-                ", UnidadAprendizaje= '" + UnidadAprendizaje + '\'' +
+                ", Fecha='" + Fecha + '\'' +
+                ", UnidadAprendizaje='" + UnidadAprendizaje + '\'' +
+                ", inscrito=" + inscrito +
                 '}';
     }
 }

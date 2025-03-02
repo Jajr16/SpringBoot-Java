@@ -81,29 +81,40 @@ public class DatabaseInitializer {
 
         String ListInscripcionesETS = """
             CREATE OR REPLACE FUNCTION ListInscripcionesETS(
-               boletaC VARCHAR(18)
-           )
-           RETURNS TABLE(
-               idets INTEGER,
-               periodo VARCHAR,
-               turno_nombre VARCHAR,
-               fecha DATE,
-               unidad_aprendizaje_nombre VARCHAR
-           )
-           LANGUAGE plpgsql
-           AS $$
-           BEGIN
-            RETURN QUERY
-    
-               SELECT inscripcionets.idets, periodoets.periodo, turno.nombre as turno, ets.fecha, unidadaprendizaje.nombre FROM inscripcionets
-            INNER JOIN ets ON inscripcionets.idets = ets.idets
-            INNER JOIN periodoets ON ets.id_periodo = periodoets.id_periodo\s
-            INNER JOIN turno ON turno.id_turno = ets.turno
-            INNER JOIN unidadaprendizaje ON unidadaprendizaje.idua = ets.idua WHERE inscripcionets.boleta = boletaC;
-    
-              \s
-           END;
-           $$;
+                boletaC VARCHAR(18)
+            )
+            RETURNS TABLE(
+                idets INTEGER,
+                periodo VARCHAR,
+                turno_nombre VARCHAR,
+                fecha DATE,
+                unidad_aprendizaje_nombre VARCHAR,
+                inscrito Boolean
+            )
+            LANGUAGE plpgsql
+            AS $$
+            BEGIN
+                RETURN QUERY
+            
+                SELECT\s
+                    ets.idets,
+                    periodoets.periodo,\s
+                    turno.nombre AS turno,\s
+                    ets.fecha,
+                    unidadaprendizaje.nombre AS unidad_aprendizaje,
+                    EXISTS (
+                        SELECT 1\s
+                        FROM inscripcionets i\s
+                        WHERE i.idets = ets.idets\s
+                        AND i.boleta = boletaC
+                    ) AS inscrito
+                FROM ets
+                INNER JOIN periodoets ON ets.id_periodo = periodoets.id_periodo\s
+                INNER JOIN turno ON turno.id_turno = ets.turno
+                INNER JOIN unidadaprendizaje ON unidadaprendizaje.idua = ets.idua;
+               \s
+            END;
+            $$;
         """;
 
         String login = """

@@ -33,12 +33,13 @@ public class ListETSService {
             String turno = (String) result[2];
             Date fecha = (Date) result[3];
             String materia = (String) result[4];
+            Boolean inscrito = (Boolean) result[5];
 
             // Convertir la fecha a String (o al formato que necesites)
             String fechaString = fecha.toString();
 
             // Crear un DTO y agregarlo a la lista de respuestas
-            responseList.add(new ListETSResponseDTO(idets, periodo, turno, fechaString, materia));
+            responseList.add(new ListETSResponseDTO(idets, periodo, turno, fechaString, materia, inscrito));
         }
 
         return responseList;
