@@ -12,6 +12,4 @@ public class PruebaCrudApplication {
 		SpringApplication.run(PruebaCrudApplication.class, args);
 	}
 
-
-
 }
