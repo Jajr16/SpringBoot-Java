@@ -68,6 +68,11 @@
 			<artifactId>guava</artifactId>
 			<version>28.0-jre</version>
 		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>4.17.0</version> <!-- Usa la versión más reciente disponible -->
+		</dependency>
 	</dependencies>
 
 	<build>
