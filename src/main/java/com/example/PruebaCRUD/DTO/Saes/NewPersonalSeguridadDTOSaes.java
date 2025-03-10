@@ -5,6 +5,7 @@ package com.example.PruebaCRUD.DTO.Saes;
  * datos de la tabla PersonalSeguridad (En esta ocasión es para el Request de crear un nuevo Personal de Seguridad)
  */
 public class NewPersonalSeguridadDTOSaes {
+    private String rfc;
     private String curp;
     private String nombre;
     private String apellido_P;
@@ -17,8 +18,9 @@ public class NewPersonalSeguridadDTOSaes {
     // ==================== CONSTRUCTORES =====================
     public NewPersonalSeguridadDTOSaes() {}
 
-    public NewPersonalSeguridadDTOSaes(String curp, String nombre, String apellido_P, String apellido_M, String sexo,
+    public NewPersonalSeguridadDTOSaes(String rfc, String curp, String nombre, String apellido_P, String apellido_M, String sexo,
                                        String cargoPS, String turno, String user) {
+        this.rfc = rfc;
         this.curp = curp;
         this.nombre = nombre;
         this.apellido_P = apellido_P;
@@ -95,10 +97,19 @@ public class NewPersonalSeguridadDTOSaes {
         this.user = user;
     }
 
+    public String getRfc() {
+        return rfc;
+    }
+
+    public void setRfc(String rfc) {
+        this.rfc = rfc;
+    }
+
     @Override
     public String toString() {
         return "NewPersonalSeguridadDTOSaes{" +
-                "curp='" + curp + '\'' +
+                "rfc='" + rfc + '\'' +
+                ", curp='" + curp + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", apellido_P='" + apellido_P + '\'' +
                 ", apellido_M='" + apellido_M + '\'' +

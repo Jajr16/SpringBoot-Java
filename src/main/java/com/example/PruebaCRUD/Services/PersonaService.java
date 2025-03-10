@@ -2,7 +2,6 @@ package com.example.PruebaCRUD.Services;
 
 import com.example.PruebaCRUD.BD.*;
 import com.example.PruebaCRUD.BD.PKCompuesta.CargoDocentePK;
-import com.example.PruebaCRUD.BD.PKCompuesta.PersonalSeguridadPK;
 import com.example.PruebaCRUD.DTO.*;
 import com.example.PruebaCRUD.DTO.Saes.*;
 import com.example.PruebaCRUD.Frames.DivisionFrames;
@@ -432,20 +431,9 @@ public class PersonaService {
              );
          }
 
-         /**
-          * Para llevar a cabo un regsitro de una tabla con llaves foráneas y llave primaria compuesta
-          * debes de llenar todas las variables que contiene la clase princiapl
-          * PersonalSeguridadPK, estos incluyen:
-          *      - Turno (Instancia de otra clase)
-          *      - CargoPS (Instancia de otra clase)
-          *      - Persona (Instancia de otra clase)
-          */
-         // Instancia de la llave primaria de CargoDocente (Aquí se deben de llenar las variables normales)
-         PersonalSeguridadPK personalSeguridadPk = new PersonalSeguridadPK();
-         personalSeguridadPk.setCURP(persona);
-
          PersonalSeguridad nuevoPersonalSeguridad = new PersonalSeguridad();
-         nuevoPersonalSeguridad.setId(personalSeguridadPk);
+         nuevoPersonalSeguridad.setRfc(personalSeguridad.getRfc());
+         nuevoPersonalSeguridad.setCURP(persona);
          nuevoPersonalSeguridad.setTurno(turno.get());
          nuevoPersonalSeguridad.setCargo(cargo.get());
 
