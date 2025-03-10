@@ -12,7 +12,7 @@ import java.util.Objects;
 @Embeddable // Especifica que esta clase debe de estar incrustada en otra dentro de otra entidad
 public class SalonETSPK implements Serializable { // Serializable indica que la clase se va a pasar a una base de
     // datos externa, convirtiendose a una secuencia de bytes
-    @Column(name = "numSalon") // Notación que indica que la variable será una columna
+        @Column(name = "numSalon") // Notación que indica que la variable será una columna
     private Integer numSalon;
 
     @Column(name = "idETS")

@@ -1,5 +1,9 @@
 package com.example.PruebaCRUD.DTO;
 
+/**
+ * Clase DTO la cuál sirve para pasar o recibir datos entre un cliente y un servidor, en este caso, ayudará a pasar
+ * datos de los ETS
+ */
 public class DataPersonaDTO {
 
     private String nombre;

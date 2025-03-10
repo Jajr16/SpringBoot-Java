@@ -1,6 +1,6 @@
 package com.example.PruebaCRUD.Repositories;
 
-import com.example.PruebaCRUD.BD.Turno;
+import com.example.PruebaCRUD.BD.TokenNotificacion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +11,8 @@ import java.util.Optional;
  * Extiende de JpaRepository (ayuda a gestionar los datos de una BD)
  */
 @Repository
-public interface TurnoRepository extends JpaRepository<Turno, Integer> {
-    // Notación findBy(Columna con primera mayúscula) proporcionada por JPA
-    Optional<Turno> findByNombre(String Nombre);
+public interface TokenNotificacionRepository extends JpaRepository<TokenNotificacion, Long> {
+    Optional<TokenNotificacion> findByUsuarioUsuario(String usuarioId);
+
+    Optional<TokenNotificacion> findByToken(String token);
 }

@@ -21,7 +21,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-@Service
+/**
+ * Clase que contendrá la lógica que para realizar las funciones principales de los endpoints
+ */
+@Service // Anotación que indica que esta clase es un servicio de negocio
 public class InscripcionETSService {
     HashMap<String, Object> datos = new HashMap<>();
 
