@@ -38,4 +38,9 @@ public class MensajeController {
     public List<ListadoUsuariosDTO> getChats() {
         return this.mensajeService.getUsers();
     }
+
+    @GetMapping("/confirm")
+    public ResponseEntity<?> getConfirmacionMensajes(@RequestBody String usuario) {
+        return this.mensajeService.getConfirmacion(usuario);
+    }
 }

@@ -43,4 +43,10 @@ public class MensajeService {
         return this.mensajeRepository.findUsers();
     }
 
+    public ResponseEntity<?> getConfirmacion(String user) {
+        
+
+        return (ResponseEntity<?>) ResponseEntity.ok();
+    }
+
 }

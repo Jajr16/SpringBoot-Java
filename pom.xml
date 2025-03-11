@@ -74,15 +74,13 @@
 			<artifactId>selenium-java</artifactId>
 			<version>4.8.0</version>  <!-- Puedes ajustar la versión si es necesario -->
 		</dependency>
-
-		<!-- WebDriver Manager (para manejar ChromeDriver automáticamente) -->
+		<!-- WebDriverr Manager (para manejar ChromeDriver automáticamente) -->
 		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
 			<version>5.7.0</version>  <!-- Última versión estable -->
 		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
