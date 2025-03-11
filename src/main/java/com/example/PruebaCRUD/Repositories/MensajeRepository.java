@@ -36,4 +36,5 @@ public interface MensajeRepository extends JpaRepository<Mensaje, MensajePK> {
             WHERE tu.tipo != 'Personal Seguridad'
             """)
     List<ListadoUsuariosDTO> findUsers();
+
 }
