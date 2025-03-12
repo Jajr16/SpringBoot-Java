@@ -33,7 +33,7 @@ public class InscripcionETS {
     //    ================= RELACIONES INVERSAS CON OTRAS TABLAS ========================
 
     @OneToMany(mappedBy = "inscripcionETS", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AsistenciaInscripcion> asistencias;
+    private List<IngresoSalon> asistencias;
 
     // ==================== CONSTRUCTORES =====================
     // Constructor vacío
@@ -70,11 +70,11 @@ public class InscripcionETS {
         this.idETSIns = ets;
     }
 
-    public List<AsistenciaInscripcion> getAsistencias() {
+    public List<IngresoSalon> getAsistencias() {
         return asistencias;
     }
 
-    public void setAsistencias(List<AsistenciaInscripcion> asistencias) {
+    public void setAsistencias(List<IngresoSalon> asistencias) {
         this.asistencias = asistencias;
     }
 }

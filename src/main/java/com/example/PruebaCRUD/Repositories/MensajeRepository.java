@@ -37,6 +37,5 @@ public interface MensajeRepository extends JpaRepository<Mensaje, MensajePK> {
             """)
     List<ListadoUsuariosDTO> findUsers();
 
-    List<>
 
 }
