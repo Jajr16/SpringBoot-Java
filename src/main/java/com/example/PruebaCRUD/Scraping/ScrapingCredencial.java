@@ -1,6 +1,6 @@
 package com.example.PruebaCRUD.Scraping;
 
-import io.github.bonigarcia.wdm.WebDriverManager;  // Asegúrate de importar esta línea
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -56,7 +56,8 @@ public class ScrapingCredencial {
 
             System.out.println("Imagen guardada en: " + imageFile.getAbsolutePath());
 
-            return "Screenshot guardado en: " + imageFile.getAbsolutePath();
+            // Devuelve solo la ruta del archivo, sin texto adicional
+            return imageFile.getAbsolutePath();
 
         } catch (IOException | InterruptedException e) {
             System.out.println("Error al capturar la credencial: " + e.getMessage());
