@@ -1,70 +1,99 @@
 package com.example.PruebaCRUD.Services;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.Notification;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.*;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.messaging.AndroidConfig;
+import com.google.firebase.messaging.AndroidNotification;
+import java.io.IOException;
+import java.io.FileInputStream;
+
 import com.example.PruebaCRUD.BD.TokenNotificacion;
 import com.example.PruebaCRUD.Repositories.TokenNotificacionRepository;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.json.JSONObject;
-
-
 import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Clase que contendrá la lógica que para realizar las funciones principales de los endpoints
- */
-@Service // Anotación que indica que esta clase es un servicio de negocio
+@Service
 public class FirebaseService {
-    private static final String FCM_URL = "https://fcm.googleapis.com/fcm/send";
-    private static final String FCM_SERVER_KEY = "BOqaGj_nit6KOtdZ5WQ1R-6_94UqHNwsJZX2CIXnymdMpMr3uyYI8ZcXY9q-EacGq9EojM4uX5jQZYGuLCo60pY";
 
-    private TokenNotificacionRepository tokenNotificacionRepository;
+    private static final Logger logger = LoggerFactory.getLogger(FirebaseService.class);
+    private final TokenNotificacionRepository tokenNotificacionRepository;
+    private static FirebaseApp firebaseApp;
 
     @Autowired
     public FirebaseService(TokenNotificacionRepository tokenNotificacionRepository) {
         this.tokenNotificacionRepository = tokenNotificacionRepository;
     }
 
-    public void enviarNoti(String usuario, String titulo, String cuerpo) {
-        Optional<TokenNotificacion> tokenOpt = tokenNotificacionRepository.findByUsuarioUsuario(usuario);
-
-        if (tokenOpt.isPresent()) {
-            String token = tokenOpt.get().getToken();
-            JSONObject message = new JSONObject();
-            try {
-                message.put("to", token);
-                message.put("notification", new JSONObject()
-                        .put("title", titulo)
-                        .put("body", cuerpo));
-
-                // Aquí debes hacer la petición HTTP a Firebase con el mensaje
-                enviarMensajeFCM(message);
-            } catch (Exception  e) {
-                e.printStackTrace();
-            }
+    // Inicializa Firebase en el método init
+    static {
+        try {
+            FileInputStream serviceAccount = new FileInputStream("./src/main/java/com/example/PruebaCRUD/serviceAccountKey.json");
+            FirebaseOptions options = new FirebaseOptions.Builder()
+                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .build();
+            firebaseApp = FirebaseApp.initializeApp(options);
+        } catch (IOException e) {
+            logger.error("Error al inicializar Firebase", e);
         }
     }
 
-    private void enviarMensajeFCM(JSONObject message) throws Exception {
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpPost httpPost = new HttpPost(FCM_URL);
-            httpPost.setHeader("Content-Type", "application/json");
-            httpPost.setHeader("Authorization", "key=" + FCM_SERVER_KEY);
-
-            StringEntity entity = new StringEntity(message.toString());
-            httpPost.setEntity(entity);
-
-            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
-                int statusCode = response.getStatusLine().getStatusCode(); // Usar getStatusCode() en HttpClient 4
-                if (statusCode != 200) {
-                    throw new RuntimeException("Error al enviar notificación: " +
-                            response.getStatusLine().getReasonPhrase()); // Usar getReasonPhrase() en HttpClient 4
+    @Async
+    public void enviarNoti(String usuario, String titulo, String cuerpo, String remitente, String mensaje) {
+        try {
+            Optional<TokenNotificacion> tokenOpt = tokenNotificacionRepository.findByUsuarioUsuario(usuario);
+            if (tokenOpt.isPresent()) {
+                String token = tokenOpt.get().getToken();
+                if (token != null && !token.isEmpty()) {
+                    enviarMensajeFCM(titulo, cuerpo, token, usuario, remitente, mensaje);
+                } else {
+                    logger.warn("Token de notificación nulo o vacío para el usuario: {}", usuario);
                 }
+            } else {
+                logger.warn("No se encontró token de notificación para el usuario: {}", usuario);
             }
+        } catch (Exception e) {
+            logger.error("Error al enviar notificación a usuario {}: {}", usuario, e.getMessage(), e);
         }
+    }
+
+    private void enviarMensajeFCM(String titulo, String cuerpo, String token, String destinatario, String remitente, String mensaje) throws FirebaseMessagingException {
+        Map<String, String> data = new HashMap<>();
+        data.put("message", mensaje);
+        data.put("sender", remitente);
+        data.put("destinatario", destinatario);
+
+        System.out.println("Payload de la notificación FCM: {}" + data);
+
+        Message msg = Message.builder()
+                .putData("message", mensaje)
+                .putData("sender", remitente)
+                .putData("destinatario", destinatario)
+                .setToken(token)
+                .setNotification(Notification.builder()
+                        .setTitle(titulo)
+                        .setBody(cuerpo)
+                        .build())
+                .setAndroidConfig(AndroidConfig.builder()
+                        .setNotification(AndroidNotification.builder()
+                                .setTitle(titulo)
+                                .setBody(cuerpo)
+                                .build())
+                        .build())
+                .build();
+
+        String response = FirebaseMessaging.getInstance().send(msg);
+        logger.info("Mensaje enviado correctamente a FCM. ID del mensaje: {}", response);
     }
 }

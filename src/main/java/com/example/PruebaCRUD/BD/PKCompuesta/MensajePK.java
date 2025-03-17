@@ -1,14 +1,16 @@
 package com.example.PruebaCRUD.BD.PKCompuesta;
 
+import com.example.PruebaCRUD.BD.Chat;
 import com.example.PruebaCRUD.BD.Usuario;
 import jakarta.persistence.*;
+import org.springframework.cglib.core.Local;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- *  Clase que auyda a construir la llave primaria de la tabla Mensaje
+ *  Clase que auyda a construir la llave primaria de la tabla Chat
  */
 @Embeddable // Especifica que esta clase debe de estar incrustada en otra dentro de otra entidad
 public class MensajePK implements Serializable { // Serializable indica que la clase se va a pasar a una base de
@@ -19,47 +21,35 @@ public class MensajePK implements Serializable { // Serializable indica que la c
      * principal no van a obtener los datos de la tabla relacionada
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "remitente", nullable = false)
-    private Usuario remitente;
+    @JoinColumn(name = "chat", nullable = false)
+    private Chat chat;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "destinatarioU", nullable = false, insertable = false, updatable = false )
-    private Usuario destinatario;
-
-    @Column(name="fecha")
-    private LocalDate fecha;
+    @Column(name = "fecha")
+    private LocalDateTime fechahora;
 
 //    =================== CONSTRUCTOR ==================
-    public MensajePK(Usuario remitente, Usuario destinatario, LocalDate fecha) {
-        this.remitente = remitente;
-        this.destinatario = destinatario;
-        this.fecha = fecha;
+    public MensajePK() {}
+
+    public MensajePK(Chat chat, LocalDateTime fecha) {
+        this.chat = chat;
+        this.fechahora = fecha;
     }
 
     // ================== GETTERS AND SETTERS =======================
-
-    public Usuario getRemitente() {
-        return remitente;
+    public Chat getChat() {
+        return chat;
     }
 
-    public void setRemitente(Usuario remitente) {
-        this.remitente = remitente;
+    public void setChat(Chat chat) {
+        this.chat = chat;
     }
 
-    public Usuario getDestinatario() {
-        return destinatario;
+    public LocalDateTime getFechahora() {
+        return fechahora;
     }
 
-    public void setDestinatario(Usuario destinatario) {
-        this.destinatario = destinatario;
-    }
-
-    public LocalDate getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
+    public void setFechahora(LocalDateTime fechahora) {
+        this.fechahora = fechahora;
     }
 
     @Override
@@ -67,12 +57,11 @@ public class MensajePK implements Serializable { // Serializable indica que la c
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MensajePK mensajePK = (MensajePK) o;
-        return Objects.equals(remitente, mensajePK.remitente) && Objects.equals(destinatario, mensajePK.destinatario)
-                && Objects.equals(fecha, mensajePK.fecha);
+        return Objects.equals(chat, mensajePK.chat) && Objects.equals(fechahora, mensajePK.fechahora);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(remitente, destinatario, fecha);
+        return Objects.hash(chat, fechahora);
     }
 }

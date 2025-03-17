@@ -62,7 +62,6 @@ public class ScrapingCredencial {
             System.out.println("Error al capturar la credencial: " + e.getMessage());
             throw new IOException("Error al capturar la credencial: " + e.getMessage());
         } finally {
-            // Cerrar el navegador
             driver.quit();
             System.out.println("Navegador cerrado.");
         }

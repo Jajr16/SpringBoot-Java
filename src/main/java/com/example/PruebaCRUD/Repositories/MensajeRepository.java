@@ -3,6 +3,7 @@ package com.example.PruebaCRUD.Repositories;
 import com.example.PruebaCRUD.BD.Mensaje;
 import com.example.PruebaCRUD.BD.PKCompuesta.MensajePK;
 import com.example.PruebaCRUD.BD.Usuario;
+import com.example.PruebaCRUD.DTO.ChatsDTO;
 import com.example.PruebaCRUD.DTO.ListadoUsuariosDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,14 +17,8 @@ import java.util.List;
  */
 @Repository
 public interface MensajeRepository extends JpaRepository<Mensaje, MensajePK> {
-    // Obtener mensajes entre dos usuarios ordenados por fecha
-    List<Mensaje> findByIdRemitenteAndIdDestinatarioOrderByIdFechaDesc(Usuario remitente, Usuario destinatario);
-
-    // Obtener mensajes por remitente
-    List<Mensaje> findByIdRemitente(Usuario remitente);
-
-    // Obtener mensajes por destinatario
-    List<Mensaje> findByIdDestinatario(Usuario destinatario);
+    // Obtener los mensajes de un chat específico ordenados por fecha
+    List<Mensaje> findById_Chat_IdOrderById_FechahoraAsc(Long chatId);
 
     @Query("""
             SELECT new com.example.PruebaCRUD.DTO.ListadoUsuariosDTO(
@@ -36,6 +31,5 @@ public interface MensajeRepository extends JpaRepository<Mensaje, MensajePK> {
             WHERE tu.tipo != 'Personal Seguridad'
             """)
     List<ListadoUsuariosDTO> findUsers();
-
 
 }
