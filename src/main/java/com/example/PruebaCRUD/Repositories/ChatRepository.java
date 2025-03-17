@@ -25,6 +25,9 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
             """)
     List<ChatsDTO> findChatsRemitente(String remitente);
 
+    @Query("SELECT c FROM Chat c WHERE (c.remitente.usuario = :remitente AND c.destinatario.usuario = :destinatario) OR (c.destinatario.usuario = :remitente AND c.remitente.usuario = :destinatario)")
+    Optional<Chat> findChatByUsers(String remitente, String destinatario);
+
     @Query("""
             SELECT new com.example.PruebaCRUD.DTO.ChatsDTO(
             c.remitente.usuario,

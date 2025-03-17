@@ -15,6 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -92,11 +96,7 @@ public class MensajeService {
     }
 
     public ResponseEntity<List<MensajeDTO>> getHistorialMensajes(String remitente, String destinatario) {
-        Optional<Chat> chat = chatRepository.findByRemitente_UsuarioAndDestinatario_Usuario(remitente, destinatario);
-
-        if (chat.isEmpty()) {
-            chat = chatRepository.findByDestinatario_UsuarioAndRemitente_Usuario(remitente, destinatario);
-        }
+        Optional<Chat> chat = chatRepository.findChatByUsers(remitente, destinatario);
 
         if (chat.isPresent()) {
             List<MensajeDTO> mensajes = mensajeRepository.findById_Chat_IdOrderById_FechahoraAsc(chat.get().getId())
