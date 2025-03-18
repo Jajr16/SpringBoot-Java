@@ -1,7 +1,10 @@
 package com.example.PruebaCRUD.Controllers;
 
 import com.example.PruebaCRUD.DTO.AlumnoDTO;
+import com.example.PruebaCRUD.DTO.CredencialDTO;
+import com.example.PruebaCRUD.DTO.DetalleAlumnosDTO;
 import com.example.PruebaCRUD.Services.AlumnoService;
+import com.example.PruebaCRUD.Services.DetalleAlumnosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +18,12 @@ import java.util.List;
 public class AlumnoController {
 
     private final AlumnoService alumnoService;
+    private final DetalleAlumnosService detalleAlumnosService;
 
     @Autowired
-    public AlumnoController(AlumnoService alumnoService) {
+    public AlumnoController(AlumnoService alumnoService, DetalleAlumnosService detalleAlumnosService) {
         this.alumnoService = alumnoService;
+        this.detalleAlumnosService = detalleAlumnosService;
     }
 
     @GetMapping("/inscritosETS")
@@ -26,4 +31,9 @@ public class AlumnoController {
         return alumnoService.findAlumnosInscritosETS();
     }
 
+    @GetMapping("/detalle/{boleta}")
+    public List<DetalleAlumnosDTO>findDetalleAlumnoporboleta(@PathVariable String boleta){
+        return detalleAlumnosService.findDetalleAlumnoporboleta(boleta);
+    }
 }
+

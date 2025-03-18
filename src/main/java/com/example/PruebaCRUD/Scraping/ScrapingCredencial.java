@@ -27,7 +27,6 @@ public class ScrapingCredencial {
         String imageName = "credencial_" + alumnoId + "_" + System.currentTimeMillis() + ".png";
         System.out.println("Nombre del archivo generado: " + imageName);
 
-        // Crear directorio de imágenes si no existe
         File imageDir = new File(IMAGE_DIR);
         if (!imageDir.exists()) {
             imageDir.mkdirs();
@@ -36,8 +35,8 @@ public class ScrapingCredencial {
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");  // Modo sin interfaz gráfica
-        options.addArguments("--window-size=1920,1080"); // Resolución de la captura
+        options.addArguments("--headless");
+        options.addArguments("--window-size=1920,1080");
 
         WebDriver driver = new ChromeDriver(options);
         System.out.println("Navegador iniciado en modo headless.");

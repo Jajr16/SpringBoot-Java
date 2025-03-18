@@ -8,6 +8,7 @@ public class DetalleAlumnosDTO {
     private String nombreAlumno; // Nombre del alumno
     private String apellidoPAlumno; // Apellido paterno del alumno
     private String apellidoMAlumno; // Apellido materno del alumno
+    private String boleta;
     private String nombreETS; // Nombre del ETS
     private String nombreTurno; // Nombre del turno
     private Integer salon; // Salón
@@ -16,11 +17,12 @@ public class DetalleAlumnosDTO {
     private String apellidoPDocente; // Apellido paterno del docente
     private String apellidoMDocente; // Apellido materno del docente
 
-    public DetalleAlumnosDTO(String imagenCredencial, String nombreAlumno, String apellidoPAlumno, String apellidoMAlumno, String nombreETS, String nombreTurno, Integer salon, Date fecha, String nombreDocente, String apellidoPDocente, String apellidoMDocente) {
+    public DetalleAlumnosDTO(String imagenCredencial, String nombreAlumno, String apellidoPAlumno, String apellidoMAlumno, String boleta, String nombreETS, String nombreTurno, Integer salon, Date fecha, String nombreDocente, String apellidoPDocente, String apellidoMDocente) {
         this.imagenCredencial = imagenCredencial;
         this.nombreAlumno = nombreAlumno;
         this.apellidoPAlumno = apellidoPAlumno;
         this.apellidoMAlumno = apellidoMAlumno;
+        this.boleta = boleta;
         this.nombreETS = nombreETS;
         this.nombreTurno = nombreTurno;
         this.salon = salon;
@@ -60,6 +62,14 @@ public class DetalleAlumnosDTO {
 
     public void setApellidoMAlumno(String apellidoMAlumno) {
         this.apellidoMAlumno = apellidoMAlumno;
+    }
+
+    public String getBoleta() {
+        return boleta;
+    }
+
+    public void setBoleta(String boleta) {
+        this.boleta = boleta;
     }
 
     public String getNombreETS() {
@@ -125,10 +135,11 @@ public class DetalleAlumnosDTO {
                 ", nombreAlumno='" + nombreAlumno + '\'' +
                 ", apellidoPAlumno='" + apellidoPAlumno + '\'' +
                 ", apellidoMAlumno='" + apellidoMAlumno + '\'' +
+                ", boleta='" + boleta + '\'' +
                 ", nombreETS='" + nombreETS + '\'' +
                 ", nombreTurno='" + nombreTurno + '\'' +
-                ", salon='" + salon + '\'' +
-                ", fecha='" + fecha + '\'' +
+                ", salon=" + salon +
+                ", fecha=" + fecha +
                 ", nombreDocente='" + nombreDocente + '\'' +
                 ", apellidoPDocente='" + apellidoPDocente + '\'' +
                 ", apellidoMDocente='" + apellidoMDocente + '\'' +
