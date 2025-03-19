@@ -27,15 +27,10 @@ public class MotivoRechazo {
     @Column(name = "motivo", nullable = false)
     private String motivo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tipo", nullable = false)
-    private TipoRechazo tipo;
-
     // ==================== CONSTRUCTORES =====================
-    public MotivoRechazo(BoletaETSPK id, String motivo, TipoRechazo tipo) {
+    public MotivoRechazo(BoletaETSPK id, String motivo) {
         this.id = id;
         this.motivo = motivo;
-        this.tipo = tipo;
     }
 
     // ==================== SETTERS AND GETTERS ====================
@@ -63,14 +58,6 @@ public class MotivoRechazo {
         this.motivo = motivo;
     }
 
-    public TipoRechazo getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(TipoRechazo tipo) {
-        this.tipo = tipo;
-    }
-
     // ==================== TO STRING ====================
     @Override
     public String toString() {
@@ -78,7 +65,6 @@ public class MotivoRechazo {
                 "id=" + id +
                 ", ingresoSalon=" + ingresoSalon +
                 ", motivo='" + motivo + '\'' +
-                ", tipo=" + tipo +
                 '}';
     }
 }
