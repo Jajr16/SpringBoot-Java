@@ -41,6 +41,7 @@ public class AlumnoService {
         //Se inicializa la variable que servirá para armar el periodo en el estamos actualmente
         String periodo = "";
 
+
         // Obtiene los últimos dos dígitos del año actual
         String año_abreviado = año.toString().substring(2);
 

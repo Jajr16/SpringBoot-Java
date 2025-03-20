@@ -18,6 +18,7 @@ public interface DetalleAlumnosRepository extends JpaRepository<InscripcionETS, 
             "p.nombre as nombreAlumno," +
             "p.apellido_p as apellidoPAlumno, " +
             "p.apellido_m as apellidoMAlumno, " + // Nombre completo del alumno
+            "a.boleta, " +
             "e.idUA.nombre as nombreETS, " + // Nombre del ETS
             "e.Turno.nombre as nombreTurno, " + // Nombre del turno
             "s.numSalonSETS.numSalon as salon, " + // Salón
