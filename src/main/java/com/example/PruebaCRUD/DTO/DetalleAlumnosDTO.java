@@ -4,18 +4,18 @@ import java.util.Date;
 
 public class DetalleAlumnosDTO {
 
-    private String imagenCredencial; // Foto de la credencial
-    private String nombreAlumno; // Nombre del alumno
-    private String apellidoPAlumno; // Apellido paterno del alumno
-    private String apellidoMAlumno; // Apellido materno del alumno
+    private String imagenCredencial;
+    private String nombreAlumno;
+    private String apellidoPAlumno;
+    private String apellidoMAlumno;
     private String boleta;
-    private String nombreETS; // Nombre del ETS
-    private String nombreTurno; // Nombre del turno
-    private Integer salon; // Salón
-    private Date fecha; // Fecha
-    private String nombreDocente; // Nombre del docente
-    private String apellidoPDocente; // Apellido paterno del docente
-    private String apellidoMDocente; // Apellido materno del docente
+    private String nombreETS;
+    private String nombreTurno;
+    private Integer salon;
+    private Date fecha;
+    private String nombreDocente;
+    private String apellidoPDocente;
+    private String apellidoMDocente;
 
     public DetalleAlumnosDTO(String imagenCredencial, String nombreAlumno, String apellidoPAlumno, String apellidoMAlumno, String boleta, String nombreETS, String nombreTurno, Integer salon, Date fecha, String nombreDocente, String apellidoPDocente, String apellidoMDocente) {
         this.imagenCredencial = imagenCredencial;

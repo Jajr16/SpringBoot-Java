@@ -4,6 +4,8 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import net.sourceforge.tess4j.Tesseract;
+import net.sourceforge.tess4j.TesseractException;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,10 +15,12 @@ import java.nio.file.StandardCopyOption;
 public class ScrapingCredencial {
 
     private static final String IMAGE_DIR = "./src/main/java/com/example/PruebaCRUD/Scraping/images/";
+    private static final String TESSDATA_PATH = "./src/main/resources/tessdata/"; // Ruta a los datos de Tesseract
 
-    public static String capturarCredencial(String credencialUrl) throws IOException {
+    public static String capturarCredencial(String credencialUrl, String boleta) throws IOException {
         System.out.println("Iniciando captura de credencial...");
         System.out.println("URL recibida: " + credencialUrl);
+        System.out.println("Boleta recibida: " + boleta);
 
         String alumnoId = extractAlumnoId(credencialUrl);
         if (alumnoId == null) {
@@ -35,7 +39,7 @@ public class ScrapingCredencial {
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
+        options.addArguments("--headless"); // Modo sin interfaz gráfica
         options.addArguments("--window-size=1920,1080");
 
         WebDriver driver = new ChromeDriver(options);
@@ -44,9 +48,17 @@ public class ScrapingCredencial {
         try {
             driver.get(credencialUrl);
             System.out.println("Página cargada correctamente.");
+            Thread.sleep(3000); // Esperar que cargue completamente
 
-            Thread.sleep(3000);
+            // Obtener el alto total de la página
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            long scrollHeight = (long) js.executeScript("return document.body.scrollHeight");
 
+            // Redimensionar la ventana para capturar toda la página
+            driver.manage().window().setSize(new Dimension(1920, (int) scrollHeight));
+            System.out.println("Ventana redimensionada a: 1920x" + scrollHeight);
+
+            // Captura de pantalla de toda la página
             File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
             System.out.println("Captura de pantalla realizada.");
 
@@ -55,7 +67,18 @@ public class ScrapingCredencial {
 
             System.out.println("Imagen guardada en: " + imageFile.getAbsolutePath());
 
-            // Devuelve solo la ruta del archivo, sin texto adicional
+            // Extraer texto de la imagen usando Tesseract
+            String textoExtraido = extraerTextoDeImagen(imageFile);
+            System.out.println("Texto extraído de la imagen: " + textoExtraido);
+
+            // Buscar la boleta en el texto extraído
+            String boletaEncontrada = buscarBoletaEnTexto(textoExtraido);
+            if (boletaEncontrada != null) {
+                System.out.println("Boleta encontrada: " + boletaEncontrada);
+            } else {
+                System.out.println("No se encontró la boleta en el texto extraído.");
+            }
+
             return imageFile.getAbsolutePath();
 
         } catch (IOException | InterruptedException e) {
@@ -65,6 +88,30 @@ public class ScrapingCredencial {
             driver.quit();
             System.out.println("Navegador cerrado.");
         }
+    }
+
+    private static String extraerTextoDeImagen(File imagen) {
+        Tesseract tesseract = new Tesseract();
+        tesseract.setDatapath(TESSDATA_PATH); // Ruta a los datos de Tesseract
+        tesseract.setLanguage("spa"); // Idioma español
+
+        try {
+            return tesseract.doOCR(imagen);
+        } catch (TesseractException e) {
+            System.out.println("Error al extraer texto de la imagen: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private static String buscarBoletaEnTexto(String texto) {
+        // Buscar un patrón que coincida con la boleta (por ejemplo, un número de 10 dígitos)
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("\\b\\d{10}\\b");
+        java.util.regex.Matcher matcher = pattern.matcher(texto);
+
+        if (matcher.find()) {
+            return matcher.group();
+        }
+        return null;
     }
 
     private static String extractAlumnoId(String url) {

@@ -80,6 +80,13 @@
 			<artifactId>webdrivermanager</artifactId>
 			<version>5.7.0</version>  <!-- Última versión estable -->
 		</dependency>
+
+		<dependency>
+			<groupId>net.sourceforge.tess4j</groupId>
+			<artifactId>tess4j</artifactId>
+			<version>5.8.0</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>

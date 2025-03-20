@@ -17,11 +17,14 @@ import java.nio.file.Paths;
 public class ScrapingCredencialController {
 
     @GetMapping("/capturar")
-    public ResponseEntity<byte[]> capturarCredencial(@RequestParam("url") String credencialUrl) {
+    public ResponseEntity<byte[]> capturarCredencial(
+            @RequestParam("url") String credencialUrl,
+            @RequestParam("boleta") String boleta) { // Nuevo parámetro para la boleta
         System.out.println("Solicitud recibida para capturar credencial: " + credencialUrl);
+        System.out.println("Boleta recibida: " + boleta);
 
         try {
-            String imagePath = ScrapingCredencial.capturarCredencial(credencialUrl);
+            String imagePath = ScrapingCredencial.capturarCredencial(credencialUrl, boleta);
             Path path = Paths.get(imagePath);
             byte[] imageBytes = Files.readAllBytes(path);
 

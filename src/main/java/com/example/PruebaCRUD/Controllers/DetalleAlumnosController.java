@@ -25,8 +25,10 @@ public class DetalleAlumnosController {
     }
 
     @GetMapping("/capturar")
-    public ResponseEntity<InputStreamResource> capturarCredencial(@RequestParam String url) throws IOException {
-        String imagePath = ScrapingCredencial.capturarCredencial(url);
+    public ResponseEntity<InputStreamResource> capturarCredencial(
+            @RequestParam String url,
+            @RequestParam String boleta) throws IOException {
+        String imagePath = ScrapingCredencial.capturarCredencial(url, boleta); // Pasar la boleta
         File imageFile = new File(imagePath);
         InputStreamResource resource = new InputStreamResource(new FileInputStream(imageFile));
 
