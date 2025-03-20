@@ -14,6 +14,11 @@ public class TipoEstado {
     @Column(name = "tipo", nullable = false)
     private String tipo;
 
+    // ============== CONSTRUCTOR SIN ARGUMENTOS (OBLIGATORIO PARA JPA) ================
+    public TipoEstado() {
+        // Constructor vacío requerido por JPA
+    }
+
 //    ============== CONSTRUCTOR ================
     public TipoEstado(Integer idtipo, String tipo) {
         if (!isValid(idtipo)) {
@@ -35,7 +40,7 @@ public class TipoEstado {
 
     private boolean isValid(Integer valor) {
         if (valor == null) return false;
-        return valor == -1 || valor == 0 || valor == 1 || valor == 2 || valor == 3;
+        return valor == -1 || valor == 0 || valor == 1 || valor == 2 || valor == 3 || valor == 4 || valor == 5 || valor == 6;
     }
 
 //    ================== GETTERS AND SETTERS ==================
