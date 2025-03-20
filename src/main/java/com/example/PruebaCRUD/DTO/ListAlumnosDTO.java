@@ -11,12 +11,12 @@ public class ListAlumnosDTO {
     private String sexo;
     private String correo;
     private String carrera;
-    private Boolean aceptado; // Nueva propiedad agregada
+    private Integer aceptado; // Nueva propiedad agregada
 
     // Constructor
     public ListAlumnosDTO(Integer idETS, String Boleta, String CURP, String NombreA,
                           String ApellidoP, String ApellidoM, String Sexo,
-                          String Correo, String Carrera, Boolean Aceptado) {
+                          String Correo, String Carrera, Integer Aceptado) {
         this.idETS = idETS;
         this.boleta = Boleta;
         this.cURP = CURP;
@@ -102,11 +102,11 @@ public class ListAlumnosDTO {
         carrera = carrera;
     }
 
-    public Boolean getAceptado() {
+    public Integer getAceptado() {
         return aceptado;
     }
 
-    public void setAceptado(Boolean aceptado) {
+    public void setAceptado(Integer aceptado) {
         aceptado = aceptado;
     }
 
