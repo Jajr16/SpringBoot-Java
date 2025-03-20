@@ -19,7 +19,7 @@ public class IngresoInstalacionPK implements Serializable { // Serializable indi
     private String boleta;
 
     @Column(name = "idets", nullable = false)
-    private String idets;
+    private Integer idets;
 
     @Column(name = "fecha", nullable = false)
     private Date fecha;
@@ -28,7 +28,7 @@ public class IngresoInstalacionPK implements Serializable { // Serializable indi
     private Time hora;
 
 //    ================== CONSTRUCTOR ===================
-    public IngresoInstalacionPK(String boleta, String idets, Date fecha, Time hora) {
+    public IngresoInstalacionPK(String boleta, Integer idets, Date fecha, Time hora) {
         this.boleta = boleta;
         this.idets = idets;
         this.fecha = fecha;
@@ -44,11 +44,11 @@ public class IngresoInstalacionPK implements Serializable { // Serializable indi
         this.boleta = boleta;
     }
 
-    public String getIdets() {
+    public Integer getIdets() {
         return idets;
     }
 
-    public void setIdets(String idets) {
+    public void setIdets(Integer idets) {
         this.idets = idets;
     }
 
