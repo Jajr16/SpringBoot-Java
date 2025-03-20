@@ -7,20 +7,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
-<<<<<<< Updated upstream
-
-
-=======
->>>>>>> Stashed changes
 @Configuration
 public class TipoEstadoConfig {
 
     @Bean
-<<<<<<< Updated upstream
     @Order(40)
-=======
-    @Order(1) // Ajusta el orden según sea necesario
->>>>>>> Stashed changes
     CommandLineRunner initDataTipoEstado(TipoEstadoRepository tipoEstadoRepository) {
         return args -> {
             System.out.println("=========== PRELLENANDO TABLA TIPOESTADO (ORDER1) ==============");
@@ -37,8 +28,8 @@ public class TipoEstadoConfig {
             }
         };
     }
-<<<<<<< Updated upstream
+
 }
-=======
-}
->>>>>>> Stashed changes
+
+
+
