@@ -6,7 +6,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TipoEstadoRepository extends JpaRepository<TipoEstado, Integer> {
+<<<<<<< Updated upstream
 
 
 
+=======
+    // Puedes agregar métodos personalizados aquí si es necesario
+>>>>>>> Stashed changes
 }
