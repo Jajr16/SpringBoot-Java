@@ -17,10 +17,9 @@ public class ScrapingCredencial {
     private static final String IMAGE_DIR = "./src/main/java/com/example/PruebaCRUD/Scraping/images/";
     private static final String TESSDATA_PATH = "./src/main/resources/tessdata/"; // Ruta a los datos de Tesseract
 
-    public static String capturarCredencial(String credencialUrl, String boleta) throws IOException {
+    public static String capturarCredencial(String credencialUrl) throws IOException {
         System.out.println("Iniciando captura de credencial...");
         System.out.println("URL recibida: " + credencialUrl);
-        System.out.println("Boleta recibida: " + boleta);
 
         String alumnoId = extractAlumnoId(credencialUrl);
         if (alumnoId == null) {
@@ -28,10 +27,17 @@ public class ScrapingCredencial {
         }
         System.out.println("ID del alumno extraído: " + alumnoId);
 
+        File imageDir = new File(IMAGE_DIR);
+        File[] existingFiles = imageDir.listFiles((dir, name) -> name.startsWith("credencial_" + alumnoId + "_"));
+
+        if (existingFiles != null && existingFiles.length > 0) {
+            System.out.println("Ya existe una imagen para este alumno. No se guardará una nueva.");
+            return existingFiles[0].getAbsolutePath();
+        }
+
         String imageName = "credencial_" + alumnoId + "_" + System.currentTimeMillis() + ".png";
         System.out.println("Nombre del archivo generado: " + imageName);
 
-        File imageDir = new File(IMAGE_DIR);
         if (!imageDir.exists()) {
             imageDir.mkdirs();
         }
@@ -50,15 +56,11 @@ public class ScrapingCredencial {
             System.out.println("Página cargada correctamente.");
             Thread.sleep(3000); // Esperar que cargue completamente
 
-            // Obtener el alto total de la página
             JavascriptExecutor js = (JavascriptExecutor) driver;
             long scrollHeight = (long) js.executeScript("return document.body.scrollHeight");
-
-            // Redimensionar la ventana para capturar toda la página
             driver.manage().window().setSize(new Dimension(1920, (int) scrollHeight));
             System.out.println("Ventana redimensionada a: 1920x" + scrollHeight);
 
-            // Captura de pantalla de toda la página
             File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
             System.out.println("Captura de pantalla realizada.");
 
@@ -67,11 +69,9 @@ public class ScrapingCredencial {
 
             System.out.println("Imagen guardada en: " + imageFile.getAbsolutePath());
 
-            // Extraer texto de la imagen usando Tesseract
             String textoExtraido = extraerTextoDeImagen(imageFile);
             System.out.println("Texto extraído de la imagen: " + textoExtraido);
 
-            // Buscar la boleta en el texto extraído
             String boletaEncontrada = buscarBoletaEnTexto(textoExtraido);
             if (boletaEncontrada != null) {
                 System.out.println("Boleta encontrada: " + boletaEncontrada);
@@ -90,7 +90,7 @@ public class ScrapingCredencial {
         }
     }
 
-    private static String extraerTextoDeImagen(File imagen) {
+    public static String extraerTextoDeImagen(File imagen) {
         Tesseract tesseract = new Tesseract();
         tesseract.setDatapath(TESSDATA_PATH); // Ruta a los datos de Tesseract
         tesseract.setLanguage("spa"); // Idioma español
@@ -103,8 +103,7 @@ public class ScrapingCredencial {
         }
     }
 
-    private static String buscarBoletaEnTexto(String texto) {
-        // Buscar un patrón que coincida con la boleta (por ejemplo, un número de 10 dígitos)
+    public static String buscarBoletaEnTexto(String texto) {
         java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("\\b\\d{10}\\b");
         java.util.regex.Matcher matcher = pattern.matcher(texto);
 
