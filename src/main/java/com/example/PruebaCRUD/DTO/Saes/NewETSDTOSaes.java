@@ -8,6 +8,7 @@ public class NewETSDTOSaes {
     private Integer idPeriodo;
     private String Turno;
     private String Fecha;
+    private String Hora;
     private Integer Cupo;
     private String idUA;
     private Integer Duracion;
@@ -20,41 +21,45 @@ public class NewETSDTOSaes {
     // ==================== CONSTRUCTORES =====================
     public NewETSDTOSaes() {}
 
-    public NewETSDTOSaes(String UnidadAprendizaje, Integer idPeriodo, String Turno, String Fecha, Integer Cupo, Integer Duracion) {
+    public NewETSDTOSaes(String UnidadAprendizaje, Integer idPeriodo, String Turno, String Fecha, String Hora, Integer Cupo, Integer Duracion) {
         this.idUA = UnidadAprendizaje;
         this.idPeriodo = idPeriodo;
         this.Turno = Turno;
         this.Fecha = Fecha;
+        this.Hora = Hora;
         this.Cupo = Cupo;
         this.Duracion = Duracion;
     }
 
-    public NewETSDTOSaes(String UnidadAprendizaje, Integer idPeriodo, String Turno, String Fecha, Integer Cupo, Integer Duracion, Integer salon) {
+    public NewETSDTOSaes(String UnidadAprendizaje, Integer idPeriodo, String Turno, String Fecha, String Hora, Integer Cupo, Integer Duracion, Integer salon) {
         this.idUA = UnidadAprendizaje;
         this.idPeriodo = idPeriodo;
         this.Turno = Turno;
         this.Fecha = Fecha;
+        this.Hora = Hora;
         this.Cupo = Cupo;
         this.Duracion = Duracion;
         this.salon = salon;
     }
 
-    public NewETSDTOSaes(String UnidadAprendizaje, Integer idPeriodo, String Turno, String Fecha, Integer Cupo, Integer Duracion, String docenteCURP, boolean titular) {
+    public NewETSDTOSaes(String UnidadAprendizaje, Integer idPeriodo, String Turno, String Fecha, String Hora, Integer Cupo, Integer Duracion, String docenteCURP, boolean titular) {
         this.idUA = UnidadAprendizaje;
         this.idPeriodo = idPeriodo;
         this.Turno = Turno;
         this.Fecha = Fecha;
+        this.Hora = Hora;
         this.Cupo = Cupo;
         this.Duracion = Duracion;
         this.docenteCURP = docenteCURP;
         this.titular = titular;
     }
 
-    public NewETSDTOSaes(String UnidadAprendizaje, Integer idPeriodo, String Turno, String Fecha, Integer Cupo, Integer Duracion, Integer salon, String docenteCURP, boolean titular) {
+    public NewETSDTOSaes(String UnidadAprendizaje, Integer idPeriodo, String Turno, String Fecha, String Hora, Integer Cupo, Integer Duracion, Integer salon, String docenteCURP, boolean titular) {
         this.idUA = UnidadAprendizaje;
         this.idPeriodo = idPeriodo;
         this.Turno = Turno;
         this.Fecha = Fecha;
+        this.Hora = Hora;
         this.Cupo = Cupo;
         this.Duracion = Duracion;
         this.salon = salon;
@@ -81,6 +86,14 @@ public class NewETSDTOSaes {
 
     public String getFecha() {
         return Fecha;
+    }
+
+    public String getHora() {
+        return Hora;
+    }
+
+    public void setHora(String hora) {
+        Hora = hora;
     }
 
     public void setFecha(String fecha) {
@@ -141,6 +154,7 @@ public class NewETSDTOSaes {
                 "idPeriodo=" + idPeriodo +
                 ", Turno='" + Turno + '\'' +
                 ", Fecha='" + Fecha + '\'' +
+                ", Hora='" + Hora + '\'' +
                 ", Cupo=" + Cupo +
                 ", idUA='" + idUA + '\'' +
                 ", Duracion=" + Duracion +
