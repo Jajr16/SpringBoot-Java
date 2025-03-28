@@ -14,26 +14,26 @@ import java.util.List;
 public interface DetalleAlumnosRepository extends JpaRepository<InscripcionETS, InscripcionETSPK> {
 
     @Query("SELECT new com.example.PruebaCRUD.DTO.DetalleAlumnosDTO(" +
-            "a.imagenCredencial, " + // Foto de la credencial
+            "a.imagenCredencial, " +
             "p.nombre as nombreAlumno," +
             "p.apellido_p as apellidoPAlumno, " +
-            "p.apellido_m as apellidoMAlumno, " + // Nombre completo del alumno
+            "p.apellido_m as apellidoMAlumno, " +
             "a.boleta, " +
-            "e.idUA.nombre as nombreETS, " + // Nombre del ETS
-            "e.Turno.nombre as nombreTurno, " + // Nombre del turno
-            "s.numSalonSETS.numSalon as salon, " + // Salón
-            "e.Fecha as fecha, " + // Fecha
-            "pp.nombre as nombreDocente, " + // Nombre del docente
-            "pp.apellido_p as apellidoPDocente, " + // Apellido paterno del docente
-            "pp.apellido_m as apellidoMDocente) " + // Apellido materno del docente
+            "e.idUA.nombre as nombreETS, " +
+            "e.Turno.nombre as nombreTurno, " +
+            "s.numSalonSETS.numSalon as salon, " +
+            "e.Fecha as fecha, " +
+            "pp.nombre as nombreDocente, " +
+            "pp.apellido_p as apellidoPDocente, " +
+            "pp.apellido_m as apellidoMDocente) " +
             "FROM InscripcionETS i " +
-            "JOIN i.boletaIns a " + // Relación con Alumno
-            "JOIN a.CURP p " + // Relación con Persona
-            "JOIN i.idETSIns e " + // Relación con ETS
-            "JOIN SalonETS s ON s.idETSSETS.id_ETS = e.id_ETS " + // Relación con SalonETS
-            "JOIN Aplica ap ON ap.idETS.id_ETS = e.id_ETS " + // Relación con Aplica
-            "JOIN ap.docenteRFC pa " + // Relación con Docente
-            "JOIN pa.CURP pp " + // Relación con Persona del docente
-            "WHERE a.boleta = :boleta") // Filtro por boleta
+            "JOIN i.boletaIns a " +
+            "JOIN a.CURP p " +
+            "JOIN i.idETSIns e " +
+            "JOIN SalonETS s ON s.idETSSETS.id_ETS = e.id_ETS " +
+            "JOIN Aplica ap ON ap.idETS.id_ETS = e.id_ETS " +
+            "JOIN ap.docenteRFC pa " +
+            "JOIN pa.CURP pp " +
+            "WHERE a.boleta = :boleta")
     List<DetalleAlumnosDTO> findDetalleAlumnoporboleta(@Param("boleta") String boleta);
 }

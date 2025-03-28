@@ -32,6 +32,8 @@ public class InscripcionETSConfig {
         return args -> {
             // Busca registros de Alumno por Boleta, en caso de no encontrarlo devuelve null
             Alumno alfredo = alumnoRepository.findByBoleta("2022630467").orElse(null);
+            Alumno alejandra = alumnoRepository.findByBoleta("2021340022").orElse(null);
+
 
             // Busca registros de ETS por ID, en caso de no encontrarlo devuelve null
             ETS ets1 = etsRepository.findById(1).orElse(null);
@@ -82,11 +84,11 @@ public class InscripcionETSConfig {
             InscripcionETSPK ietspk3 = new InscripcionETSPK();
             assert ets3 != null;
             ietspk3.setIdETS(ets3.getIdETS());
-            ietspk3.setBoleta(alfredo.getBoleta());
+            ietspk3.setBoleta(alejandra.getBoleta());
 
             InscripcionETS ins3 = new InscripcionETS();
             ins3.setId(ietspk3);
-            ins3.setAlumno(alfredo);
+            ins3.setAlumno(alejandra);
             ins3.setEts(ets3);
 
             inscripcionETSRepository.save(ins3);
