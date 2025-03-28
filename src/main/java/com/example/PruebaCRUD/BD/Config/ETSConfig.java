@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -52,10 +53,12 @@ public class ETSConfig {
                 UnidadAprendizaje PDI = unidadAprendizajeRepository.findById("PDI-IIA").orElse(null);
                 UnidadAprendizaje BBD = unidadAprendizajeRepository.findById("BBD-ISC").orElse(null);
 
+                Time hora = Time.valueOf("08:00:00");
+
                 // Guarda nuevos registros con nuevas instancias de ETS
-                etsRepository.save(new ETS(periodo, Matutino, fecha, 20, BD, 2));
-                etsRepository.save(new ETS(periodo, Vespertino, fecha, 20, PDI, 2));
-                etsRepository.save(new ETS(periodo, Matutino, fecha, 20, BBD, 2));
+                etsRepository.save(new ETS(periodo, Matutino, fecha, hora, 20, BD, 2));
+                etsRepository.save(new ETS(periodo, Vespertino, fecha, hora, 20, PDI, 2));
+                etsRepository.save(new ETS(periodo, Matutino, fecha, hora, 20, BBD, 2));
             }
         };
     }
