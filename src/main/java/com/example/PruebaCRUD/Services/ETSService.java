@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
@@ -80,8 +82,10 @@ public class ETSService {
         LocalDate fechaDate = LocalDate.parse(ets.getFecha(), formatter);
         Date fecha = java.sql.Date.valueOf(fechaDate);
 
+        Time horaActual = Time.valueOf(LocalTime.now());
+
         // Se crea una nueva instancia de ETS con los datos recibidos
-        ETS nets = new ETS(pets.get(), turno.get(), fecha, ets.getCupo(), uapren.get(), ets.getDuracion());
+        ETS nets = new ETS(pets.get(), turno.get(), fecha, horaActual, ets.getCupo(), uapren.get(), ets.getDuracion());
 
         // Se crea un nuevo registro de ETS
         ETS newETS = etsRepository.save(nets);

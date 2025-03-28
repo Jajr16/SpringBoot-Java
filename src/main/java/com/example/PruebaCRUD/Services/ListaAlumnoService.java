@@ -39,7 +39,7 @@ public class ListaAlumnoService {
             String correo = (String) result[7];
             String carrera = (String) result[8];
 
-            Boolean aceptado = (Boolean) result[9];
+            Integer aceptado = (Integer) result[9];
 
             // Crear un DTO y agregarlo a la lista de respuestas
             responseList.add(new ListAlumnosDTO(idets, boleta, curp, nombreA, apellidoP, apellidoM,sexo,correo,carrera,aceptado));
