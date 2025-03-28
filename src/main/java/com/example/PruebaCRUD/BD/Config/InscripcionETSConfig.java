@@ -84,11 +84,11 @@ public class InscripcionETSConfig {
             InscripcionETSPK ietspk3 = new InscripcionETSPK();
             assert ets3 != null;
             ietspk3.setIdETS(ets3.getIdETS());
-            ietspk3.setBoleta(alejandra.getBoleta());
+            ietspk3.setBoleta(alfredo.getBoleta());
 
             InscripcionETS ins3 = new InscripcionETS();
             ins3.setId(ietspk3);
-            ins3.setAlumno(alejandra);
+            ins3.setAlumno(alfredo);
             ins3.setEts(ets3);
 
             inscripcionETSRepository.save(ins3);

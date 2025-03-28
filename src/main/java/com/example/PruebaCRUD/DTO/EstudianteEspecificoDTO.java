@@ -78,6 +78,8 @@ public class EstudianteEspecificoDTO {
                 ", curp='" + curp + '\'' +
                 ", unidadAcademica='" + unidadAcademica + '\'' +
                 '}';
+
+
     }
 }
 
