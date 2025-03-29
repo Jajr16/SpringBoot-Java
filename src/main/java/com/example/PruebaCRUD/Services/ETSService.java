@@ -58,7 +58,7 @@ public class ETSService {
     public ResponseEntity<Object> newETS(NewETSDTOSaes ets) throws Exception {
         datos = new HashMap<>(); // Variable que contendrá los datos a devolver al cliente
 
-        if (ets.getCupo() == null || ets.getFecha() == null || ets.getDuracion() == null
+        if (ets.getCupo() == null || ets.getFecha() == null || ets.getHora() == null || ets.getDuracion() == null
                 || ets.getIdPeriodo() == null
                 || ets.getTurno() == null || ets.getTurno().isEmpty()
                 || ets.getIdUA() == null || ets.getIdUA().isEmpty()) {
@@ -82,10 +82,11 @@ public class ETSService {
         LocalDate fechaDate = LocalDate.parse(ets.getFecha(), formatter);
         Date fecha = java.sql.Date.valueOf(fechaDate);
 
-        Time horaActual = Time.valueOf(LocalTime.now());
+        LocalTime hora = LocalTime.parse(ets.getHora(), DateTimeFormatter.ofPattern("HH:mm"));
+        Time horaSQL = Time.valueOf(hora);
 
         // Se crea una nueva instancia de ETS con los datos recibidos
-        ETS nets = new ETS(pets.get(), turno.get(), fecha, horaActual, ets.getCupo(), uapren.get(), ets.getDuracion());
+        ETS nets = new ETS(pets.get(), turno.get(), fecha, horaSQL, ets.getCupo(), uapren.get(), ets.getDuracion());
 
         // Se crea un nuevo registro de ETS
         ETS newETS = etsRepository.save(nets);
