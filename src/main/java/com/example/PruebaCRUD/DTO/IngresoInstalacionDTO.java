@@ -10,16 +10,14 @@ public class IngresoInstalacionDTO {
     private String apellidoM;
     private String idETS;
     private Date fecha;
-    private Time horaIngreso;  // Cambiado de 'hora' a 'horaIngreso' para mayor claridad
 
-    public IngresoInstalacionDTO(String boleta, String nombre, String apellidoP, String apellidoM, String idETS, Date fecha, Time horaIngreso) {
+    public IngresoInstalacionDTO(String boleta, String nombre, String apellidoP, String apellidoM, String idETS, Date fecha) {
         this.boleta = boleta;
         this.nombre = nombre;
         this.apellidoP = apellidoP;
         this.apellidoM = apellidoM;
         this.idETS = idETS;
         this.fecha = fecha;
-        this.horaIngreso = horaIngreso;
     }
 
     public String getBoleta() {
@@ -70,13 +68,6 @@ public class IngresoInstalacionDTO {
         this.fecha = fecha;
     }
 
-    public Time getHoraIngreso() {
-        return horaIngreso;
-    }
-
-    public void setHoraIngreso(Time horaIngreso) {
-        this.horaIngreso = horaIngreso;
-    }
 
     @Override
     public String toString() {
@@ -87,7 +78,6 @@ public class IngresoInstalacionDTO {
                 ", apellidoM='" + apellidoM + '\'' +
                 ", idETS='" + idETS + '\'' +
                 ", fecha=" + fecha +
-                ", horaIngreso=" + horaIngreso +
                 '}';
     }
 }
