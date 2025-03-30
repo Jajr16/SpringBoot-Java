@@ -27,8 +27,8 @@ public class Aplica {
     @JoinColumn(name = "Docente_RFC", nullable = false)
     private PersonalAcademico docenteRFC;
 
-    @Column(name = "Titular", nullable = false)
-    private boolean Titular;
+    @Column(name = "coordinador", nullable = false)
+    private boolean coordinador;
 
     // ==================== CONSTRUCTORES =====================
     public Aplica() {}
@@ -37,6 +37,10 @@ public class Aplica {
         this.id = id;
     }
 
+    public Aplica(AplicaPK id, boolean coordinador) {
+        this.id = id;
+        this.coordinador = coordinador;
+    }
     // ==================== SETTERS AND GETTERS ====================
     public AplicaPK getId() {
         return id;
@@ -64,10 +68,10 @@ public class Aplica {
     }
 
     public boolean isTitular() {
-        return Titular;
+        return coordinador;
     }
 
-    public void setTitular(boolean titular) {
-        Titular = titular;
+    public void setTitular(boolean coordinador) {
+        this.coordinador = coordinador;
     }
 }

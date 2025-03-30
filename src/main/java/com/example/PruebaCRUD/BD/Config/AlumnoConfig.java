@@ -34,7 +34,7 @@ public class AlumnoConfig {
             if (alumnoRepository.count() == 0) { // Si aún no hay ningún registro en la tabla alumno entra aquí
                 // Busca el registro de cada uno de los Alumnos por CURP, en caso de no encontrarlo devuelve null
                 Persona Alfredo = personaRepository.findPersonaByCURP("1").orElseGet(null);
-//                Persona Ale = personaRepository.findPersonaByCURP("2").orElseGet(null);
+                Persona Ale = personaRepository.findPersonaByCURP("2").orElseGet(null);
 //                Persona Flores = personaRepository.findPersonaByCURP("3").orElseGet(null);
 //                Persona Daniel = personaRepository.findPersonaByCURP("4").orElseGet(null);
 //                Persona Luis = personaRepository.findPersonaByCURP("5").orElseGet(null);
@@ -45,8 +45,8 @@ public class AlumnoConfig {
                 ProgramaAcademico ISC = programaAcademicoRepository.findByIdPA("ISC-2024").orElseGet(null);
 
                 // Guarda nuevos registros con nuevas instancias de Alumno y con los registros obtenidos anteriormente
-                alumnoRepository.save(new Alumno("2022630467", Alfredo, "1@gmail.com", IA, "IMG" ));
-//                alumnoRepository.save(new Alumno("1234567890", Ale, "2@gmail.com", IA, "IMG" ));
+                alumnoRepository.save(new Alumno("2022630467", Alfredo, "1@gmail.com", IA, "website/views/fotos/2022630467.jpg" ));
+                alumnoRepository.save(new Alumno("2021340022", Ale, "2@gmail.com", IA, "website/views/fotos/2021340022.jpg" ));
 //                alumnoRepository.save(new Alumno("0987654321", Flores, "3@gmail.com", IA, "IMG" ));
 //                alumnoRepository.save(new Alumno("0123456789", Daniel, "4@gmail.com", IA, "IMG" ));
 //                alumnoRepository.save(new Alumno("1111111111", Luis, "5@gmail.com", IA, "IMG" ));

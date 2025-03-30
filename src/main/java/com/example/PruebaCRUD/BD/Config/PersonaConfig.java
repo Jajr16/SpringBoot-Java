@@ -56,7 +56,7 @@ public class PersonaConfig {
 
                 // Se guardan todos los registros con ayuda de los datos anteriores
                 personaRepository.save(new Persona("1", "José Alfredo", "Jiménez", "Rodríguez", masculino, ESCOM));
-//                personaRepository.save(new Persona("2", "Alejandra", "De la cruz", "De la cruz", femenino, ESCOM));
+                personaRepository.save(new Persona("2", "Alejandra", "De la cruz", "De la cruz", femenino, ESCOM));
 //                personaRepository.save(new Persona("3", "Luis Antonio", "Flores", "Esquivel", masculino, ESCOM));
 //                personaRepository.save(new Persona("4", "Daniel Martin", "Huertas", "Ramírez", masculino, ESCOM));
 //                personaRepository.save(new Persona("5", "Luis Fernando", "Valle", "Hernández", masculino, ESCOM));

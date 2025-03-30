@@ -3,8 +3,8 @@ package com.example.PruebaCRUD.BD;
 import com.example.PruebaCRUD.BD.PKCompuesta.BoletaETSPK;
 import jakarta.persistence.*;
 
+import java.sql.Date;
 import java.sql.Time;
-import java.util.Date;
 
 /**
  *  Clase para crear una tabla en la base de datos
