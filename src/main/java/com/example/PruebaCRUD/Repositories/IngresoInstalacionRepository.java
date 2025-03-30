@@ -16,8 +16,7 @@ public interface IngresoInstalacionRepository extends JpaRepository<IngresoInsta
             "p.apellido_p, " +
             "p.apellido_m, " +
             "CAST(e.id_ETS AS string), " +
-            "ii.id.fecha, " +
-            "ii.id.hora) " +
+            "ii.id.fecha) " +  // Se eliminó la coma que causaba error
             "FROM InscripcionETS ie " +
             "JOIN ie.boletaIns a " +
             "JOIN a.CURP p " +
