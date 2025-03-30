@@ -84,6 +84,7 @@ public class InscripcionETSConfig {
             InscripcionETSPK ietspk3 = new InscripcionETSPK();
             assert ets3 != null;
             ietspk3.setIdETS(ets3.getIdETS());
+            assert alejandra != null;
             ietspk3.setBoleta(alejandra.getBoleta());
 
             InscripcionETS ins3 = new InscripcionETS();
