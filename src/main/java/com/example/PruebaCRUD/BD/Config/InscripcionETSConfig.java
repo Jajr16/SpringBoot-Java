@@ -81,18 +81,18 @@ public class InscripcionETSConfig {
             inscripcionETSRepository.save(ins2);
 
             // TERCER REGISTRO
-            InscripcionETSPK ietspk3 = new InscripcionETSPK();
-            assert ets3 != null;
-            ietspk3.setIdETS(ets3.getIdETS());
-            assert alejandra != null;
-            ietspk3.setBoleta(alejandra.getBoleta());
-
-            InscripcionETS ins3 = new InscripcionETS();
-            ins3.setId(ietspk3);
-            ins3.setAlumno(alejandra);
-            ins3.setEts(ets3);
-
-            inscripcionETSRepository.save(ins3);
+//            InscripcionETSPK ietspk3 = new InscripcionETSPK();
+//            assert ets3 != null;
+//            ietspk3.setIdETS(ets3.getIdETS());
+//            assert alejandra != null;
+//            ietspk3.setBoleta(alejandra.getBoleta());
+//
+//            InscripcionETS ins3 = new InscripcionETS();
+//            ins3.setId(ietspk3);
+//            ins3.setAlumno(alejandra);
+//            ins3.setEts(ets3);
+//
+//            inscripcionETSRepository.save(ins3);
 
         };
     }
