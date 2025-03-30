@@ -16,7 +16,7 @@ public class ResultadoRN {
      * Relación en la BD de la tabla actual con la clase de la instancia. LAZY indica que las consultas a la tabla
      * principal no van a obtener los datos de la tabla relacionada
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId // Relaciona esta variable con la de la clase de la llave primaria
     @JoinColumns({
             @JoinColumn(name = "boleta", referencedColumnName = "boleta", nullable = false),
@@ -30,11 +30,15 @@ public class ResultadoRN {
     @Column(name = "precision", scale = 2, nullable = false)
     private Float precision;
 
+    // Constructor sin argumentos (requerido por Hibernate)
+    public ResultadoRN() {}
+
     // ==================== CONSTRUCTORES =====================
-    public ResultadoRN(BoletaETSPK id, String imagenAlumno, Float precision) {
+    public ResultadoRN(BoletaETSPK id, String imagenAlumno, Float precision, IngresoSalon ingresoSalon) {
         this.id = id;
         this.imagenAlumno = imagenAlumno;
         this.precision = precision;
+        this.ingresoSalon = ingresoSalon;
     }
 
     // ==================== SETTERS AND GETTERS ====================

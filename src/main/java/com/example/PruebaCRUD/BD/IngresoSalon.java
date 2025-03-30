@@ -19,7 +19,7 @@ public class IngresoSalon {
      * Relación en la BD de la tabla actual con la clase de la instancia. LAZY indica que las consultas a la tabla
      * principal no van a obtener los datos de la tabla relacionada
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId("inscripcionETS") // Relaciona esta variable con la de la clase de la llave primaria
     @JoinColumns({
             @JoinColumn(name = "boleta", referencedColumnName = "Boleta", nullable = false),
