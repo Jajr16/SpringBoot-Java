@@ -32,7 +32,7 @@ public class InscripcionETS {
 
     //    ================= RELACIONES INVERSAS CON OTRAS TABLAS ========================
 
-    @OneToOne(mappedBy = "inscripcionETS", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "inscripcionETS", cascade = CascadeType.ALL, orphanRemoval = false)
     private IngresoSalon asistencias;
 
     // ==================== CONSTRUCTORES =====================

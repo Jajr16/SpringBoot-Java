@@ -20,6 +20,8 @@ public class BoletaETSPK implements Serializable { // Serializable indica que la
     private Integer idets;
 
 //    ================== CONSTRUCTOR ===================
+    public BoletaETSPK() {}
+
     public BoletaETSPK(String boleta, Integer idets) {
         this.boleta = boleta;
         this.idets = idets;
