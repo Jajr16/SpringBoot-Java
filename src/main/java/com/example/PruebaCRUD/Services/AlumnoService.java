@@ -58,8 +58,6 @@ public class AlumnoService {
 
         if (fechaString == null) { // Si la fecha obtenida es null
             List<AlumnoDTO> lista = new ArrayList<>();  // Usamos ArrayList como implementación de List
-            AlumnoDTO error = new AlumnoDTO(1);  // Suponiendo que 1 es un ID de error
-            lista.add(error);  // Añadimos el error a la lista
             return lista;  // Retornamos la lista que contiene el error
         }
 
