@@ -18,6 +18,7 @@ public class DetalleAlumnosService {
     }
 
     public List<DetalleAlumnosDTO> findDetalleAlumnoporboleta(String boleta) {
+        System.out.println(detalleAlumnosRepository.findDetalleAlumnoporboleta(boleta));
         return detalleAlumnosRepository.findDetalleAlumnoporboleta(boleta);
     }
 }

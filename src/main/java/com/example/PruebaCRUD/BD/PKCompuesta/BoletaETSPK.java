@@ -19,7 +19,10 @@ public class BoletaETSPK implements Serializable { // Serializable indica que la
     @Column(name = "idets")
     private Integer idets;
 
-//    ================== CONSTRUCTOR ===================
+    // Constructor sin argumentos (requerido por Hibernate)
+    public BoletaETSPK() {}
+
+
     public BoletaETSPK(String boleta, Integer idets) {
         this.boleta = boleta;
         this.idets = idets;
@@ -53,5 +56,13 @@ public class BoletaETSPK implements Serializable { // Serializable indica que la
     @Override
     public int hashCode() {
         return Objects.hash(boleta, idets);
+    }
+
+    @Override
+    public String toString() {
+        return "BoletaETSPK{" +
+                "boleta='" + boleta + '\'' +
+                ", idets=" + idets +
+                '}';
     }
 }
