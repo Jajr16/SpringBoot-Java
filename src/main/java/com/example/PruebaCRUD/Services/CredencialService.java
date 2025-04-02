@@ -13,6 +13,8 @@ public class CredencialService {
     private CredencialRepository credencialRepository;
 
     public List<CredencialDTO> findCredencialPorBoleta(String boleta) {
+        System.out.println("LA BOLETA ES: " + boleta);
+        System.out.println("LA FUNCION DE ALE ES: " + credencialRepository.findbyBoleta(boleta));
         return credencialRepository.findbyBoleta(boleta);
     }
 }
