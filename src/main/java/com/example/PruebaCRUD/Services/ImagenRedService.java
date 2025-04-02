@@ -73,11 +73,11 @@ public class ImagenRedService {
                 case "Rechazado: Verificado por el profesor.":
                     estadoNum = 3;
                     break;
-                case "Rechazado: Verificado con el reconocimiento facial.":
-                    estadoNum = 1;
-                    break;
                 case "Rechazado: Verificado con el código QR de la credencial.":
                     estadoNum = 2;
+                    break;
+                case "Rechazado: Verificado con el reconocimiento facial.":
+                    estadoNum = 1;
                     break;
                 default:
                     // Manejar caso por defecto (opcional)
