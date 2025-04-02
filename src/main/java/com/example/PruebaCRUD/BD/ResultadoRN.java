@@ -30,11 +30,15 @@ public class ResultadoRN {
     @Column(name = "precision", scale = 2, nullable = false)
     private Float precision;
 
+    // Constructor sin argumentos (requerido por Hibernate)
+    public ResultadoRN() {}
+
     // ==================== CONSTRUCTORES =====================
-    public ResultadoRN(BoletaETSPK id, String imagenAlumno, Float precision) {
+    public ResultadoRN(BoletaETSPK id, String imagenAlumno, Float precision, IngresoSalon ingresoSalon) {
         this.id = id;
         this.imagenAlumno = imagenAlumno;
         this.precision = precision;
+        this.ingresoSalon = ingresoSalon;
     }
 
     // ==================== SETTERS AND GETTERS ====================

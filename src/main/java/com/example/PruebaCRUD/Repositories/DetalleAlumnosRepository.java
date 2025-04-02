@@ -14,7 +14,6 @@ import java.util.List;
 public interface DetalleAlumnosRepository extends JpaRepository<InscripcionETS, InscripcionETSPK> {
 
     @Query("SELECT new com.example.PruebaCRUD.DTO.DetalleAlumnosDTO(" +
-            "a.imagenCredencial, " +
             "p.nombre as nombreAlumno, " +
             "p.apellido_p as apellidoPAlumno, " +
             "p.apellido_m as apellidoMAlumno, " +
@@ -30,10 +29,10 @@ public interface DetalleAlumnosRepository extends JpaRepository<InscripcionETS, 
             "JOIN i.boletaIns a " +
             "JOIN a.CURP p " +
             "JOIN i.idETSIns e " +
-            "LEFT JOIN SalonETS s ON s.idETSSETS.id_ETS = e.id_ETS " +
-            "LEFT JOIN Aplica ap ON ap.idETS.id_ETS = e.id_ETS " +
-            "LEFT JOIN ap.docenteRFC pa " +
-            "LEFT JOIN pa.CURP pp " +
+            "INNER JOIN SalonETS s ON s.idETSSETS.id_ETS = e.id_ETS " +
+            "INNER JOIN Aplica ap ON ap.idETS.id_ETS = e.id_ETS " +
+            "INNER JOIN ap.docenteRFC pa " +
+            "INNER JOIN pa.CURP pp " +
             "WHERE a.boleta = :boleta")
     List<DetalleAlumnosDTO> findDetalleAlumnoporboleta(@Param("boleta") String boleta);
 }

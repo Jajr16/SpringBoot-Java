@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class DetalleAlumnosDTO {
 
-    private String imagenCredencial;
     private String nombreAlumno;
     private String apellidoPAlumno;
     private String apellidoMAlumno;
@@ -17,8 +16,7 @@ public class DetalleAlumnosDTO {
     private String apellidoPDocente;
     private String apellidoMDocente;
 
-    public DetalleAlumnosDTO(String imagenCredencial, String nombreAlumno, String apellidoPAlumno, String apellidoMAlumno, String boleta, String nombreETS, String nombreTurno, Integer salon, Date fecha, String nombreDocente, String apellidoPDocente, String apellidoMDocente) {
-        this.imagenCredencial = imagenCredencial;
+    public DetalleAlumnosDTO(String nombreAlumno, String apellidoPAlumno, String apellidoMAlumno, String boleta, String nombreETS, String nombreTurno, Integer salon, Date fecha, String nombreDocente, String apellidoPDocente, String apellidoMDocente) {
         this.nombreAlumno = nombreAlumno;
         this.apellidoPAlumno = apellidoPAlumno;
         this.apellidoMAlumno = apellidoMAlumno;
@@ -32,13 +30,7 @@ public class DetalleAlumnosDTO {
         this.apellidoMDocente = apellidoMDocente;
     }
 
-    public String getImagenCredencial() {
-        return imagenCredencial;
-    }
 
-    public void setImagenCredencial(String imagenCredencial) {
-        this.imagenCredencial = imagenCredencial;
-    }
 
     public String getNombreAlumno() {
         return nombreAlumno;
@@ -131,7 +123,6 @@ public class DetalleAlumnosDTO {
     @Override
     public String toString() {
         return "DetalleAlumnosDTO{" +
-                "imagenCredencial='" + imagenCredencial + '\'' +
                 ", nombreAlumno='" + nombreAlumno + '\'' +
                 ", apellidoPAlumno='" + apellidoPAlumno + '\'' +
                 ", apellidoMAlumno='" + apellidoMAlumno + '\'' +
