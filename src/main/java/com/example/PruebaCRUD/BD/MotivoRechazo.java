@@ -24,6 +24,10 @@ public class MotivoRechazo {
     }) // Relaciones a otras columnas de otras tablas
     private IngresoSalon ingresoSalon;
 
+    // Constructor sin argumentos (requerido por JPA)
+    public MotivoRechazo() {
+    }
+
     @Column(name = "motivo", nullable = false)
     private String motivo;
 
