@@ -1,7 +1,6 @@
 package com.example.PruebaCRUD.BD.Config;
 
 import com.example.PruebaCRUD.BD.CargoPS;
-import com.example.PruebaCRUD.BD.PKCompuesta.PersonalSeguridadPK;
 import com.example.PruebaCRUD.BD.Persona;
 import com.example.PruebaCRUD.BD.PersonalSeguridad;
 import com.example.PruebaCRUD.BD.Turno;
@@ -57,41 +56,28 @@ public class PersonalSeguridadConfig {
                 );
 
                 /**
-                 * Para llevar a cabo un regsitro de una tabla con llaves foráneas y llave primaria compuesta
-                 * debes de llenar todas las variables que contiene la clase princiapl
-                 * PersonalSeguridad, estos incluyen:
-                 *      - PersonalSeguridadPK (Instancia de otra clase)
-                 *      - Turno (Instancia de otra clase)
-                 *      - CargoPS (Instancia de otra clase)
-                 */
-                // Instancia de la llave primaria de PersonalSeguridad (Aquí se deben de llenar las variables normales)
-                PersonalSeguridadPK pspkE = new PersonalSeguridadPK();
-                pspkE.setCURP(Esteban); // Se asigna el CURP
-
-                /**
                  * Se hace la instancia de CargoDocente (tabla princiapl), como se mencionó, se deben de asignar todas
                  * las variables de dicha clase, las cuales son instancias de otras clases.
                  */
                 PersonalSeguridad psE = new PersonalSeguridad();
-                psE.setId(pspkE); // Se asigna la llave primaria compuesta
+                psE.setRfc("A"); // Se asigna el rfc
+                psE.setCURP(Esteban); // Se asigna el curp
                 psE.setTurno(matutino); // Se asigna el turno
                 psE.setCargo(Jefe); // Se asigna el cargo
 
                 // SEGUNDO REGISTRO
-                PersonalSeguridadPK pspkF = new PersonalSeguridadPK();
-                pspkF.setCURP(Flor);
 
                 PersonalSeguridad psF = new PersonalSeguridad();
-                psF.setId(pspkF);
+                psF.setRfc("B");
+                psF.setCURP(Flor);
                 psF.setTurno(vespertino);
                 psF.setCargo(SubJefe);
 
                 // TERCER REGISTRO
-                PersonalSeguridadPK pspkC = new PersonalSeguridadPK();
-                pspkC.setCURP(Carlos);
 
                 PersonalSeguridad psC = new PersonalSeguridad();
-                psC.setId(pspkC);
+                psC.setRfc("C");
+                psC.setCURP(Carlos);
                 psC.setTurno(matutino);
                 psC.setCargo(Guardia);
 

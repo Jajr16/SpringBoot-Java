@@ -63,8 +63,15 @@ public class PeriodoETSService {
         // Se calcula la diferencia de días
         long diasDeDiferencia = ChronoUnit.DAYS.between(today, fechaETSLD);
 
+        String response;
+
+        if (diasDeDiferencia < 0) {
+            response = "Aún no está registrado el siguiente periodo de ETS.";
+        } else {
+            response = "Faltan " + diasDeDiferencia + " días para el periodo de ETS.";
+        }
+
         // Se crea la respuesta que se le entregará al cliente
-        String response = "Faltan " + diasDeDiferencia + " días para el periodo de ETS.";
 
         // Se retorna la respuesta por medio de un DTO
         return new TimeToETSDTO(response);

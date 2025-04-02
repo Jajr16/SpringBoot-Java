@@ -29,11 +29,11 @@ public class periodoETSConfig {
                 // Aquí se debe de darle formato a la fecha que vamos a guardar para que se pase correctamente a la BD
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Formato de fecha
                 // Nueva variable fechaInicio con formato anterior
-                Date fechaInicio = dateFormat.parse("2025-02-10");
-                Date fechaFin = dateFormat.parse("2025-05-10"); // Nueva variable fechaFin con formato anterior
+                Date fechaInicio = dateFormat.parse("2025-07-14");
+                Date fechaFin = dateFormat.parse("2025-07-18"); // Nueva variable fechaFin con formato anterior
 
                 // Guarda nuevo registro periodoETS con los datos anteriores
-                pETSRepository.save(new periodoETS("25/1", 'O', fechaInicio, fechaFin));
+                pETSRepository.save(new periodoETS("25/2", 'O', fechaInicio, fechaFin));
             }
         };
     }

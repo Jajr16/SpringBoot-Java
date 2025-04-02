@@ -1,15 +1,16 @@
 package com.example.PruebaCRUD.Controllers;
 
 import com.example.PruebaCRUD.BD.Usuario;
+import com.example.PruebaCRUD.DTO.Saes.ListInsETSProjectionSaes;
 import com.example.PruebaCRUD.Repositories.UsuarioRepository;
+import com.example.PruebaCRUD.Services.InscripcionETSService;
 import com.example.PruebaCRUD.Services.ListETSService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -20,7 +21,6 @@ import java.util.Optional;
 @RequestMapping("/inscripciones") // Mapear la url a este método
 public class InscripcionesController {
     private final ListETSService listETSService;
-
     private final UsuarioRepository usuarioRepository;
 
     @Autowired // Notación que permite inyectar dependencias, en este caso, PeriodoETSService
@@ -49,14 +49,14 @@ public class InscripcionesController {
             String tipoUsuario = usuarioOpt.get().getTipoU().getTipo(); // Obtener tipo de usuario
 
             // Validación flexible: acepta cualquier rol que contenga 'Docente' o 'Seguridad'
-            if (tipoUsuario.toLowerCase().contains("docente") ||
-                    tipoUsuario.toLowerCase().contains("seguridad")) {
+            if (tipoUsuario.toLowerCase().contains("personal academico") ||
+                    tipoUsuario.toLowerCase().contains("seguridad") || tipoUsuario.toLowerCase().contains("alumno")) {
 
                 response.put("username", username);
                 response.put("tipoUsuario", tipoUsuario);
                 response.put("mensaje", "Usuario válido");
             } else {
-                response.put("error", "El usuario no corresponde a un Docente o Seguridad");
+                response.put("error", "El usuario no corresponde a ningún rol");
             }
         } else {
             response.put("error", "Usuario no encontrado");

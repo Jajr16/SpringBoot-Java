@@ -2,6 +2,7 @@ package com.example.PruebaCRUD.BD;
 
 import jakarta.persistence.*;
 
+import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +35,9 @@ public class ETS {
     @Temporal(TemporalType.DATE) // Notación para indicarle que es una variable Dat e
     private Date Fecha;
 
+    @Column(name = "Hora", nullable = false)
+    private Time hora;
+
     @Column(name = "Cupo", nullable = false)
     private Integer Cupo;
 
@@ -60,7 +64,7 @@ public class ETS {
     // ==================== CONSTRUCTORES =====================
     public ETS() {}
 
-    public ETS(Integer idets, periodoETS idPeriodo, Turno turno, Date fecha, Integer Cupo, UnidadAprendizaje idUA, Integer duracion) {
+    public ETS(Integer idets, periodoETS idPeriodo, Turno turno, Date fecha, Time hora, Integer Cupo, UnidadAprendizaje idUA, Integer duracion) {
         this.id_ETS = idets;
         this.idPeriodo = idPeriodo;
         this.Turno = turno;
@@ -68,15 +72,17 @@ public class ETS {
         this.Cupo = Cupo;
         this.idUA = idUA;
         this.Duracion = duracion;
+        this.hora = hora;
     }
 
-    public ETS(periodoETS idPeriodo, Turno turno, Date fecha, Integer Cupo, UnidadAprendizaje idUA, Integer duracion) {
+    public ETS(periodoETS idPeriodo, Turno turno, Date fecha, Time hora, Integer Cupo, UnidadAprendizaje idUA, Integer duracion) {
         this.idPeriodo = idPeriodo;
         this.Turno = turno;
         this.Fecha = fecha;
         this.Cupo = Cupo;
         this.idUA = idUA;
         this.Duracion = duracion;
+        this.hora = hora;
     }
 
     // ==================== SETTERS AND GETTERS ====================
@@ -106,6 +112,22 @@ public class ETS {
 
     public Date getFecha() {
         return Fecha;
+    }
+
+    public Integer getId_ETS() {
+        return id_ETS;
+    }
+
+    public void setId_ETS(Integer id_ETS) {
+        this.id_ETS = id_ETS;
+    }
+
+    public Time getHora() {
+        return hora;
+    }
+
+    public void setHora(Time hora) {
+        this.hora = hora;
     }
 
     public void setFecha(Date fecha) {
@@ -167,6 +189,7 @@ public class ETS {
                 ", idPeriodo=" + idPeriodo +
                 ", Turno=" + Turno +
                 ", Fecha=" + Fecha +
+                ", hora=" + hora +
                 ", Cupo=" + Cupo +
                 ", idUA=" + idUA +
                 ", Duracion=" + Duracion +

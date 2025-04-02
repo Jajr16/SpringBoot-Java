@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -41,21 +42,23 @@ public class ETSConfig {
                 Turno Vespertino = turnoRepository.findByNombre("Vespertino").orElse(null);
 
                 // Busca registros de PeriodoETS por periodo y tipo, en caso de no encontrarlo devuelve null
-                periodoETS periodo = periodoETSRepository.findByPeriodoAndTipo("25/1", 'O').orElse(null);
+                periodoETS periodo = periodoETSRepository.findByPeriodoAndTipo("25/2", 'O').orElse(null);
 
                 // Aquí se debe de darle formato a la fecha que vamos a guardar para que se pase correctamente a la BD
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Formato de fecha
-                Date fecha = dateFormat.parse("2024-10-04"); // Nueva variable fecha con formato anterior
+                Date fecha = dateFormat.parse("2025-07-14"); // Nueva variable fecha con formato anterior
 
                 // Busca registros de UnidadAprendizaje por ID, en caso de no encontrarlo devuelve null
                 UnidadAprendizaje BD = unidadAprendizajeRepository.findById("BD-IIA").orElse(null);
                 UnidadAprendizaje PDI = unidadAprendizajeRepository.findById("PDI-IIA").orElse(null);
                 UnidadAprendizaje BBD = unidadAprendizajeRepository.findById("BBD-ISC").orElse(null);
 
+                Time hora = Time.valueOf("08:00:00");
+
                 // Guarda nuevos registros con nuevas instancias de ETS
-                etsRepository.save(new ETS(periodo, Matutino, fecha, 20, BD, 2));
-                etsRepository.save(new ETS(periodo, Vespertino, fecha, 20, PDI, 2));
-                etsRepository.save(new ETS(periodo, Matutino, fecha, 20, BBD, 2));
+                etsRepository.save(new ETS(periodo, Matutino, fecha, hora, 20, BD, 2));
+                etsRepository.save(new ETS(periodo, Vespertino, fecha, hora, 20, PDI, 2));
+                etsRepository.save(new ETS(periodo, Matutino, fecha, hora, 20, BBD, 2));
             }
         };
     }
