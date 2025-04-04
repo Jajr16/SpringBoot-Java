@@ -162,6 +162,7 @@ public class ImagenRedService {
 
             // Crear MotivoRechazo (al final)
             if (razon != null){
+                System.out.println(razon);
                 MotivoRechazo motivoRechazo = new MotivoRechazo(id, razon);
                 motivoRechazo.setIngresoSalon(ingresoSalon); // Establecer ingresoSalon
                 motivoRechazoRepository.save(motivoRechazo);

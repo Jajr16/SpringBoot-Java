@@ -36,7 +36,7 @@ public class ImagenRedController {
         try {
             int idetsInt = Integer.parseInt(idets);
 
-            String razonValue = precision.orElse(null);
+            String razonValue = razon.orElse(null);
 
             String precisionValue = precision.orElse(null);
 
