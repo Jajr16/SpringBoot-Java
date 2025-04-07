@@ -9,15 +9,17 @@ public class IngresoInstalacionDTO {
     private String apellidoP;
     private String apellidoM;
     private String idETS;
-    private Date fecha;
+//    private Date fecha;
+//    private Time hora;
 
-    public IngresoInstalacionDTO(String boleta, String nombre, String apellidoP, String apellidoM, String idETS, Date fecha) {
+    public IngresoInstalacionDTO(String boleta, String nombre, String apellidoP, String apellidoM, String idETS) {
         this.boleta = boleta;
         this.nombre = nombre;
         this.apellidoP = apellidoP;
         this.apellidoM = apellidoM;
         this.idETS = idETS;
-        this.fecha = fecha;
+//        this.fecha = fecha;
+//        this.hora = hora;
     }
 
     public String getBoleta() {
@@ -60,14 +62,21 @@ public class IngresoInstalacionDTO {
         this.idETS = idETS;
     }
 
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-
+//    public Date getFecha() {
+//        return fecha;
+//    }
+//
+//    public void setFecha(Date fecha) {
+//        this.fecha = fecha;
+//    }
+//
+//    public Time getHora() {
+//        return hora;
+//    }
+//
+//    public void setHora(Time hora) {
+//        this.hora = hora;
+//    }
 
     @Override
     public String toString() {
@@ -77,7 +86,6 @@ public class IngresoInstalacionDTO {
                 ", apellidoP='" + apellidoP + '\'' +
                 ", apellidoM='" + apellidoM + '\'' +
                 ", idETS='" + idETS + '\'' +
-                ", fecha=" + fecha +
                 '}';
     }
 }

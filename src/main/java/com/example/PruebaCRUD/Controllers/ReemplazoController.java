@@ -1,11 +1,11 @@
 package com.example.PruebaCRUD.Controllers;
 
 import com.example.PruebaCRUD.BD.Reemplazo;
+import com.example.PruebaCRUD.DTO.SolicitudReemplazoDTO;
 import com.example.PruebaCRUD.Services.ReemplazoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/reemplazos")
@@ -19,8 +19,9 @@ public class ReemplazoController {
         this.reemplazoService = reemplazoService;
     }
 
-    @GetMapping("/docente/{docenteRFC}")
-    public List<Reemplazo> obtenerReemplazosPorDocente(@PathVariable String docenteRFC) {
-        return reemplazoService.obtenerReemplazosPorDocenteRFC(docenteRFC);
+    @PostMapping
+    public ResponseEntity<Reemplazo> crearSolicitudReemplazo(@RequestBody SolicitudReemplazoDTO solicitudDTO) {
+        Reemplazo nuevoReemplazo = reemplazoService.crearSolicitudReemplazo(solicitudDTO);
+        return ResponseEntity.ok(nuevoReemplazo);
     }
 }
