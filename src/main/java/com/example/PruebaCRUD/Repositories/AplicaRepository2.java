@@ -5,10 +5,12 @@ import com.example.PruebaCRUD.BD.PKCompuesta.AplicaPK;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface AplicaRepository2 extends JpaRepository<Aplica, AplicaPK> {
+@Repository
+public interface    AplicaRepository2 extends JpaRepository<Aplica, AplicaPK> {
 
     @Query(value = "SELECT * FROM ListAplica(:docente_rfc)", nativeQuery = true)
     List<Object[]> callListAplica(@Param("docente_rfc") String docente_rfc);
