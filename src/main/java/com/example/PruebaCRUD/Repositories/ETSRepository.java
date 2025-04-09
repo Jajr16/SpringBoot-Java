@@ -31,7 +31,8 @@ public interface ETSRepository extends JpaRepository<ETS, Integer> {
               turno.nombre,
               CAST(ets.Fecha AS string),
               ets.Cupo,
-              ets.Duracion
+              ets.Duracion,
+              CAST(ets.hora AS string)
           )
           FROM ETS ets
           INNER JOIN UnidadAprendizaje as uapren ON uapren.idUA = ets.idUA.idUA
