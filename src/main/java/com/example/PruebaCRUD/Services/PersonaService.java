@@ -6,6 +6,8 @@ import com.example.PruebaCRUD.DTO.*;
 import com.example.PruebaCRUD.DTO.Saes.*;
 import com.example.PruebaCRUD.Frames.DivisionFrames;
 import com.example.PruebaCRUD.Repositories.*;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -76,13 +79,96 @@ public class PersonaService {
         return alumnoRepository.findAllAsDTO();
     }
 
+    //Función para crear a un nuevo alumno apartir de Excel
+    @Transactional
+    public ResponseEntity<Object> newVideoAlumno(NewVideoAlumnoDTOSaes newVideoAlumnoDTOSaes,
+                                                 MultipartFile multipartFile) throws IOException {
+
+        HashMap<String, Object> datos = new HashMap<>();
+
+        if (Stream.of(newVideoAlumnoDTOSaes.getBoleta(), newVideoAlumnoDTOSaes.getCredencial())
+                .anyMatch(val -> val == null || val.isEmpty())) {
+            throw new RuntimeException("Debes de llenar todos los campos.");
+        }
+
+        File carpeta = new File(new File("").getAbsolutePath()
+                + "/src/main/java/com/example/PruebaCRUD/EntrenamientoIMG/"
+                + newVideoAlumnoDTOSaes.getBoleta() + "/");
+
+        if (!carpeta.exists()) {
+            carpeta.mkdirs();
+        }
+
+        File destino = new File(carpeta, Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        multipartFile.transferTo(destino);
+
+        DivisionFrames.extractFrames(destino.getPath(), destino.getParent());
+
+        Optional<UnidadAcademica> uaAlumno = this.unidadAcademicaRepository.findByNombre("ESCOM");
+
+        try (FileInputStream archivo = new FileInputStream("src/main/java/com/example/PruebaCRUD/grupos_ESCOM.xlsx");
+             Workbook libro = new XSSFWorkbook(archivo)) {
+
+            DataFormatter formatter = new DataFormatter();
+
+            for (Sheet hoja : libro) {
+                for (Row fila : hoja) {
+                    String boletaExcel = formatter.formatCellValue(fila.getCell(0));
+
+                    if (boletaExcel.equals(newVideoAlumnoDTOSaes.getBoleta())) {
+
+                        String nombre = fila.getCell(1).toString();
+                        String apellido_p = fila.getCell(2).toString();
+                        String apellido_m = fila.getCell(3).toString();
+                        String correo = fila.getCell(4).toString();
+                        String sexo = fila.getCell(5).toString();
+                        String carrera = fila.getCell(6).toString();
+                        String curp = formatter.formatCellValue(fila.getCell(7));
+
+                        if (this.personaRepository.findPersonaByCURP(curp).isPresent()
+                                || this.alumnoRepository.findByBoleta(newVideoAlumnoDTOSaes.getBoleta()).isPresent()) {
+                            throw new RuntimeException("Ese Alumno ya ha sido registrado con anterioridad.");
+                        }
+
+                        Optional<Sexo> sexoRep = this.sexoRepository.findByNombre(sexo);
+                        if (sexoRep.isEmpty()) throw new RuntimeException("Sexo no encontrado.");
+
+                        Persona npersona = new Persona();
+                        npersona.setCURP(curp);
+                        npersona.setNombre(nombre);
+                        npersona.setApellido_P(apellido_p);
+                        npersona.setApellido_M(apellido_m);
+                        npersona.setSexo(sexoRep.get());
+                        npersona.setUnidadAcademica(uaAlumno.get());
+                        personaRepository.save(npersona);
+
+                        Optional<ProgramaAcademico> pa = this.programaAcademicoRepository.findBy(1, carrera);
+                        if (pa.isEmpty()) throw new RuntimeException("Esa carrera no existe.");
+
+                        Alumno nalumno = new Alumno();
+                        nalumno.setBoleta(newVideoAlumnoDTOSaes.getBoleta());
+                        nalumno.setCorreoI(correo);
+                        nalumno.setImagenCredencial(newVideoAlumnoDTOSaes.getCredencial());
+                        nalumno.setCURP(npersona);
+                        nalumno.setIdPA(pa.get());
+                        alumnoRepository.save(nalumno);
+
+                        datos.put("message", "Alumno registrado con éxito.");
+                        return new ResponseEntity<>(datos, HttpStatus.CREATED);
+                    }
+                }
+            }
+
+        }
+
+        throw new RuntimeException("La boleta no se encontró en el Excel.");
+    }
+
     // Función para crear un nuevo alumno
     @Transactional // Notación que indica que si algo falla, hace un rollback a todas las transacciones ya hechas
     public ResponseEntity<Object> newAlumno(NewAlumnoDTOSaes newAlumnoDTOSaes, MultipartFile multipartFile)
             throws IOException {
         datos = new HashMap<>();
-
-        System.out.println(newAlumnoDTOSaes);
 
         if (Stream.of(newAlumnoDTOSaes.getCurp(), newAlumnoDTOSaes.getBoleta(), newAlumnoDTOSaes.getNombre(),
                 newAlumnoDTOSaes.getApellido_p(), newAlumnoDTOSaes.getApellido_m(), newAlumnoDTOSaes.getSexo(),
