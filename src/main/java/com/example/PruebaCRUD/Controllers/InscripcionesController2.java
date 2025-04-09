@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
+@RestController
 public class InscripcionesController2 {
 
     private final ListETSService2 listETSService2;

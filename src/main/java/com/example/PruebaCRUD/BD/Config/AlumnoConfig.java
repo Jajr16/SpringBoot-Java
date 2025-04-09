@@ -41,8 +41,8 @@ public class AlumnoConfig {
 //                Persona Roman = personaRepository.findPersonaByCURP("6").orElseGet(null);
 
                 // Busca el registro de cada programa académico por su ID, en caso de no encontrarlo devuelve null
-                ProgramaAcademico IA = programaAcademicoRepository.findByIdPA("IIA-2024").orElseGet(null);
-                ProgramaAcademico ISC = programaAcademicoRepository.findByIdPA("ISC-2024").orElseGet(null);
+                ProgramaAcademico IA = programaAcademicoRepository.findByIdPA("IIA-2020").orElseGet(null);
+                ProgramaAcademico ISC = programaAcademicoRepository.findByIdPA("ISC-2020").orElseGet(null);
 
                 // Guarda nuevos registros con nuevas instancias de Alumno y con los registros obtenidos anteriormente
                 alumnoRepository.save(new Alumno("2022630467", Alfredo, "1@gmail.com", IA, "website/views/fotos/2022630467.jpg" ));

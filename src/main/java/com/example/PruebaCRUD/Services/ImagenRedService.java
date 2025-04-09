@@ -73,11 +73,11 @@ public class ImagenRedService {
                 case "Rechazado: Verificado por el profesor.":
                     estadoNum = 3;
                     break;
-                case "Rechazado: Verificado con el reconocimiento facial.":
-                    estadoNum = 1;
-                    break;
                 case "Rechazado: Verificado con el código QR de la credencial.":
                     estadoNum = 2;
+                    break;
+                case "Rechazado: Verificado con el reconocimiento facial.":
+                    estadoNum = 1;
                     break;
                 default:
                     // Manejar caso por defecto (opcional)
@@ -162,7 +162,6 @@ public class ImagenRedService {
 
             // Crear MotivoRechazo (al final)
             if (razon != null){
-                System.out.println(razon);
                 MotivoRechazo motivoRechazo = new MotivoRechazo(id, razon);
                 motivoRechazo.setIngresoSalon(ingresoSalon); // Establecer ingresoSalon
                 motivoRechazoRepository.save(motivoRechazo);

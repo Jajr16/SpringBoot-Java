@@ -6,16 +6,16 @@ public class AlumnoDTO {
     private String nombre;
     private String apellidoP;
     private String apellidoM;
+    private String turno;
     private Integer error;
 
-
-
     // Constructor actualizado
-    public AlumnoDTO(String boleta, String nombre, String apellidoP, String apellidoM) {
+    public AlumnoDTO(String boleta, String nombre, String apellidoP, String apellidoM, String turno) {
         this.boleta = boleta;
         this.nombre = nombre;
         this.apellidoP = apellidoP;
         this.apellidoM = apellidoM;
+        this.turno = turno;
     }
 
     public AlumnoDTO(String boleta, String Nombre, String Apellido_P, String Apellido_M, Integer error) {
@@ -66,6 +66,14 @@ public class AlumnoDTO {
         this.apellidoM = apellidoM;
     }
 
+    public String getTurno() {
+        return turno;
+    }
+
+    public void setTurno(String turno) {
+        this.turno = turno;
+    }
+
     public Integer getError() {
         return error;
     }
@@ -76,11 +84,12 @@ public class AlumnoDTO {
 
     @Override
     public String toString() {
-        return "{" +
+        return "AlumnoDTO{" +
                 "boleta='" + boleta + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", apellidoP='" + apellidoP + '\'' +
                 ", apellidoM='" + apellidoM + '\'' +
+                ", turno='" + turno + '\'' +
                 ", error=" + error +
                 '}';
     }

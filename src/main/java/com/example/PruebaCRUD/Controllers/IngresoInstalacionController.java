@@ -23,4 +23,18 @@ public class IngresoInstalacionController {
         }
         return ResponseEntity.ok(alumnos);
     }
+
+    @PostMapping("registrar-asistencia")
+    public ResponseEntity<List<IngresoInstalacionDTO>> registrarAsistencia(
+            @RequestParam String boleta,
+            @RequestParam String fecha,
+            @RequestParam String hora) {
+
+        try {
+            List<IngresoInstalacionDTO> registro = ingresoInstalacionService.registrarEntrada(boleta, fecha, hora);
+            return ResponseEntity.ok(registro);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
 }

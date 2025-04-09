@@ -4,13 +4,13 @@ public class SolicitudReemplazoDTO {
     private Integer idETS;
     private String docenteRFC;
     private String motivo;
-    private String estatus;
+//    private String estatus;
 
-    public SolicitudReemplazoDTO(Integer idETS, String docenteRFC, String motivo, String estatus) {
+    public SolicitudReemplazoDTO(Integer idETS, String docenteRFC, String motivo) {
         this.idETS = idETS;
         this.docenteRFC = docenteRFC;
         this.motivo = motivo;
-        this.estatus = estatus;
+//        this.estatus = estatus;
     }
 
     public Integer getIdETS() {
@@ -37,13 +37,13 @@ public class SolicitudReemplazoDTO {
         this.motivo = motivo;
     }
 
-    public String getEstatus() {
-        return estatus;
-    }
-
-    public void setEstatus(String estatus) {
-        this.estatus = estatus;
-    }
+//    public String getEstatus() {
+//        return estatus;
+//    }
+//
+//    public void setEstatus(String estatus) {
+//        this.estatus = estatus;
+//    }
 
     @Override
     public String toString() {
@@ -51,7 +51,7 @@ public class SolicitudReemplazoDTO {
                 "idETS=" + idETS +
                 ", docenteRFC='" + docenteRFC + '\'' +
                 ", motivo='" + motivo + '\'' +
-                ", estatus='" + estatus + '\'' +
+//                ", estatus='" + estatus + '\'' +
                 '}';
     }
 }
