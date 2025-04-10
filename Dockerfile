@@ -1,11 +1,22 @@
 FROM eclipse-temurin:17-jdk-jammy
 
-# Instalar FFmpeg
-RUN apt-get update && apt-get install -y ffmpeg
-
-# Crear directorio para el volumen
-RUN mkdir -p /data/frames
+# Instalar FFmpeg y preparar el volumen
+RUN apt-get update && \
+    apt-get install -y ffmpeg && \
+    mkdir -p /data/frames && \
+    chmod 777 /data/frames && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY . .
+
+# Copiar archivos y dar permisos
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN chmod +x mvnw && \
+    ./mvnw dependency:go-offline
+
+COPY src ./src
+
+EXPOSE 8080
+
 CMD ["./mvnw", "spring-boot:run"]
