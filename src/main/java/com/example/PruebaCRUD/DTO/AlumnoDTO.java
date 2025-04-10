@@ -9,11 +9,7 @@ public class AlumnoDTO {
     private String turno;
     private Integer error;
 
-
-
     // Constructor actualizado
-
-
     public AlumnoDTO(String boleta, String nombre, String apellidoP, String apellidoM, String turno) {
         this.boleta = boleta;
         this.nombre = nombre;

@@ -13,9 +13,10 @@ public class ETSDTO {
     private String Fecha;
     private Integer Cupo;
     private Integer Duracion;
+    private String Hora; // Nuevo atributo para la hora
 
     // ==================== CONSTRUCTORES =====================
-    public ETSDTO(int idETS, String UnidadAprendizaje, char tipoETS, String idPeriodo, String Turno, String Fecha, Integer Cupo, Integer Duracion) {
+    public ETSDTO(int idETS, String UnidadAprendizaje, char tipoETS, String idPeriodo, String Turno, String Fecha, Integer Cupo, Integer Duracion, String Hora) {
         this.idETS = idETS;
         this.UnidadAprendizaje = UnidadAprendizaje;
         this.tipoETS = tipoETS;
@@ -24,6 +25,7 @@ public class ETSDTO {
         this.Fecha = Fecha;
         this.Cupo = Cupo;
         this.Duracion = Duracion;
+        this.Hora = Hora; // Inicializar el nuevo atributo
     }
 
     // ==================== SETTERS AND GETTERS ====================
@@ -91,6 +93,14 @@ public class ETSDTO {
         Duracion = duracion;
     }
 
+    public String getHora() {
+        return Hora;
+    }
+
+    public void setHora(String hora) {
+        Hora = hora;
+    }
+
     @Override
     public String toString() {
         return "ETSDTO{" +
@@ -102,6 +112,7 @@ public class ETSDTO {
                 ", Fecha='" + Fecha + '\'' +
                 ", Cupo=" + Cupo +
                 ", Duracion=" + Duracion +
+                ", Hora='" + Hora + '\'' + // Incluir la hora en el toString
                 '}';
     }
 }

@@ -15,53 +15,54 @@ import java.util.Optional;
  /**
  * Clase que contendrá la lógica que para realizar las funciones principales de los endpoints
  */
-@Service // Anotación que indica que esta clase es un servicio de negocio
-public class ETSDetailsService {
-    private final SalonETSRepository salonetsRepository;
-    private final ETSRepository etsRepository;
+ @Service
+ public class ETSDetailsService {
+     private final SalonETSRepository salonetsRepository;
+     private final ETSRepository etsRepository;
 
-    @Autowired // Notación que permite inyectar dependencias, en este caso, SalonETSRepository y ETSRepository
-    public ETSDetailsService(SalonETSRepository salonetsRepository, ETSRepository etsRepository) {
-        this.salonetsRepository = salonetsRepository;
-        this.etsRepository = etsRepository;
-    }
+     @Autowired
+     public ETSDetailsService(SalonETSRepository salonetsRepository, ETSRepository etsRepository) {
+         this.salonetsRepository = salonetsRepository;
+         this.etsRepository = etsRepository;
+     }
 
-    public List<ETSDTOSaes> detailAdminETS() {
-        return etsRepository.findETS();
-    }
+     public List<ETSDTOSaes> detailAdminETS() {
+         return etsRepository.findETS();
+     }
 
-    public DetailETSDTO detallesETS(Integer ets){
-        // Obtiene un ETS por ID
-        Optional<ETSDTO> result = etsRepository.findById_ETS(ets);
+     public DetailETSDTO detallesETS(Integer ets){
+         // Obtiene un ETS por ID
+         Optional<ETSDTO> result = etsRepository.findById_ETS(ets);
 
-        if (result.isEmpty()) {
-            throw new RuntimeException("No se encontraron ETS");
-        }
+         if (result.isEmpty()) {
+             throw new RuntimeException("No se encontraron ETS");
+         }
 
-        // Guarda todos los datos con respecto al DTO de ETS
-        ETSDTO detailETS =  new ETSDTO(
-                result.get().getIdETS(),
-                result.get().getUnidadAprendizaje(),
-                result.get().getTipoETS(),
-                result.get().getIdPeriodo(),
-                result.get().getTurno(),
-                result.get().getFecha(),
-                result.get().getCupo(),
-                result.get().getDuracion()
-        );
+         // Guarda todos los datos con respecto al DTO de ETS
+         ETSDTO detailETS =  new ETSDTO(
+                 result.get().getIdETS(),
+                 result.get().getUnidadAprendizaje(),
+                 result.get().getTipoETS(),
+                 result.get().getIdPeriodo(),
+                 result.get().getTurno(),
+                 result.get().getFecha(),
+                 result.get().getCupo(),
+                 result.get().getDuracion(),
+                 result.get().getHora() // Obtener y asignar la hora
+         );
 
-        // Busca salones asignados al ETS
-        List<SalonesDTO> Salon = salonetsRepository.findByIdETSSETS(ets);
+         // Busca salones asignados al ETS
+         List<SalonesDTO> Salon = salonetsRepository.findByIdETSSETS(ets);
 
-        if(Salon.isEmpty()) { // Si no encuentra ningún salón entra aquí
-            // Devuelve los detalles del ETS
-            return new DetailETSDTO(detailETS);
-        }
+         if(Salon.isEmpty()) { // Si no encuentra ningún salón entra aquí
+             // Devuelve los detalles del ETS
+             return new DetailETSDTO(detailETS);
+         }
 
-        // Devuelve los detalles del ETS junto con sus salones asignados
-        return new DetailETSDTO(
-                detailETS,
-                Salon
-        );
-    }
-}
+         // Devuelve los detalles del ETS junto con sus salones asignados
+         return new DetailETSDTO(
+                 detailETS,
+                 Salon
+         );
+     }
+ }

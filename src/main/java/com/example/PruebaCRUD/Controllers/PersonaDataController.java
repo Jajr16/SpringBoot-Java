@@ -15,7 +15,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("persona/datos")
-
 public class PersonaDataController {
 
     private final PersonaDataService personaDataService;

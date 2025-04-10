@@ -49,19 +49,26 @@ public class EscuelaProgramaConfig {
             }
 
             // Busca registros de ProgramaAcademico por su ID, en caso de no encontrarlo devuelve null
-            ProgramaAcademico pa1 = programaAcademicoRepository.findByIdPA("ISC-2024").orElse(null);
+            ProgramaAcademico pa1 = programaAcademicoRepository.findByIdPA("ISC-2020").orElse(null);
             if (pa1 == null) { // Si no encuentra registros entra aquí
                 // Guarda un nuevo registro de ProgramaAcademico
-                pa1 = programaAcademicoRepository.save(new ProgramaAcademico("ISC-2024",
+                pa1 = programaAcademicoRepository.save(new ProgramaAcademico("ISC-2020",
                         "Ingeniería en Sistemas Computacionales", "Descripcion1"));
             }
 
             // Busca registros de ProgramaAcademico por su ID, en caso de no encontrarlo devuelve null
-            ProgramaAcademico pa2 = programaAcademicoRepository.findByIdPA("IIA-2024").orElse(null);
+            ProgramaAcademico pa2 = programaAcademicoRepository.findByIdPA("IIA-2020").orElse(null);
             if (pa2 == null) { // Si no encuentra registros entra aquí
                 // Guarda un nuevo registro de ProgramaAcademico
-                pa2 = programaAcademicoRepository.save(new ProgramaAcademico("IIA-2024",
+                pa2 = programaAcademicoRepository.save(new ProgramaAcademico("IIA-2020",
                         "Ingeniería en Inteligencia Artificial", "Descripcion2"));
+            }
+            // Busca registros de ProgramaAcademico por su ID, en caso de no encontrarlo devuelve null
+            ProgramaAcademico pa3 = programaAcademicoRepository.findByIdPA("LCD-2020").orElse(null);
+            if (pa3 == null) { // Si no encuentra registros entra aquí
+                // Guarda un nuevo registro de ProgramaAcademico
+                pa3 = programaAcademicoRepository.save(new ProgramaAcademico("LCD-2020",
+                        "Licenciatura en Ciencia de Datos", "Descripcion3"));
             }
 
 
@@ -89,6 +96,13 @@ public class EscuelaProgramaConfig {
 
                 EscuelaPrograma escuelaProgramareg2 = new EscuelaPrograma(reg2, ua1, pa2); // Asocia las entidades completas
                 escuelaProgramaRepository.save(escuelaProgramareg2);
+
+
+                EscuelaProgramaPK reg3 = new EscuelaProgramaPK();
+                reg3.setIdEscuela(ua1.getIdEscuela());
+                reg3.setIdPA(pa3.getId_PA());
+                EscuelaPrograma escuelaProgramareg3 = new EscuelaPrograma(reg3, ua1, pa3);
+                escuelaProgramaRepository.save(escuelaProgramareg3);
             }
         };
     }

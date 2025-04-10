@@ -27,8 +27,8 @@ public class UnidadAprendizajeConfig {
         return args -> {
             if (unidadAprendizajeRepository.count() == 0) { // Si no encuentra registros entra aquí
                 // Busca registros de ProgramaAcademico por ID, si no encuentra nada devuelve null
-                ProgramaAcademico isc = programaAcademicoRepository.findByIdPA("ISC-2024").orElse(null);
-                ProgramaAcademico iia = programaAcademicoRepository.findByIdPA("IIA-2024").orElse(null);
+                ProgramaAcademico isc = programaAcademicoRepository.findByIdPA("ISC-2020").orElse(null);
+                ProgramaAcademico iia = programaAcademicoRepository.findByIdPA("IIA-2020").orElse(null);
 
                 // Guarda los nuevos registros con los datos anteriores
                 unidadAprendizajeRepository.save(new UnidadAprendizaje("PDI-IIA",
