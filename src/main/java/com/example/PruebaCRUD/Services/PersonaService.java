@@ -81,8 +81,7 @@ public class PersonaService {
 
     //Función para crear a un nuevo alumno apartir de Excel
     @Transactional
-    public ResponseEntity<Object> newVideoAlumno(NewVideoAlumnoDTOSaes newVideoAlumnoDTOSaes,
-                                                 MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<Object> newVideoAlumno(NewVideoAlumnoDTOSaes newVideoAlumnoDTOSaes) throws IOException {
 
         HashMap<String, Object> datos = new HashMap<>();
 
@@ -98,11 +97,6 @@ public class PersonaService {
         if (!carpeta.exists()) {
             carpeta.mkdirs();
         }
-
-        File destino = new File(carpeta, Objects.requireNonNull(multipartFile.getOriginalFilename()));
-        multipartFile.transferTo(destino);
-
-        DivisionFrames.extractFrames(destino.getPath(), destino.getParent());
 
         Optional<UnidadAcademica> uaAlumno = this.unidadAcademicaRepository.findByNombre("ESCOM");
 

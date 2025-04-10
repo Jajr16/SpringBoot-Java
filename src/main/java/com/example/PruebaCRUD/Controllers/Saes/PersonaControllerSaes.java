@@ -37,9 +37,9 @@ public class PersonaControllerSaes {
     }
 
     @PostMapping("/nvAlumno")
-    public ResponseEntity<Object> newVideoAlumno(@ModelAttribute NewVideoAlumnoDTOSaes newVideoAlumnoDTOSaes,
-                                            @RequestParam("video")MultipartFile video) throws IOException {
-        return this.personaService.newVideoAlumno(newVideoAlumnoDTOSaes, video);
+    public ResponseEntity<Object> newVideoAlumno(@ModelAttribute NewVideoAlumnoDTOSaes newVideoAlumnoDTOSaes)
+            throws IOException {
+        return this.personaService.newVideoAlumno(newVideoAlumnoDTOSaes);
     }
 
     @GetMapping("/docentes")
