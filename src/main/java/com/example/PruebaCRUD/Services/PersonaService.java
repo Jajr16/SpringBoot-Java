@@ -91,22 +91,18 @@ public class PersonaService {
             throw new RuntimeException("Debes de llenar todos los campos.");
         }
 
-        String boleta = newVideoAlumnoDTOSaes.getBoleta();
-        File carpeta = new File("/data/frames/" + boleta + "/");
-//        File carpeta = new File(new File("").getAbsolutePath()
-//                + "/src/main/java/com/example/PruebaCRUD/EntrenamientoIMG/"
-//                + newVideoAlumnoDTOSaes.getBoleta() + "/");
+        File carpeta = new File(new File("").getAbsolutePath()
+                + "/src/main/java/com/example/PruebaCRUD/EntrenamientoIMG/"
+                + newVideoAlumnoDTOSaes.getBoleta() + "/");
 
         if (!carpeta.exists()) {
             carpeta.mkdirs();
         }
 
         File destino = new File(carpeta, Objects.requireNonNull(multipartFile.getOriginalFilename()));
-
         multipartFile.transferTo(destino);
 
-//        DivisionFrames.extractFrames(destino.getPath(), destino.getParent());
-        DivisionFrames.extractFrames(destino.getPath(), carpeta.getAbsolutePath());
+        DivisionFrames.extractFrames(destino.getPath(), destino.getParent());
 
         Optional<UnidadAcademica> uaAlumno = this.unidadAcademicaRepository.findByNombre("ESCOM");
 

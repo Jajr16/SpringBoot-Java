@@ -25,11 +25,7 @@ public class DivisionFrames {
              *  -vsync vfr: Asegura que los fotogramas extraídos se sincronicen con un modo de frecuencia variable
              */
             ProcessBuilder builder = new ProcessBuilder(
-                    "ffmpeg",
-                    "-i", videoPath,
-                    "-vf", "fps=3",
-                    "-vsync", "vfr",
-                    new File(outputDir, "frame_%02d.png").getAbsolutePath()  // Ruta absoluta
+                    "ffmpeg", "-i", videoPath, "-vf", "fps=3", "-vsync", "vfr", outputDir + "/frame_%02d.png"
             );
 
             // Ejecuta el proceso anterior
