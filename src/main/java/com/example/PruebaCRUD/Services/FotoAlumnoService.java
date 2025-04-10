@@ -27,7 +27,7 @@ public class FotoAlumnoService {
     @Autowired
     private FotoAlumnoRepository fotoAlumnoRepository;
 
-    private static final String DJANGO_SERVER_URL = "http://192.168.100.7:8000/api/obtener-imagen/"; // URL del servidor de Django
+    private static final String DJANGO_SERVER_URL = "http://192.168.1.69:8000/api/obtener-imagen/"; // URL del servidor de Django
 
     // Método para obtener la foto del alumno desde Django
     public FotoAlumnoDTO obtenerFotoPorBoleta(String boleta) {

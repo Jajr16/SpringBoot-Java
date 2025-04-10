@@ -61,11 +61,11 @@ public class CredencialDTO {
         this.apellidoM = apellidoM;
     }
 
-    public String getcurp() {
+    public String getCurp() {
         return curp;
     }
 
-    public void setcurp(String curp) {
+    public void setCurp(String curp) {
         this.curp = curp;
     }
 

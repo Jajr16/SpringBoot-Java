@@ -74,33 +74,47 @@ public class ScrapingCredencial {
 
     private static Map<String, String> extraerDatosAlumno(WebDriver driver) {
         Map<String, String> datos = new HashMap<>();
+        System.out.println("\n=== INICIO DE EXTRACCIÓN DE DATOS ===");
 
         try {
-            // Extraer boleta
+            // Boleta
             WebElement boletaElement = driver.findElement(By.cssSelector(".boleta"));
             String boleta = boletaElement.getText().replaceAll("[^0-9]", "");
             datos.put("boleta", boleta);
+            System.out.println("[EXTRACCIÓN] Boleta obtenida: " + boleta);
 
+            // CURP
             WebElement curpElement = driver.findElement(By.cssSelector(".curp"));
-            String curp = curpElement.getText().trim();
+            String curp = curpElement.getText().trim().toUpperCase();
+            if (!curp.matches("^[A-Z]{4}[0-9]{6}[A-Z]{6}[0-9A-Z]{2}$")) {
+                System.err.println("CURP con formato inválido: " + curp);
+            }
             datos.put("curp", curp);
+            System.out.println("[OK] CURP: " + curp);
 
-            WebElement nombreElement = driver.findElement(By.cssSelector(".nombre-alumno"));
+            // Nombre
+            WebElement nombreElement = driver.findElement(By.cssSelector(".nombre"));
             String nombre = nombreElement.getText().trim();
             datos.put("nombre", nombre);
+            System.out.println("[EXTRACCIÓN] Nombre obtenido: " + nombre);
 
+            // Carrera
             WebElement carreraElement = driver.findElement(By.cssSelector(".carrera"));
             String carrera = carreraElement.getText().trim();
             datos.put("carrera", carrera);
+            System.out.println("[EXTRACCIÓN] Carrera obtenida: " + carrera);
 
+            // Escuela
             WebElement escuelaElement = driver.findElement(By.cssSelector(".escuela"));
             String escuela = escuelaElement.getText().trim();
             datos.put("escuela", escuela);
+            System.out.println("[EXTRACCIÓN] Escuela obtenida: " + escuela);
 
         } catch (NoSuchElementException e) {
-            System.err.println("No se pudo encontrar alguno de los elementos: " + e.getMessage());
+            System.err.println("[ERROR] Elemento no encontrado: " + e.getMessage());
         }
 
+        System.out.println("=== FIN DE EXTRACCIÓN ===\n");
         return datos;
     }
 
