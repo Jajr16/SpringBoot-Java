@@ -119,7 +119,7 @@ public class PersonaService {
                         String carrera = fila.getCell(6).toString();
                         String curp = formatter.formatCellValue(fila.getCell(7));
 
-                        if (this.personaRepository.findPersonaByCURP(curp).isPresent()
+                        if (this.personaRepository.findPersonaByCURP(newVideoAlumnoDTOSaes.getCurp()).isPresent()
                                 || this.alumnoRepository.findByBoleta(newVideoAlumnoDTOSaes.getBoleta()).isPresent()) {
                             throw new RuntimeException("Ese Alumno ya ha sido registrado con anterioridad.");
                         }
@@ -128,7 +128,7 @@ public class PersonaService {
                         if (sexoRep.isEmpty()) throw new RuntimeException("Sexo no encontrado.");
 
                         Persona npersona = new Persona();
-                        npersona.setCURP(curp);
+                        npersona.setCURP(newVideoAlumnoDTOSaes.getCurp());
                         npersona.setNombre(nombre);
                         npersona.setApellido_P(apellido_p);
                         npersona.setApellido_M(apellido_m);

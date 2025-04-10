@@ -7,11 +7,13 @@ package com.example.PruebaCRUD.DTO.Saes;
 public class NewVideoAlumnoDTOSaes {
     private String boleta;
     private String credencial;
+    private String curp;
 
     // ==================== CONSTRUCTORES =====================
-    public NewVideoAlumnoDTOSaes(String boleta, String credencial) {
+    public NewVideoAlumnoDTOSaes(String boleta, String credencial, String curp) {
         this.boleta = boleta;
         this.credencial = credencial;
+        this.curp = curp;
     }
 
     // ==================== SETTERS AND GETTERS ====================
@@ -32,11 +34,20 @@ public class NewVideoAlumnoDTOSaes {
         this.credencial = credencial;
     }
 
+    public String getCurp() {
+        return curp;
+    }
+
+    public void setCurp(String curp) {
+        this.curp = curp;
+    }
+
     @Override
     public String toString() {
-        return "NewAlumnoDTOSaes{" +
-                ", boleta='" + boleta + '\'' +
+        return "NewVideoAlumnoDTOSaes{" +
+                "boleta='" + boleta + '\'' +
                 ", credencial='" + credencial + '\'' +
+                ", curp='" + curp + '\'' +
                 '}';
     }
 }
