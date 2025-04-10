@@ -14,7 +14,7 @@ public class ReporteRepository {
     private JdbcTemplate jdbcTemplate;
 
     public List<ReporteSqlDTO> obtenerDatosReporte(Integer idets, String boleta) {
-        String sql = "SELECT * FROM obtener_datos_reporte(?, ?)";
+        String sql = "SELECT * FROM obtener_datos_reporte(?, ?) AS reporte";
         return jdbcTemplate.query(sql, new Object[]{idets, boleta}, (rs, rowNum) -> {
             ReporteSqlDTO reporte = new ReporteSqlDTO();
             reporte.setCurp(rs.getString("curp"));
