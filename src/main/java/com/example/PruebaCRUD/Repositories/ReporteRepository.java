@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
+@Repository
 public interface ReporteRepository extends JpaRepository<Alumno, String> {
 
     @Query(value = """
