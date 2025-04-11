@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ListaAlumnosRepository extends JpaRepository<InscripcionETS, InscripcionETSPK> {
 
-    @Query(value = "SELECT * FROM ObtenerAsistenciaDetalles(:idets)", nativeQuery = true)
+    @Query(value = "SELECT * FROM obtenerasistenciadetalles(:idets)", nativeQuery = true)
     List<Object[]> callObtenerAsistenciaDetalles(@Param("idets") Integer idets);
 
 
