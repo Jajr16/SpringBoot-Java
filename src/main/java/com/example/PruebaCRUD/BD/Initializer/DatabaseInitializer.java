@@ -544,7 +544,7 @@ public class DatabaseInitializer {
 
     private String triggerValidarPrograma() {
         return """
-            CREATE TRIGGER OR REPLACE trigger_validar_programa
+            CREATE OR REPLACE TRIGGER trigger_validar_programa
             BEFORE INSERT OR UPDATE ON alumno
             FOR EACH ROW
             EXECUTE FUNCTION validar_programa_academico();
