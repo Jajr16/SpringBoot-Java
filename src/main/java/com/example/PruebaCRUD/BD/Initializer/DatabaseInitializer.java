@@ -206,43 +206,43 @@ public class DatabaseInitializer {
     private String obtenerAsistenciaDetallesFunction() {
         return """
             CREATE OR REPLACE FUNCTION ObtenerAsistenciaDetalles(
-                   etsprueba INTEGER
-               )
-               RETURNS TABLE(
-                   idETS INTEGER,
-                   Boleta VARCHAR(18),
-                   CURP VARCHAR(18),
-                   NombreA VARCHAR,
-                   ApellidoP VARCHAR,
-                   ApellidoM VARCHAR,
-                   Sexo VARCHAR,
-                   Correo VARCHAR,
-                   Carrera VARCHAR,
-                   Aceptado INTEGER
-               )
-               LANGUAGE plpgsql
-               AS $$
-               BEGIN
-                   RETURN QUERY
-                   SELECT
-                       ai.idets AS idETS,
-                       ai.boleta AS Boleta,
-                       a.curp AS CURP,
-                       p.nombre AS NombreA,
-                       p.apellido_p AS ApellidoP,
-                       p.apellido_m AS ApellidoM,
-                       s.nombre AS Sexo,
-                       a.correoi AS Correo,
-                       a.idpa::VARCHAR AS Carrera,
-                       COALESCE(ax.estado, 0) AS Aceptado
-                   FROM inscripcionets ai
-                   INNER JOIN alumno a ON ai.boleta = a.boleta
-                   INNER JOIN persona p ON a.curp = p.curp
-                   INNER JOIN sexo s ON p.sexo = s.id_sexo
-                   LEFT JOIN ingreso_salon ax ON ai.boleta = ax.boleta AND ax.idets = etsprueba -- Added condition here
-                   WHERE ai.idets = etsprueba;
-               END;
-               $$;
+                  etsprueba INTEGER
+              )
+              RETURNS TABLE(
+                  idETS INTEGER,
+                  Boleta VARCHAR(18),
+                  CURP VARCHAR(18),
+                  NombreA VARCHAR,
+                  ApellidoP VARCHAR,
+                  ApellidoM VARCHAR,
+                  Sexo VARCHAR,
+                  Correo VARCHAR,
+                  Carrera VARCHAR,
+                  Aceptado INTEGER
+              )
+              LANGUAGE plpgsql
+              AS $$
+              BEGIN
+                  RETURN QUERY
+                  SELECT
+                      ai.idets AS idETS,
+                      ai.boleta AS Boleta,
+                      a.curp AS CURP,
+                      p.nombre AS NombreA,
+                      p.apellido_p AS ApellidoP,
+                      p.apellido_m AS ApellidoM,
+                      s.nombre AS Sexo,
+                      a.correoi AS Correo,
+                      a.idpa::VARCHAR AS Carrera,
+                      COALESCE(ax.estado, 0) AS Aceptado
+                  FROM inscripcionets ai
+                  INNER JOIN alumno a ON ai.boleta = a.boleta
+                  INNER JOIN persona p ON a.curp = p.curp
+                  INNER JOIN sexo s ON p.sexo = s.id_sexo
+                  LEFT JOIN ingreso_salon ax ON ai.boleta = ax.boleta AND ax.idets = etsprueba -- Added condition here
+                  WHERE ai.idets = etsprueba;
+              END;
+              $$;
             """;
     }
 
