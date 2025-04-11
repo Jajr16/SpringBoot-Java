@@ -43,10 +43,9 @@ public class ImagenRedController {
             // Llama al servicio con los datos
             String mensaje = imagenRedService.guardarImagenYActualizarBD(imagen, boleta, idetsInt, razonValue, tipo, hora, precisionValue);
 
-            // Log para indicar que la solicitud se ha procesado
             logger.info("Solicitud de carga de imagen procesada para boleta: {}", boleta);
 
-            CreacionReporteDTO respuesta = new CreacionReporteDTO(mensaje); // Envía el mensaje del servicio
+            CreacionReporteDTO respuesta = new CreacionReporteDTO(mensaje);
             return ResponseEntity.ok(respuesta);
 
         } catch (NumberFormatException e) {

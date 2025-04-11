@@ -35,10 +35,10 @@ public class ReemplazoService {
 
         // 2. Crear la entidad Reemplazo
         Reemplazo reemplazo = new Reemplazo();
-        reemplazo.setId(aplicaPK); // Usamos la misma PK que Aplica
-        reemplazo.setReemplazoPK(aplica); // Establecemos la relación
+        reemplazo.setId(aplicaPK);
+        reemplazo.setReemplazoPK(aplica);
         reemplazo.setMotivo(solicitudDTO.getMotivo());
-        reemplazo.setEstatus(0); // 0 = PENDIENTE
+        reemplazo.setEstatus(0);
 
         // 3. Guardar el reemplazo
         return reemplazoRepository.save(reemplazo);

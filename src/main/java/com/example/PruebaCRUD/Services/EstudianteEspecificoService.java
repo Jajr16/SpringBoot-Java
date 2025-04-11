@@ -22,7 +22,7 @@ public class EstudianteEspecificoService {
 
         // Verificar si hay resultados
         if (!results.isEmpty()) {
-            Object[] result = results.get(0);  // Suponiendo que solo hay una fila de resultados
+            Object[] result = results.get(0);
 
             // Obtener los valores de las columnas que devuelve la consulta nativa
             String nombre = (String) result[4];
@@ -37,7 +37,7 @@ public class EstudianteEspecificoService {
             return new EstudianteEspecificoDTO(nombre, apellidoP, apellidoM, boletaResultado, curp, unidadAcademica);
         }
 
-        // Si no se encuentra el estudiante, retornar null
+
         return null;
     }
 

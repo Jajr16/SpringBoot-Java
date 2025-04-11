@@ -30,7 +30,7 @@ public class ReporteController {
             @RequestParam("boleta") String boleta) throws IOException {
 
         List<ReporteSqlDTO> reportes = reporteService.obtenerDatosReporte(idets, boleta);
-        ReporteSqlDTO reporte = reportes.get(0); // Asumiendo que solo hay un reporte
+        ReporteSqlDTO reporte = reportes.get(0);
 
         Map<String, Object> response = new HashMap<>();
         response.put("reporte", reporte);
@@ -48,10 +48,10 @@ public class ReporteController {
         if (rutaImagen != null && !rutaImagen.isEmpty() && !rutaImagen.equals("No Imagen")) {
             byte[] imageBytes = Files.readAllBytes(Paths.get(rutaImagen));
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_JPEG); // O MediaType.IMAGE_PNG según el tipo de imagen
+            headers.setContentType(MediaType.IMAGE_JPEG);
             return ResponseEntity.ok().headers(headers).body(new ByteArrayResource(imageBytes));
         } else {
-            return ResponseEntity.notFound().build(); // No se encontró la imagen
+            return ResponseEntity.notFound().build();
         }
     }
 }

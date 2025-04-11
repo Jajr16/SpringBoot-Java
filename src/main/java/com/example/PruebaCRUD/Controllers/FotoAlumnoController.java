@@ -33,7 +33,7 @@ public class FotoAlumnoController {
 
             // 3. Enviar la imagen a Android
             return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_JPEG) // Ajusta si es otro tipo de imagen
+                    .contentType(MediaType.IMAGE_JPEG)
                     .body(imageBytes);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

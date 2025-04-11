@@ -37,7 +37,7 @@ public class ReporteNoPresenteService {
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
     private final ZoneId mexicoCityZone = ZoneId.of("America/Mexico_City");
 
-    @Scheduled(fixedRate = 5000) // Ejecutar cada minuto
+    @Scheduled(fixedRate = 5000)
     public void verificarYCrearIngresosRetrasados() {
         List<Object[]> distinctInscripciones = inscripcionETSRepository.findDistinctBoletaIdets();
 
@@ -55,11 +55,11 @@ public class ReporteNoPresenteService {
                 System.out.println("cosa rara " + fechaEts);
                 LocalTime horaEts = ets.getHora().toLocalTime();
                 LocalDateTime etsDateTime = LocalDateTime.of(fechaEts, horaEts);
-                LocalDateTime now = LocalDateTime.now(mexicoCityZone); // Use time zone here as well
+                LocalDateTime now = LocalDateTime.now(mexicoCityZone);
                 LocalDateTime delayDateTime = etsDateTime.plusHours(2).plusMinutes(1);
 
                 if (now.isAfter(delayDateTime)) {
-                    // Use your native SQL function to check if an entry exists
+
                     if (!ingresoSalonRepository.verificarIngresoFuncion(boleta, idets)) {
                         IngresoSalon nuevoIngreso = new IngresoSalon();
                         BoletaETSPK boletaETSPK = new BoletaETSPK();
@@ -77,7 +77,7 @@ public class ReporteNoPresenteService {
                         nuevoIngreso.setFecha(null);
                         nuevoIngreso.setHora(null);
                         nuevoIngreso.setDocente(null);
-                        nuevoIngreso.setTipo(null); // Assuming TipoEstado is the entity for estado
+                        nuevoIngreso.setTipo(null);
                         ingresoSalonRepository.save(nuevoIngreso);
                         System.out.println("Creando ingreso_salon para boleta: " + boleta + ", idets: " + idets);
                     }

@@ -54,11 +54,9 @@ public class ImagenRedService {
             String docenteRfcResultado = aplicaRepository2.callObtenerDocenteRfc(idets);
 
             if (docenteRfcResultado == null) {
-                // Manejar el caso donde no se encuentra el docenteRfc
                 throw new DocenteNoEncontradoException("No se encontró docente RFC para idets " + idets);
             }
 
-            // Determinar el estado numérico
             int estadoNum = 0;
             switch (tipo) {
                 case "Aceptado: Verificado por el profesor.":
@@ -80,7 +78,7 @@ public class ImagenRedService {
                     estadoNum = 1;
                     break;
                 default:
-                    // Manejar caso por defecto (opcional)
+
                     break;
             }
 
@@ -109,7 +107,6 @@ public class ImagenRedService {
                 ingresoSalon.setTipo(tipoEstado);
             } else {
                 // Actualizar IngresoSalon existente
-                // Convertir String hora a Time
                 LocalTime localTime = LocalTime.parse(hora);
                 Time time = Time.valueOf(localTime);
                 ingresoSalon.setHora(time);
@@ -140,7 +137,6 @@ public class ImagenRedService {
             ingresoSalon = ingresoSalonRepository.findById(id).orElse(null);
 
             if (ingresoSalon == null) {
-                // Lanzar excepción si ingresoSalon es nulo
                 throw new IngresoSalonNoEncontradoException("No se encontró IngresoSalon para boleta " + boleta + " y idets " + idets);
             }
 
@@ -160,7 +156,6 @@ public class ImagenRedService {
                 resultadoRNRepository.save(resultadoRN); // Guardar o actualizar ResultadoRN
             }
 
-            // Crear MotivoRechazo (al final)
             if (razon != null){
                 MotivoRechazo motivoRechazo = new MotivoRechazo(id, razon);
                 motivoRechazo.setIngresoSalon(ingresoSalon); // Establecer ingresoSalon
@@ -178,7 +173,6 @@ public class ImagenRedService {
         }
     }
 
-    // Excepción personalizada para IngresoSalon no encontrado
     public static class IngresoSalonNoEncontradoException extends RuntimeException {
         public IngresoSalonNoEncontradoException(String message) {
             super(message);

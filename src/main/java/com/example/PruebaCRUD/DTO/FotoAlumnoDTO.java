@@ -3,7 +3,7 @@ package com.example.PruebaCRUD.DTO;
 public class FotoAlumnoDTO {
 
     private String boleta;
-    private String fotoUrl; // Puedes agregar más atributos si es necesario
+    private String fotoUrl;
 
     // Getters y setters
     public String getBoleta() {

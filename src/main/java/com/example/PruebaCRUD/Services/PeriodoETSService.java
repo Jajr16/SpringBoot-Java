@@ -71,8 +71,6 @@ public class PeriodoETSService {
             response = "Faltan " + diasDeDiferencia + " días para el periodo de ETS.";
         }
 
-        // Se crea la respuesta que se le entregará al cliente
-
         // Se retorna la respuesta por medio de un DTO
         return new TimeToETSDTO(response);
     }

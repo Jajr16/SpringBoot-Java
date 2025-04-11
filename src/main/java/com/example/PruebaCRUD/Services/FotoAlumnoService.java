@@ -44,7 +44,7 @@ public class FotoAlumnoService {
         // 3. Crear y devolver el DTO
         FotoAlumnoDTO fotoAlumnoDTO = new FotoAlumnoDTO();
         fotoAlumnoDTO.setBoleta(boleta);
-        fotoAlumnoDTO.setFotoUrl(rutaImagen); // Opcional si quieres devolver la ruta
+        fotoAlumnoDTO.setFotoUrl(rutaImagen);
 
         return fotoAlumnoDTO;
     }
@@ -61,7 +61,6 @@ public class FotoAlumnoService {
             Map<String, String> requestBody = new HashMap<>();
             requestBody.put("ruta_imagen", rutaImagen);
 
-            // Asegúrate de que el cuerpo esté siendo correctamente serializado a JSON
             String jsonRequestBody = new ObjectMapper().writeValueAsString(requestBody);
             System.out.println("Cuerpo de la solicitud en JSON: " + jsonRequestBody);
 

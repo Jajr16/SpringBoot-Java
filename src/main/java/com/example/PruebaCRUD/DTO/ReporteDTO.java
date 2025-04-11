@@ -14,11 +14,11 @@ public class ReporteDTO {
     private String tipo;
     private String turno;
     private String materia;
-    private String fechaIngreso; // Cambiado a String
-    private String horaIngreso; // Cambiado a String
+    private String fechaIngreso;
+    private String horaIngreso;
     private String nombreDocente;
     private String tipoEstado;
-    private byte[] imagenAlumno; // Cambiado a byte[] para la imagen
+    private byte[] imagenAlumno;
     private Double presicion;
     private String motivo;
 

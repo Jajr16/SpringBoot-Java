@@ -36,7 +36,6 @@ public class FirebaseService {
         this.tokenNotificacionRepository = tokenNotificacionRepository;
     }
 
-    // Inicializa Firebase en el método init
     static {
         try {
             FileInputStream serviceAccount = new FileInputStream("./src/main/java/com/example/PruebaCRUD/serviceAccountKey.json");

@@ -46,7 +46,6 @@ public class PersonaService {
     private final CargoDocenteRepository cargoDocenteRepository;
     private final ProgramaAcademicoRepository programaAcademicoRepository;
 
-    // Con esta inyección podremos hacer el CRUD de forma directa
     @Autowired // Notación que permite inyectar dependencias
     public PersonaService(PersonaRepository personaRepository, SexoRepository sexoRepository,
                           UnidadAcademicaRepository unidadAcademicaRepository,
