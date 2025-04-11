@@ -59,6 +59,6 @@ public interface InscripcionETSRepository extends JpaRepository<InscripcionETS, 
             """)
     List<InscripcionesDTOSaes> getInscripciones(@Param("usuario") String usuario);
 
-//    @Query("SELECT DISTINCT ie.id.Boleta, ie.id.idETS FROM InscripcionETS ie")
-//    List<Object[]> findDistinctBoletaIdets();
+    @Query("SELECT DISTINCT ie.id.Boleta, ie.id.idETS FROM InscripcionETS ie")
+    List<Object[]> findDistinctBoletaIdets();
 }
