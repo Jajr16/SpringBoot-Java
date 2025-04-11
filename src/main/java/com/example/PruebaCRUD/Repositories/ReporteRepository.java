@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
-public interface ReporteRepository extends JpaRepository<Alumno, String> { // Usamos Object ya que no hay una entidad mapeada directamente
+@Repository
+public interface ReporteRepository extends JpaRepository<Alumno, String> {
 
     @Query(value = """
         SELECT

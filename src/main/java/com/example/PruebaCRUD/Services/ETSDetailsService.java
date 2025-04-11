@@ -48,13 +48,13 @@ import java.util.Optional;
                  result.get().getFecha(),
                  result.get().getCupo(),
                  result.get().getDuracion(),
-                 result.get().getHora() // Obtener y asignar la hora
+                 result.get().getHora()
          );
 
          // Busca salones asignados al ETS
          List<SalonesDTO> Salon = salonetsRepository.findByIdETSSETS(ets);
 
-         if(Salon.isEmpty()) { // Si no encuentra ningún salón entra aquí
+         if(Salon.isEmpty()) {
              // Devuelve los detalles del ETS
              return new DetailETSDTO(detailETS);
          }

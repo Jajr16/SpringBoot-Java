@@ -23,7 +23,7 @@ public class DatosWebDTO {
         this.escuela = escuela;
     }
 
-    // Getters y setters estándar
+    // Getters y setters
     public String getBoleta() {
         return boleta;
     }
@@ -44,7 +44,6 @@ public class DatosWebDTO {
         return escuela;
     }
 
-    // Setters
     public void setBoleta(String boleta) {
         this.boleta = boleta;
     }

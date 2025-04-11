@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface    AplicaRepository2 extends JpaRepository<Aplica, AplicaPK> {
+public interface AplicaRepository2 extends JpaRepository<Aplica, AplicaPK> {
 
     @Query(value = "SELECT * FROM ListAplica(:docente_rfc)", nativeQuery = true)
     List<Object[]> callListAplica(@Param("docente_rfc") String docente_rfc);
