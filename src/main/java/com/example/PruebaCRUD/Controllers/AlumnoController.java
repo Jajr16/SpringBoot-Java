@@ -29,6 +29,7 @@ public class AlumnoController {
     @GetMapping("/inscritosETS")
     public List<AlumnoDTO>findAlumnosInscritosETS() {
         return alumnoService.findAlumnosInscritosETS();
+
     }
 
     @GetMapping("/detalle/{boleta}")
