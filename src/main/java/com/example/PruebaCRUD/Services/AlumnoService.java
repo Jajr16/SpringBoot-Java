@@ -36,11 +36,8 @@ public class AlumnoService {
         Integer año = LocalDate.now().getYear();
         Integer mes = LocalDate.now().getMonthValue();
 
-        LocalDate today = LocalDate.now();
-
         //Se inicializa la variable que servirá para armar el periodo en el estamos actualmente
         String periodo = "";
-
 
         // Obtiene los últimos dos dígitos del año actual
         String año_abreviado = año.toString().substring(2);
@@ -52,25 +49,29 @@ public class AlumnoService {
             periodo = año_abreviado.concat("/2");
         }
 
+        List<String> fechasPeriodos = periodRepo.findFechasByPeriodo(periodo);
 
-        String fechaString = periodRepo.findFechaByPeriodo(periodo);
-
-
-        if (fechaString == null) { // Si la fecha obtenida es null
+        if (fechasPeriodos == null) { // Si la fecha obtenida es null
             List<AlumnoDTO> lista = new ArrayList<>();  // Usamos ArrayList como implementación de List
             return lista;  // Retornamos la lista que contiene el error
         }
 
+        String fechasString = fechasPeriodos.get(0);
 
-        Date fechaETS;
-        fechaETS = Date.valueOf(fechaString); // Convierte a Date solo si no es null
+        String[] fechasSeparadas = fechasString.split(",");
 
-        System.out.println("fecha y periodo" + fechaETS + periodo);
+        System.out.println("LAS FECHAS DEL PERIODO " + periodo + " SON " + fechasPeriodos);
 
+        // Fecha actual
+        Date fechaActual = java.sql.Date.valueOf(LocalDate.now());
 
-        List<AlumnoDTO> results = inscripcionETSRepository.findAlumnosInscritosETS(fechaETS, periodo);
-        System.out.println("Aqui es results" + results);
+        Date fechaInicio = java.sql.Date.valueOf(LocalDate.parse(fechasSeparadas[0]));
+        Date fechaFin = java.sql.Date.valueOf(LocalDate.parse(fechasSeparadas[1]));
 
+        List<AlumnoDTO> results = inscripcionETSRepository.findAlumnosInscritosETS(fechaActual, fechaInicio, fechaFin,
+                periodo);
+
+        System.out.println("LOS ALUMNOS QUE PRESENTAN ETS HOY SON: " + results);
         return results;
     }
 

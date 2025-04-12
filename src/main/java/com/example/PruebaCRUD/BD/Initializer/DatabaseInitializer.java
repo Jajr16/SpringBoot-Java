@@ -205,7 +205,7 @@ public class DatabaseInitializer {
 
     private String obtenerAsistenciaDetallesFunction() {
         return """
-            CREATE OR REPLACE FUNCTION ObtenerAsistenciaDetalles(
+            CREATE OR REPLACE FUNCTION obtenerasistenciadetalles(
                   etsprueba INTEGER
               )
               RETURNS TABLE(

@@ -19,5 +19,8 @@ public interface periodoETSRepository extends JpaRepository<periodoETS, Integer>
     @Query(value = "SELECT pe.fecha_inicio FROM periodoets pe WHERE periodo = :periodo LIMIT 1", nativeQuery = true)
     String findFechaByPeriodo(String periodo);
 
+    @Query(value = "SELECT pe.fecha_inicio, pe.fecha_fin FROM periodoets pe WHERE periodo = :periodo LIMIT 1", nativeQuery = true)
+    List<String> findFechasByPeriodo(String periodo);
+
     List<PeriodosETSProjectionSaes> findAllBy();
 }

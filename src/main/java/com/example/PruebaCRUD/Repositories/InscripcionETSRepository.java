@@ -32,8 +32,11 @@ public interface InscripcionETSRepository extends JpaRepository<InscripcionETS, 
             "JOIN ie.idETSIns e " +
             "JOIN e.idPeriodo pe " +
             "JOIN e.Turno t " +
-            "WHERE e.Fecha = :fecha AND pe.periodo = :periodo")
-    List<AlumnoDTO> findAlumnosInscritosETS(@Param("fecha") Date fecha, @Param("periodo") String periodo);
+            "WHERE e.Fecha = :fecha " +
+            "AND :fecha BETWEEN :fechaInicio AND :fechaFin " +
+            "AND pe.periodo = :periodo")
+    List<AlumnoDTO> findAlumnosInscritosETS(@Param("fecha") Date fecha, @Param("fechaInicio") Date fechaInicio,
+                                            @Param("fechaFin") Date fechaFin, @Param("periodo") String periodo);
 
     boolean existsById(InscripcionETSPK id);
 
