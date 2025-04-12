@@ -65,10 +65,12 @@ public class AlumnoService {
         Date fechaETS;
         fechaETS = Date.valueOf(fechaString); // Convierte a Date solo si no es null
 
+        System.out.println("fecha y periodo" + fechaETS + periodo);
 
 
         List<AlumnoDTO> results = inscripcionETSRepository.findAlumnosInscritosETS(fechaETS, periodo);
         System.out.println("Aqui es results" + results);
+
         return results;
     }
 
