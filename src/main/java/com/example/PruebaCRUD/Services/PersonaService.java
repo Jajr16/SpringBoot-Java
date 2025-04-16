@@ -18,10 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
@@ -180,7 +177,7 @@ public class PersonaService {
             );
         }
 
-        String rutaVolumen = "/EntrenamientoIMG/" + newAlumnoDTOSaes.getBoleta() + "/";
+        String rutaVolumen = "/data/EntrenamientoIMG/" + newAlumnoDTOSaes.getBoleta() + "/";
 
         System.out.println("===== DEFINIENDO RUTA PARA GUARDAR IMAGENES " + rutaVolumen + " =====");
 
@@ -195,6 +192,10 @@ public class PersonaService {
         if (!carpeta.exists()) {
             carpeta.mkdirs();
         }
+
+        System.out.println("=== CONTENIDO DEL VOLUMEN ===");
+        Arrays.stream(carpeta.listFiles()).forEach(file -> System.out.println(file.getName()));
+        System.out.println("============================");
 
         File destino = new File(carpeta, Objects.requireNonNull(multipartFile.getOriginalFilename()));
 

@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -34,6 +36,13 @@ public class PersonaControllerSaes {
     public ResponseEntity<Object> newAlumno(@ModelAttribute NewAlumnoDTOSaes newAlumnoDTOSaes,
                                             @RequestParam("video")MultipartFile video) throws IOException {
         return this.personaService.newAlumno(newAlumnoDTOSaes, video);
+    }
+
+    @GetMapping("/check-volume")
+    public ResponseEntity<String> checkVolume() {
+        File carpeta = new File("/EntrenamientoIMG");
+        String[] archivos = carpeta.list();
+        return ResponseEntity.ok("Archivos: " + Arrays.toString(archivos));
     }
 
     @PostMapping("/nvAlumno")
