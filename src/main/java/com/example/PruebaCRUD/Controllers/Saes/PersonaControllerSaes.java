@@ -39,10 +39,9 @@ public class PersonaControllerSaes {
     }
 
     @GetMapping("/check-volume")
-    public ResponseEntity<String> checkVolume() {
-        File carpeta = new File("/EntrenamientoIMG");
-        String[] archivos = carpeta.list();
-        return ResponseEntity.ok("Archivos: " + Arrays.toString(archivos));
+    public String testVolumen() {
+        File dir = new File("/data/EntrenamientoIMG");
+        return "Existe: " + dir.exists() + " - Puedo escribir: " + dir.canWrite();
     }
 
     @PostMapping("/nvAlumno")

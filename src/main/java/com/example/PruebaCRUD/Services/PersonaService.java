@@ -190,16 +190,34 @@ public class PersonaService {
 //                + newAlumnoDTOSaes.getBoleta() + "/");
 
         if (!carpeta.exists()) {
-            carpeta.mkdirs();
+            boolean created = carpeta.mkdirs();
+            System.out.println("¿Se creó la carpeta? " + created);
+            if (!created) {
+                datos.put("Error", true);
+                datos.put("message", "No se pudo crear la carpeta para guardar la imagen.");
+                return new ResponseEntity<>(datos, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
 
         System.out.println("=== CONTENIDO DEL VOLUMEN ===");
-        Arrays.stream(carpeta.listFiles()).forEach(file -> System.out.println(file.getName()));
+        File[] archivos = carpeta.listFiles();
+        if (archivos != null) {
+            Arrays.stream(archivos).forEach(file -> System.out.println(file.getName()));
+        } else {
+            System.out.println("No hay archivos (listFiles() devolvió null)");
+        }
         System.out.println("============================");
 
         File destino = new File(carpeta, Objects.requireNonNull(multipartFile.getOriginalFilename()));
 
-        multipartFile.transferTo(destino);
+        try {
+            multipartFile.transferTo(destino);
+        } catch (Exception e) {
+            e.printStackTrace(); // Esto manda el error al log
+            datos.put("Error", true);
+            datos.put("message", "Error al guardar el archivo: " + e.getMessage());
+            return new ResponseEntity<>(datos, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         DivisionFrames.extractFrames(destino.getPath(), destino.getParent());
 
