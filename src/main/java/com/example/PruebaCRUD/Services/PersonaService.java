@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,6 +27,10 @@ import java.util.stream.Stream;
  */
 @Service // Anotación que indica que esta clase es un servicio de negocio
 public class PersonaService {
+
+    @Value("${file.storage.path}")
+    private String fileStoragePath;
+
     HashMap<String, Object> datos = new HashMap<>();
 
     private final PersonaRepository personaRepository;
@@ -177,7 +182,7 @@ public class PersonaService {
             );
         }
 
-        String rutaVolumen = "/data/EntrenamientoIMG/" + newAlumnoDTOSaes.getBoleta() + "/";
+        String rutaVolumen = fileStoragePath + "/" + newAlumnoDTOSaes.getBoleta() + "/";
 
         System.out.println("===== DEFINIENDO RUTA PARA GUARDAR IMAGENES " + rutaVolumen + " =====");
 
