@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class PruebaCrudApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PruebaCrudApplication.class, args);
+		System.out.println("Java version: " + System.getProperty("java.version"));
+		SpringApplication.run(PruebaCrudApplication.class, args
+		);
 	}
 
 }
