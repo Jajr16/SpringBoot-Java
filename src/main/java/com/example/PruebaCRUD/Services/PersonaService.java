@@ -57,7 +57,8 @@ public class PersonaService {
                           TipoPersonalRepository tipoPersonalRepository,
                           PersonalAcademicoRepository personalAcademicoRepository, CargoRepository cargoRepository,
                           CargoDocenteRepository cargoDocenteRepository,
-                          ProgramaAcademicoRepository programaAcademicoRepository) {
+                          ProgramaAcademicoRepository programaAcademicoRepository,
+                          @Value("${file.storage.path}") String fileStoragePath) {
         this.personaRepository = personaRepository;
         this.sexoRepository = sexoRepository;
         this.unidadAcademicaRepository = unidadAcademicaRepository;
@@ -72,6 +73,7 @@ public class PersonaService {
         this.cargoRepository = cargoRepository;
         this.cargoDocenteRepository = cargoDocenteRepository;
         this.programaAcademicoRepository = programaAcademicoRepository;
+        this.fileStoragePath = fileStoragePath;
     }
 
     // =================== ALUMNOS ======================
