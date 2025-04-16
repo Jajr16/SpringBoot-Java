@@ -6,6 +6,7 @@ import com.example.PruebaCRUD.DTO.*;
 import com.example.PruebaCRUD.DTO.Saes.*;
 import com.example.PruebaCRUD.Frames.DivisionFrames;
 import com.example.PruebaCRUD.Repositories.*;
+import jdk.swing.interop.SwingInterOpUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,6 +162,10 @@ public class PersonaService {
     @Transactional // Notación que indica que si algo falla, hace un rollback a todas las transacciones ya hechas
     public ResponseEntity<Object> newAlumno(NewAlumnoDTOSaes newAlumnoDTOSaes, MultipartFile multipartFile)
             throws IOException {
+
+        System.out.println("===== CREANDO ALUMNO =====");
+        System.out.println("===== LOS DATOS SON: " + newAlumnoDTOSaes + " =====");
+
         datos = new HashMap<>();
 
         if (Stream.of(newAlumnoDTOSaes.getCurp(), newAlumnoDTOSaes.getBoleta(), newAlumnoDTOSaes.getNombre(),
@@ -176,9 +181,17 @@ public class PersonaService {
             );
         }
 
-        File carpeta = new File(new File("").getAbsolutePath()
-                + "/src/main/java/com/example/PruebaCRUD/EntrenamientoIMG/"
-                + newAlumnoDTOSaes.getBoleta() + "/");
+        String rutaVolumen = "/EntrenamientoIMG/" + newAlumnoDTOSaes.getBoleta() + "/";
+
+        System.out.println("===== DEFINIENDO RUTA PARA GUARDAR IMAGENES " + rutaVolumen + " =====");
+
+        File carpeta = new File(rutaVolumen);
+
+        System.out.println("===== RUTA CREADA =====");
+
+//        File carpeta = new File(new File("").getAbsolutePath()
+//                + "/src/main/java/com/example/PruebaCRUD/EntrenamientoIMG/"
+//                + newAlumnoDTOSaes.getBoleta() + "/");
 
         if (!carpeta.exists()) {
             carpeta.mkdirs();
@@ -189,6 +202,11 @@ public class PersonaService {
         multipartFile.transferTo(destino);
 
         DivisionFrames.extractFrames(destino.getPath(), destino.getParent());
+
+        // Elimina el archivo de video original
+        if (destino.exists()) {
+            destino.delete();
+        }
 
         Optional<UnidadAcademica> uaAlumno = this.unidadAcademicaRepository.findById(newAlumnoDTOSaes.getEscuela());
 
@@ -227,6 +245,8 @@ public class PersonaService {
             );
         }
 
+        System.out.println("===== CREANDO PERSONA =====");
+
         Persona npersona = new Persona();
         npersona.setCURP(newAlumnoDTOSaes.getCurp());
         npersona.setNombre(newAlumnoDTOSaes.getNombre());
@@ -236,6 +256,8 @@ public class PersonaService {
         npersona.setUnidadAcademica(uaAlumno.get());
 
         personaRepository.save(npersona);
+
+        System.out.println("===== PERSONA CREADA =====");
 
         Optional<ProgramaAcademico> pa = this.programaAcademicoRepository.findBy(newAlumnoDTOSaes.getEscuela(),
                 newAlumnoDTOSaes.getCarrera());
@@ -250,6 +272,7 @@ public class PersonaService {
             );
         }
 
+        System.out.println("===== CREANDO ALUMNO =====");
         Alumno nalumno = new Alumno();
         nalumno.setBoleta(newAlumnoDTOSaes.getBoleta());
         nalumno.setCURP(npersona);
@@ -258,6 +281,8 @@ public class PersonaService {
         nalumno.setImagenCredencial(newAlumnoDTOSaes.getCredencial());
 
         alumnoRepository.save(nalumno);
+
+        System.out.println("===== ALUMNO CREADO =====");
 
         datos.put("message", "Alumno registrado con éxito.");
         return new ResponseEntity<>(
