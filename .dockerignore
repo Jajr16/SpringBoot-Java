@@ -3,3 +3,5 @@ target/
 .gitignore
 *.iml
 .idea/
+
+!target/PruebaCRUD-*.jar
