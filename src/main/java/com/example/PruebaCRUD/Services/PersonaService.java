@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Stream;
@@ -204,22 +205,25 @@ public class PersonaService {
         List<String> frameUrls = new ArrayList<>();
         if (frames != null) {
             for (File frame : frames) {
-                Map uploadResult = cloudinary.uploader().upload(frame, ObjectUtils.emptyMap());
+                Map uploadResult = cloudinary.uploader().upload(frame, ObjectUtils.asMap(
+                        "folder", "frames/" + newAlumnoDTOSaes.getBoleta()
+                ));
                 frameUrls.add(uploadResult.get("secure_url").toString());
             }
         }
 
-
         System.out.println("===== SUBIENDO CREDENCIAL =====");
-        // Subir archivo a Cloudinary
-        String imageUrl;
-        try {
-            imageUrl = cloudinaryUploader.uploadImage(credencial);
-            System.out.println("Imagen subida a Cloudinary: " + imageUrl);
+        String credencialUrl;
+        try (InputStream credStream = credencial.getInputStream()) {
+            Map uploadResult = cloudinary.uploader().upload(credStream, ObjectUtils.asMap(
+                    "folder", "fotosCredencial",
+                    "public_id", newAlumnoDTOSaes.getBoleta()
+            ));
+            credencialUrl = uploadResult.get("secure_url").toString();
         } catch (Exception e) {
             e.printStackTrace();
             datos.put("Error", true);
-            datos.put("message", "Error al subir la imagen a Cloudinary: " + e.getMessage());
+            datos.put("message", "Error al subir la imagen de la credencial a Cloudinary: " + e.getMessage());
             return new ResponseEntity<>(datos, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -274,7 +278,7 @@ public class PersonaService {
         nalumno.setCURP(npersona);
         nalumno.setCorreoI(newAlumnoDTOSaes.getCorreo());
         nalumno.setIdPA(pa.get());
-        nalumno.setImagenCredencial(imageUrl);
+        nalumno.setImagenCredencial(credencialUrl);
 
         alumnoRepository.save(nalumno);
 
