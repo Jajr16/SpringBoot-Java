@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 @Service // Anotación que indica que esta clase es un servicio de negocio
 public class PersonaService {
 
-    @Value("${file.storage.path}")
+    @Value("${FILE_STORAGE_PATH}")
     private String fileStoragePath;
 
     HashMap<String, Object> datos = new HashMap<>();
