@@ -190,14 +190,17 @@ public class PersonaService {
             return new ResponseEntity<>(datos, HttpStatus.CONFLICT);
         }
 
+        System.out.println("===== GUARDANDO VIDEO TEMPORALMENTE =====");
         // Guardar el video temporalmente
         File tempVideoFile = File.createTempFile("video_temp", ".mp4");
         video.transferTo(tempVideoFile);
 
+        System.out.println("===== GUARDANDO CARPETA DE FRAMES TEMPORALMENTE =====");
         // Crear carpeta temporal para los frames
         File framesDir = Files.createTempDirectory("frames_" + newAlumnoDTOSaes.getBoleta()).toFile();
         DivisionFrames.extractFrames(tempVideoFile.getAbsolutePath(), framesDir.getAbsolutePath());
 
+        System.out.println("===== EMPEZANDO TAREAS ASÍNCRONAS =====");
         // Usar CompletableFuture para tareas asíncronas
         CompletableFuture<List<String>> framesUploadFuture = CompletableFuture.supplyAsync(() -> {
             List<String> frameUrls = new ArrayList<>();
@@ -240,6 +243,7 @@ public class PersonaService {
         // Obtener resultados de las tareas asíncronas
         String credencialUrl = credencialUploadFuture.get();
 
+        System.out.println("===== EMPEZANDO CON EL GUARDADO DEL ALUMNO =====");
         // Validación de existencia de datos
         Optional<UnidadAcademica> uaAlumno = this.unidadAcademicaRepository.findById(newAlumnoDTOSaes.getEscuela());
         if (uaAlumno.isEmpty()) {
