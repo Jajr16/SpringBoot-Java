@@ -29,7 +29,7 @@ import java.util.stream.Stream;
 public class PersonaService {
 
     @Value("${FILE_STORAGE_PATH}")
-    private String fileStoragePath;
+    private String fileStoragePath = "/data/EntrenamientoIMG";
 
     HashMap<String, Object> datos = new HashMap<>();
 
