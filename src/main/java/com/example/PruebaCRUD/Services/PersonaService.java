@@ -172,7 +172,9 @@ public class PersonaService {
 
     // Función para crear un nuevo alumno
     @Transactional
-    public ResponseEntity<Object> newAlumno(NewAlumnoDTOSaes newAlumnoDTOSaes, MultipartFile video, MultipartFile credencial) throws IOException, ExecutionException, InterruptedException {
+    public ResponseEntity<Object> newAlumno(NewAlumnoDTOSaes newAlumnoDTOSaes, MultipartFile video,
+                                            MultipartFile credencial) throws IOException, ExecutionException,
+            InterruptedException {
 
         System.out.println("===== CREANDO ALUMNO =====");
         System.out.println("===== LOS DATOS SON: " + newAlumnoDTOSaes + " =====");

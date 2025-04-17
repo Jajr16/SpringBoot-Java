@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Clase API que tendrá los endpoints
@@ -35,7 +36,8 @@ public class PersonaControllerSaes {
     @PostMapping("/nAlumno")
     public ResponseEntity<Object> newAlumno(@ModelAttribute NewAlumnoDTOSaes newAlumnoDTOSaes,
                                             @RequestParam("video")MultipartFile video,
-                                            @RequestParam("credencial")MultipartFile credencial) throws IOException {
+                                            @RequestParam("credencial")MultipartFile credencial) throws IOException,
+            ExecutionException, InterruptedException {
         return this.personaService.newAlumno(newAlumnoDTOSaes, video, credencial);
     }
 
