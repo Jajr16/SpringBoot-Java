@@ -7,6 +7,10 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.annotation.PostConstruct;
+
+import java.io.File;
+import java.io.IOException;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "com.example.PruebaCRUD.Repositories")
@@ -20,6 +24,24 @@ public class PruebaCrudApplication {
 		System.out.println("Java version: " + System.getProperty("java.version"));
 		SpringApplication.run(PruebaCrudApplication.class, args
 		);
+	}
+
+	@PostConstruct
+	public void checkFileStoragePath() {
+		String fileStoragePath = "/data/EntrenamientoIMG";
+		File dir = new File(fileStoragePath);
+		if (!dir.exists()) {
+			boolean created = dir.mkdirs();
+			System.out.println("Creado dir?: " + created);
+		}
+
+		try {
+			File testFile = new File(fileStoragePath + "/test.txt");
+			boolean success = testFile.createNewFile();
+			System.out.println("¿Pudo crear archivo de prueba?: " + success);
+		} catch (IOException e) {
+			e.printStackTrace(); // Aquí verás si hay permisos denegados o no existe el path
+		}
 	}
 
 }
