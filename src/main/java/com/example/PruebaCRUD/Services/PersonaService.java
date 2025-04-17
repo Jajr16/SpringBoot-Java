@@ -28,9 +28,6 @@ import java.util.stream.Stream;
 @Service // Anotación que indica que esta clase es un servicio de negocio
 public class PersonaService {
 
-    @Value("${FILE_STORAGE_PATH}")
-    private String fileStoragePath = "/data/EntrenamientoIMG";
-
     HashMap<String, Object> datos = new HashMap<>();
 
     private final PersonaRepository personaRepository;
@@ -182,6 +179,7 @@ public class PersonaService {
             );
         }
 
+        String fileStoragePath = "/data/EntrenamientoIMG";
         String rutaVolumen = fileStoragePath + "/" + newAlumnoDTOSaes.getBoleta() + "/";
 
         System.out.println("===== DEFINIENDO RUTA PARA GUARDAR IMAGENES " + rutaVolumen + " =====");
