@@ -1,11 +1,13 @@
 package com.example.PruebaCRUD.Services;
 
+import com.cloudinary.Cloudinary;
 import com.example.PruebaCRUD.BD.*;
 import com.example.PruebaCRUD.BD.PKCompuesta.CargoDocentePK;
 import com.example.PruebaCRUD.DTO.*;
 import com.example.PruebaCRUD.DTO.Saes.*;
 import com.example.PruebaCRUD.Frames.DivisionFrames;
 import com.example.PruebaCRUD.Repositories.*;
+import com.example.PruebaCRUD.utils.CloudinaryUploader;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,8 @@ public class PersonaService {
     private final CargoDocenteRepository cargoDocenteRepository;
     private final ProgramaAcademicoRepository programaAcademicoRepository;
 
+    private Cloudinary cloudinary;
+
     @Autowired // Notación que permite inyectar dependencias
     public PersonaService(PersonaRepository personaRepository, SexoRepository sexoRepository,
                           UnidadAcademicaRepository unidadAcademicaRepository,
@@ -54,7 +58,8 @@ public class PersonaService {
                           TipoPersonalRepository tipoPersonalRepository,
                           PersonalAcademicoRepository personalAcademicoRepository, CargoRepository cargoRepository,
                           CargoDocenteRepository cargoDocenteRepository,
-                          ProgramaAcademicoRepository programaAcademicoRepository) {
+                          ProgramaAcademicoRepository programaAcademicoRepository,
+                          Cloudinary cloudinary) {
         this.personaRepository = personaRepository;
         this.sexoRepository = sexoRepository;
         this.unidadAcademicaRepository = unidadAcademicaRepository;
@@ -69,6 +74,7 @@ public class PersonaService {
         this.cargoRepository = cargoRepository;
         this.cargoDocenteRepository = cargoDocenteRepository;
         this.programaAcademicoRepository = programaAcademicoRepository;
+        this.cloudinary = cloudinary;
     }
 
     // =================== ALUMNOS ======================
@@ -157,7 +163,7 @@ public class PersonaService {
     }
 
     // Función para crear un nuevo alumno
-    @Transactional // Notación que indica que si algo falla, hace un rollback a todas las transacciones ya hechas
+    @Transactional
     public ResponseEntity<Object> newAlumno(NewAlumnoDTOSaes newAlumnoDTOSaes, MultipartFile multipartFile)
             throws IOException {
 
@@ -168,102 +174,46 @@ public class PersonaService {
 
         if (Stream.of(newAlumnoDTOSaes.getCurp(), newAlumnoDTOSaes.getBoleta(), newAlumnoDTOSaes.getNombre(),
                 newAlumnoDTOSaes.getApellido_p(), newAlumnoDTOSaes.getApellido_m(), newAlumnoDTOSaes.getSexo(),
-                newAlumnoDTOSaes.getCorreo(), newAlumnoDTOSaes.getCarrera(),
-                newAlumnoDTOSaes.getCredencial()).anyMatch(val -> val == null || val.isEmpty())) {
+                newAlumnoDTOSaes.getCorreo(), newAlumnoDTOSaes.getCarrera()).anyMatch(val -> val == null || val.isEmpty())
+                || multipartFile == null || multipartFile.isEmpty()) {
             datos.put("Error", true);
-            datos.put("message", "Debes de llenar todos los campos");
-
-            return new ResponseEntity<>(
-                    datos,
-                    HttpStatus.CONFLICT
-            );
+            datos.put("message", "Debes de llenar todos los campos y subir una imagen.");
+            return new ResponseEntity<>(datos, HttpStatus.CONFLICT);
         }
 
-        String fileStoragePath = "/data/EntrenamientoIMG";
-        String rutaVolumen = fileStoragePath + "/" + newAlumnoDTOSaes.getBoleta() + "/";
-
-        System.out.println("===== DEFINIENDO RUTA PARA GUARDAR IMAGENES " + rutaVolumen + " =====");
-
-        File carpeta = new File(rutaVolumen);
-
-        System.out.println("===== RUTA CREADA =====");
-
-//        File carpeta = new File(new File("").getAbsolutePath()
-//                + "/src/main/java/com/example/PruebaCRUD/EntrenamientoIMG/"
-//                + newAlumnoDTOSaes.getBoleta() + "/");
-
-        if (!carpeta.exists()) {
-            boolean created = carpeta.mkdirs();
-            System.out.println("¿Se creó la carpeta? " + created);
-            if (!created) {
-                datos.put("Error", true);
-                datos.put("message", "No se pudo crear la carpeta para guardar la imagen.");
-                return new ResponseEntity<>(datos, HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        System.out.println("=== CONTENIDO DEL VOLUMEN ===");
-        File[] archivos = carpeta.listFiles();
-        if (archivos != null) {
-            Arrays.stream(archivos).forEach(file -> System.out.println(file.getName()));
-        } else {
-            System.out.println("No hay archivos (listFiles() devolvió null)");
-        }
-        System.out.println("============================");
-
-        File destino = new File(carpeta, Objects.requireNonNull(multipartFile.getOriginalFilename()));
-
+        // Subir archivo a Cloudinary
+        CloudinaryUploader uploader = new CloudinaryUploader(cloudinary); // Asegúrate de inyectar cloudinary
+        String imageUrl;
         try {
-            multipartFile.transferTo(destino);
+            imageUrl = uploader.uploadImage(multipartFile);
+            System.out.println("Imagen subida a Cloudinary: " + imageUrl);
         } catch (Exception e) {
-            e.printStackTrace(); // Esto manda el error al log
+            e.printStackTrace();
             datos.put("Error", true);
-            datos.put("message", "Error al guardar el archivo: " + e.getMessage());
+            datos.put("message", "Error al subir la imagen a Cloudinary: " + e.getMessage());
             return new ResponseEntity<>(datos, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        DivisionFrames.extractFrames(destino.getPath(), destino.getParent());
-
-        // Elimina el archivo de video original
-        if (destino.exists()) {
-            destino.delete();
-        }
-
         Optional<UnidadAcademica> uaAlumno = this.unidadAcademicaRepository.findById(newAlumnoDTOSaes.getEscuela());
-
         if (uaAlumno.isEmpty()) {
             datos.put("Error", true);
             datos.put("message", "La escuela proporcionada no existe");
-
-            return new ResponseEntity<>(
-                    datos,
-                    HttpStatus.CONFLICT
-            );
+            return new ResponseEntity<>(datos, HttpStatus.CONFLICT);
         }
 
         Optional<Sexo> sexo = this.sexoRepository.findByNombre(newAlumnoDTOSaes.getSexo());
-
         if (sexo.isEmpty()) {
             datos.put("Error", true);
             datos.put("message", "El sexo proporcionado no es válido");
-
-            return new ResponseEntity<>(
-                    datos,
-                    HttpStatus.CONFLICT
-            );
+            return new ResponseEntity<>(datos, HttpStatus.CONFLICT);
         }
 
         Optional<Persona> exists = this.personaRepository.findPersonaByCURP(newAlumnoDTOSaes.getCurp());
         Optional<Alumno> existsA = this.alumnoRepository.findByBoleta(newAlumnoDTOSaes.getBoleta());
-
         if (exists.isPresent() || existsA.isPresent()) {
             datos.put("Error", true);
             datos.put("message", "Ese alumno ya ha sido registrado con anterioridad.");
-
-            return new ResponseEntity<>(
-                    datos,
-                    HttpStatus.CONFLICT
-            );
+            return new ResponseEntity<>(datos, HttpStatus.CONFLICT);
         }
 
         System.out.println("===== CREANDO PERSONA =====");
@@ -286,11 +236,7 @@ public class PersonaService {
         if (pa.isEmpty()) {
             datos.put("Error", true);
             datos.put("message", "Esa carrera no existe.");
-
-            return new ResponseEntity<>(
-                    datos,
-                    HttpStatus.CONFLICT
-            );
+            return new ResponseEntity<>(datos, HttpStatus.CONFLICT);
         }
 
         System.out.println("===== CREANDO ALUMNO =====");
@@ -299,18 +245,16 @@ public class PersonaService {
         nalumno.setCURP(npersona);
         nalumno.setCorreoI(newAlumnoDTOSaes.getCorreo());
         nalumno.setIdPA(pa.get());
-        nalumno.setImagenCredencial(newAlumnoDTOSaes.getCredencial());
+        nalumno.setImagenCredencial(imageUrl); // <-- Aquí se guarda la URL de Cloudinary
 
         alumnoRepository.save(nalumno);
 
         System.out.println("===== ALUMNO CREADO =====");
 
         datos.put("message", "Alumno registrado con éxito.");
-        return new ResponseEntity<>(
-                datos,
-                HttpStatus.CREATED
-        );
+        return new ResponseEntity<>(datos, HttpStatus.CREATED);
     }
+
 
     // =================== DOCENTES =====================
 //    Función para traer a todos los docentes

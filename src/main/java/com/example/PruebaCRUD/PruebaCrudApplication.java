@@ -21,28 +21,8 @@ import java.io.IOException;
 public class PruebaCrudApplication {
 
 	public static void main(String[] args) {
-		System.out.println("Java version: " + System.getProperty("java.version"));
 		SpringApplication.run(PruebaCrudApplication.class, args
 		);
-	}
-
-	@PostConstruct
-	public void checkFileStoragePath() {
-		System.out.println("Entró a checkFileStoragePath");
-		String fileStoragePath = "/data/EntrenamientoIMG";
-		File dir = new File(fileStoragePath);
-		if (!dir.exists()) {
-			boolean created = dir.mkdirs();
-			System.out.println("Creado dir?: " + created);
-		}
-
-		try {
-			File testFile = new File(fileStoragePath + "/test.txt");
-			boolean success = testFile.createNewFile();
-			System.out.println("¿Pudo crear archivo de prueba?: " + success);
-		} catch (IOException e) {
-			e.printStackTrace(); // Aquí verás si hay permisos denegados o no existe el path
-		}
 	}
 
 }
