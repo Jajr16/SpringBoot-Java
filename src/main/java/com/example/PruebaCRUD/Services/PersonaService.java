@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.beans.factory.annotation.Value;
+import java.util.concurrent.CompletableFuture;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 
 /**
@@ -171,9 +172,7 @@ public class PersonaService {
 
     // Función para crear un nuevo alumno
     @Transactional
-    public ResponseEntity<Object> newAlumno(NewAlumnoDTOSaes newAlumnoDTOSaes, MultipartFile video,
-                                            MultipartFile credencial)
-            throws IOException {
+    public ResponseEntity<Object> newAlumno(NewAlumnoDTOSaes newAlumnoDTOSaes, MultipartFile video, MultipartFile credencial) throws IOException, ExecutionException, InterruptedException {
 
         System.out.println("===== CREANDO ALUMNO =====");
         System.out.println("===== LOS DATOS SON: " + newAlumnoDTOSaes + " =====");
@@ -189,47 +188,57 @@ public class PersonaService {
             return new ResponseEntity<>(datos, HttpStatus.CONFLICT);
         }
 
-        System.out.println("===== GUARDAR EL VIDEO TEMPORALMENTE =====");
         // Guardar el video temporalmente
         File tempVideoFile = File.createTempFile("video_temp", ".mp4");
         video.transferTo(tempVideoFile);
 
-        System.out.println("===== SEPARAR LOS FRAMES Y GUARDARLOS TEMPORALMENTE =====");
         // Crear carpeta temporal para los frames
         File framesDir = Files.createTempDirectory("frames_" + newAlumnoDTOSaes.getBoleta()).toFile();
         DivisionFrames.extractFrames(tempVideoFile.getAbsolutePath(), framesDir.getAbsolutePath());
 
-        System.out.println("===== SUBIENDO FRAMES =====");
-        // Subir los frames a Cloudinary
-        File[] frames = framesDir.listFiles((dir, name) -> name.endsWith(".png"));
-        List<String> frameUrls = new ArrayList<>();
-        if (frames != null) {
-            for (File frame : frames) {
-                Map uploadResult = cloudinary.uploader().upload(frame, ObjectUtils.asMap(
-                        "folder", "frames/" + newAlumnoDTOSaes.getBoleta()
-                ));
-                frameUrls.add(uploadResult.get("secure_url").toString());
+        // Usar CompletableFuture para tareas asíncronas
+        CompletableFuture<List<String>> framesUploadFuture = CompletableFuture.supplyAsync(() -> {
+            List<String> frameUrls = new ArrayList<>();
+            File[] frames = framesDir.listFiles((dir, name) -> name.endsWith(".png"));
+            if (frames != null) {
+                for (File frame : frames) {
+                    try {
+                        Map uploadResult = cloudinary.uploader().upload(frame, ObjectUtils.asMap(
+                                "folder", "frames/" + newAlumnoDTOSaes.getBoleta()
+                        ));
+                        frameUrls.add(uploadResult.get("secure_url").toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        }
+            return frameUrls;
+        });
 
-        System.out.println("===== SUBIENDO CREDENCIAL =====");
-        String credencialUrl;
-        try {
-            Map uploadResult = cloudinary.uploader().upload(
-                    credencial.getBytes(),
-                    ObjectUtils.asMap(
-                            "folder", "fotosCredencial",
-                            "public_id", newAlumnoDTOSaes.getBoleta()
-                    )
-            );
-            credencialUrl = uploadResult.get("secure_url").toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            datos.put("Error", true);
-            datos.put("message", "Error al subir la imagen de la credencial a Cloudinary: " + e.getMessage());
-            return new ResponseEntity<>(datos, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        // Subir la credencial en paralelo
+        CompletableFuture<String> credencialUploadFuture = CompletableFuture.supplyAsync(() -> {
+            try {
+                Map uploadResult = cloudinary.uploader().upload(
+                        credencial.getBytes(),
+                        ObjectUtils.asMap(
+                                "folder", "fotosCredencial",
+                                "public_id", newAlumnoDTOSaes.getBoleta()
+                        )
+                );
+                return uploadResult.get("secure_url").toString();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        });
 
+        // Esperar a que ambas tareas asíncronas terminen
+        CompletableFuture.allOf(framesUploadFuture, credencialUploadFuture).join();
+
+        // Obtener resultados de las tareas asíncronas
+        String credencialUrl = credencialUploadFuture.get();
+
+        // Validación de existencia de datos
         Optional<UnidadAcademica> uaAlumno = this.unidadAcademicaRepository.findById(newAlumnoDTOSaes.getEscuela());
         if (uaAlumno.isEmpty()) {
             datos.put("Error", true);
@@ -252,8 +261,7 @@ public class PersonaService {
             return new ResponseEntity<>(datos, HttpStatus.CONFLICT);
         }
 
-        System.out.println("===== CREANDO PERSONA =====");
-
+        // Crear la persona
         Persona npersona = new Persona();
         npersona.setCURP(newAlumnoDTOSaes.getCurp());
         npersona.setNombre(newAlumnoDTOSaes.getNombre());
@@ -261,21 +269,17 @@ public class PersonaService {
         npersona.setApellido_M(newAlumnoDTOSaes.getApellido_m());
         npersona.setSexo(sexo.get());
         npersona.setUnidadAcademica(uaAlumno.get());
-
         personaRepository.save(npersona);
 
-        System.out.println("===== PERSONA CREADA =====");
-
+        // Crear el alumno
         Optional<ProgramaAcademico> pa = this.programaAcademicoRepository.findBy(newAlumnoDTOSaes.getEscuela(),
                 newAlumnoDTOSaes.getCarrera());
-
         if (pa.isEmpty()) {
             datos.put("Error", true);
             datos.put("message", "Esa carrera no existe.");
             return new ResponseEntity<>(datos, HttpStatus.CONFLICT);
         }
 
-        System.out.println("===== CREANDO ALUMNO =====");
         Alumno nalumno = new Alumno();
         nalumno.setBoleta(newAlumnoDTOSaes.getBoleta());
         nalumno.setCURP(npersona);
@@ -285,11 +289,11 @@ public class PersonaService {
 
         alumnoRepository.save(nalumno);
 
-        System.out.println("===== ALUMNO CREADO =====");
-
+        // Devolver respuesta
         datos.put("message", "Alumno registrado con éxito.");
         return new ResponseEntity<>(datos, HttpStatus.CREATED);
     }
+
 
 
     // =================== DOCENTES =====================
