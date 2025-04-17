@@ -28,6 +28,7 @@ public class PruebaCrudApplication {
 
 	@PostConstruct
 	public void checkFileStoragePath() {
+		System.out.println("Entró a checkFileStoragePath");
 		String fileStoragePath = "/data/EntrenamientoIMG";
 		File dir = new File(fileStoragePath);
 		if (!dir.exists()) {
