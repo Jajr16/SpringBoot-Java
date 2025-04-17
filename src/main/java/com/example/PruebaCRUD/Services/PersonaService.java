@@ -214,11 +214,14 @@ public class PersonaService {
 
         System.out.println("===== SUBIENDO CREDENCIAL =====");
         String credencialUrl;
-        try (InputStream credStream = credencial.getInputStream()) {
-            Map uploadResult = cloudinary.uploader().upload(credStream, ObjectUtils.asMap(
-                    "folder", "fotosCredencial",
-                    "public_id", newAlumnoDTOSaes.getBoleta()
-            ));
+        try {
+            Map uploadResult = cloudinary.uploader().upload(
+                    credencial.getBytes(),
+                    ObjectUtils.asMap(
+                            "folder", "fotosCredencial",
+                            "public_id", newAlumnoDTOSaes.getBoleta()
+                    )
+            );
             credencialUrl = uploadResult.get("secure_url").toString();
         } catch (Exception e) {
             e.printStackTrace();
