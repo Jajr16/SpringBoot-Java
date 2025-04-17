@@ -11,6 +11,7 @@ import com.example.PruebaCRUD.Repositories.*;
 import com.example.PruebaCRUD.utils.CloudinaryUploader;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -187,14 +188,17 @@ public class PersonaService {
             return new ResponseEntity<>(datos, HttpStatus.CONFLICT);
         }
 
+        System.out.println("===== GUARDAR EL VIDEO TEMPORALMENTE =====");
         // Guardar el video temporalmente
         File tempVideoFile = File.createTempFile("video_temp", ".mp4");
         video.transferTo(tempVideoFile);
 
+        System.out.println("===== SEPARAR LOS FRAMES Y GUARDARLOS TEMPORALMENTE =====");
         // Crear carpeta temporal para los frames
         File framesDir = Files.createTempDirectory("frames_" + newAlumnoDTOSaes.getBoleta()).toFile();
         DivisionFrames.extractFrames(tempVideoFile.getAbsolutePath(), framesDir.getAbsolutePath());
 
+        System.out.println("===== SUBIENDO FRAMES =====");
         // Subir los frames a Cloudinary
         File[] frames = framesDir.listFiles((dir, name) -> name.endsWith(".png"));
         List<String> frameUrls = new ArrayList<>();
@@ -205,10 +209,12 @@ public class PersonaService {
             }
         }
 
+
+        System.out.println("===== SUBIENDO CREDENCIAL =====");
         // Subir archivo a Cloudinary
         String imageUrl;
         try {
-            imageUrl = cloudinaryUploader.uploadImage(video);
+            imageUrl = cloudinaryUploader.uploadImage(credencial);
             System.out.println("Imagen subida a Cloudinary: " + imageUrl);
         } catch (Exception e) {
             e.printStackTrace();

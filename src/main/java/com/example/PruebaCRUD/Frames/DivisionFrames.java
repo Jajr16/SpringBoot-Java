@@ -17,6 +17,9 @@ public class DivisionFrames {
             // Crear el directorio si no existe
             new File(outputDir).mkdirs();
 
+            System.out.println("EL VIDEO ES " + videoPath);
+            System.out.println("DONDE SE GUARDARÁ ES " + outputDir);
+
             /**
              * Extraer 15 fotogramas distribuidos uniformemente mediante procesos del sistema operativo, es decir, cmd.
              *  ffmpeg: Línea de comandos para convertir, grabar y modificar archivos multimedia
