@@ -14,11 +14,11 @@ public class NewAlumnoDTOSaes {
     private String correo;
     private Integer escuela;
     private String carrera;
-    private String credencial;
+//    private String credencial;
 
     // ==================== CONSTRUCTORES =====================
     public NewAlumnoDTOSaes(String curp, String boleta, String nombre, String apellido_p, String apellido_m, String sexo,
-                            String correo, Integer escuela, String carrera, String credencial) {
+                            String correo, Integer escuela, String carrera) {
         this.curp = curp;
         this.boleta = boleta;
         this.nombre = nombre;
@@ -28,7 +28,7 @@ public class NewAlumnoDTOSaes {
         this.correo = correo;
         this.escuela = escuela;
         this.carrera = carrera;
-        this.credencial = credencial;
+//        this.credencial = credencial;
     }
 
     // ==================== SETTERS AND GETTERS ====================
@@ -104,13 +104,13 @@ public class NewAlumnoDTOSaes {
         this.carrera = carrera;
     }
 
-    public String getCredencial() {
-        return credencial;
-    }
-
-    public void setCredencial(String credencial) {
-        this.credencial = credencial;
-    }
+//    public String getCredencial() {
+//        return credencial;
+//    }
+//
+//    public void setCredencial(String credencial) {
+//        this.credencial = credencial;
+//    }
 
     @Override
     public String toString() {
@@ -124,7 +124,7 @@ public class NewAlumnoDTOSaes {
                 ", correo='" + correo + '\'' +
                 ", escuela='" + escuela + '\'' +
                 ", carrera='" + carrera + '\'' +
-                ", credencial='" + credencial + '\'' +
+//                ", credencial='" + credencial + '\'' +
                 '}';
     }
 }

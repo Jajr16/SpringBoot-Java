@@ -1,6 +1,7 @@
 package com.example.PruebaCRUD.Services;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.example.PruebaCRUD.BD.*;
 import com.example.PruebaCRUD.BD.PKCompuesta.CargoDocentePK;
 import com.example.PruebaCRUD.DTO.*;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -48,6 +50,7 @@ public class PersonaService {
     private final ProgramaAcademicoRepository programaAcademicoRepository;
 
     private Cloudinary cloudinary;
+    private final CloudinaryUploader cloudinaryUploader;
 
     @Autowired // Notación que permite inyectar dependencias
     public PersonaService(PersonaRepository personaRepository, SexoRepository sexoRepository,
@@ -59,7 +62,8 @@ public class PersonaService {
                           PersonalAcademicoRepository personalAcademicoRepository, CargoRepository cargoRepository,
                           CargoDocenteRepository cargoDocenteRepository,
                           ProgramaAcademicoRepository programaAcademicoRepository,
-                          Cloudinary cloudinary) {
+                          Cloudinary cloudinary,
+                          CloudinaryUploader cloudinaryUploader) {
         this.personaRepository = personaRepository;
         this.sexoRepository = sexoRepository;
         this.unidadAcademicaRepository = unidadAcademicaRepository;
@@ -75,6 +79,7 @@ public class PersonaService {
         this.cargoDocenteRepository = cargoDocenteRepository;
         this.programaAcademicoRepository = programaAcademicoRepository;
         this.cloudinary = cloudinary;
+        this.cloudinaryUploader = cloudinaryUploader;
     }
 
     // =================== ALUMNOS ======================
@@ -164,7 +169,8 @@ public class PersonaService {
 
     // Función para crear un nuevo alumno
     @Transactional
-    public ResponseEntity<Object> newAlumno(NewAlumnoDTOSaes newAlumnoDTOSaes, MultipartFile multipartFile)
+    public ResponseEntity<Object> newAlumno(NewAlumnoDTOSaes newAlumnoDTOSaes, MultipartFile video,
+                                            MultipartFile credencial)
             throws IOException {
 
         System.out.println("===== CREANDO ALUMNO =====");
@@ -175,17 +181,34 @@ public class PersonaService {
         if (Stream.of(newAlumnoDTOSaes.getCurp(), newAlumnoDTOSaes.getBoleta(), newAlumnoDTOSaes.getNombre(),
                 newAlumnoDTOSaes.getApellido_p(), newAlumnoDTOSaes.getApellido_m(), newAlumnoDTOSaes.getSexo(),
                 newAlumnoDTOSaes.getCorreo(), newAlumnoDTOSaes.getCarrera()).anyMatch(val -> val == null || val.isEmpty())
-                || multipartFile == null || multipartFile.isEmpty()) {
+                || video == null || video.isEmpty() || credencial == null || credencial.isEmpty()) {
             datos.put("Error", true);
             datos.put("message", "Debes de llenar todos los campos y subir una imagen.");
             return new ResponseEntity<>(datos, HttpStatus.CONFLICT);
         }
 
+        // Guardar el video temporalmente
+        File tempVideoFile = File.createTempFile("video_temp", ".mp4");
+        video.transferTo(tempVideoFile);
+
+        // Crear carpeta temporal para los frames
+        File framesDir = Files.createTempDirectory("frames_" + newAlumnoDTOSaes.getBoleta()).toFile();
+        DivisionFrames.extractFrames(tempVideoFile.getAbsolutePath(), framesDir.getAbsolutePath());
+
+        // Subir los frames a Cloudinary
+        File[] frames = framesDir.listFiles((dir, name) -> name.endsWith(".png"));
+        List<String> frameUrls = new ArrayList<>();
+        if (frames != null) {
+            for (File frame : frames) {
+                Map uploadResult = cloudinary.uploader().upload(frame, ObjectUtils.emptyMap());
+                frameUrls.add(uploadResult.get("secure_url").toString());
+            }
+        }
+
         // Subir archivo a Cloudinary
-        CloudinaryUploader uploader = new CloudinaryUploader(cloudinary); // Asegúrate de inyectar cloudinary
         String imageUrl;
         try {
-            imageUrl = uploader.uploadImage(multipartFile);
+            imageUrl = cloudinaryUploader.uploadImage(video);
             System.out.println("Imagen subida a Cloudinary: " + imageUrl);
         } catch (Exception e) {
             e.printStackTrace();
@@ -245,7 +268,7 @@ public class PersonaService {
         nalumno.setCURP(npersona);
         nalumno.setCorreoI(newAlumnoDTOSaes.getCorreo());
         nalumno.setIdPA(pa.get());
-        nalumno.setImagenCredencial(imageUrl); // <-- Aquí se guarda la URL de Cloudinary
+        nalumno.setImagenCredencial(imageUrl);
 
         alumnoRepository.save(nalumno);
 
