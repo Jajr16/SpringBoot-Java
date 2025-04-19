@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/InfoA")
@@ -23,22 +25,19 @@ public class FotoAlumnoController {
     private FotoAlumnoService fotoAlumnoService;
 
     @GetMapping("/foto/{boleta}")
-    public ResponseEntity<byte[]> getFotoAlumno(@PathVariable String boleta) {
+    public ResponseEntity<Map<String, String>> getFotoAlumno(@PathVariable String boleta) {
         try {
-            // 1. Obtener la información del alumno y su imagen desde Django
-            FotoAlumnoDTO fotoAlumnoDTO = fotoAlumnoService.obtenerFotoPorBoleta(boleta);
+            String fotoUrl = fotoAlumnoService.obtenerUrlPorBoleta(boleta);
 
-            // 2. Leer los bytes de la imagen obtenida desde Django
-            byte[] imageBytes = fotoAlumnoService.obtenerImagenDesdeDjango(fotoAlumnoDTO.getFotoUrl());
+            Map<String, String> response = new HashMap<>();
+            response.put("fotoUrl", fotoUrl);
 
-            // 3. Enviar la imagen a Android
-            return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_JPEG) // Ajusta si es otro tipo de imagen
-                    .body(imageBytes);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(404).body(null);
         }
     }
 }
+
 
 
