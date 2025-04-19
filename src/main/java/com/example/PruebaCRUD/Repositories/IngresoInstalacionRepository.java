@@ -26,8 +26,9 @@ public interface IngresoInstalacionRepository extends JpaRepository<IngresoInsta
             "FROM InscripcionETS ie " +
             "JOIN ie.boletaIns a " +
             "JOIN ie.idETSIns e " +
-            "WHERE a.boleta = :boleta")
-    List<IngresoInstalacionDTO> findAlumnosInscritosETS(@Param("boleta") String boleta);
+            "WHERE a.boleta = :boleta AND e.id_ETS = :idETS")
+    List<IngresoInstalacionDTO> findAlumnosInscritosETS(@Param("boleta") String boleta, @Param("idETS") Integer idETS);
+
 
     @Modifying
     @Transactional
@@ -37,4 +38,13 @@ public interface IngresoInstalacionRepository extends JpaRepository<IngresoInsta
                         @Param("idETS") Integer idETS,
                         @Param("fecha") Date fecha,
                         @Param("hora") Time hora);
+
+    @Query(value = "SELECT i FROM IngresoInstalacion i WHERE " +
+            "CAST(i.id.boleta AS string) = CAST(:boleta AS string) AND " +
+            "i.id.fecha = :fecha AND " +
+            "CAST(i.id.idets AS integer) = CAST(:idets AS integer)")
+    List<IngresoInstalacion> findByBoletaAndFechaAndIdETS(
+            @Param("boleta") String boleta,
+            @Param("fecha") Date fecha,
+            @Param("idets") Integer idets);
 }
