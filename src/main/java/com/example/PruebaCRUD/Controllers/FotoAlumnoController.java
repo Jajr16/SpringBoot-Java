@@ -2,17 +2,12 @@ package com.example.PruebaCRUD.Controllers;
 
 import com.example.PruebaCRUD.Services.FotoAlumnoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.io.File;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
