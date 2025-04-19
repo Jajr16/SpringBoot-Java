@@ -5,6 +5,8 @@ import com.example.PruebaCRUD.Repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
 /**
  * Clase que contendrá la lógica que para realizar las funciones principales de los endpoints
  */
@@ -32,9 +34,13 @@ public class LoginService {
             return new LoginResponseDTO(0, "Error inesperado.");
         }
 
+        System.out.println("EL RESULTADO DEL LOGIN FUE " + Arrays.toString(result));
+
         String message = (String) result[0];
         int error_code = (int) result[1];
         String role = (String) result[2];
+
+        System.out.println("EL ROL DEL LOGIN FUE " + role);
 
         return new LoginResponseDTO(username, error_code, message, role);
     }
