@@ -27,6 +27,7 @@ public class CargoConfig {
                 cargoRepository.save(new Cargo("Docente"));
                 cargoRepository.save(new Cargo("Subdirector"));
                 cargoRepository.save(new Cargo("Director"));
+                cargoRepository.save(new Cargo("Presidente Academia"));
             }
         };
     }

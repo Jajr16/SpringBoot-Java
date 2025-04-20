@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
      * personalizable con las clases del proyecto
      */
     @Query(value = "SELECT * FROM login(:username, :password)", nativeQuery = true)
-    Object callLoginFunction(@Param("username") String username, @Param("password") String password);
+    List<Object[]> callLoginFunction(@Param("username") String username, @Param("password") String password);
 
     @Query(value = "SELECT p.id_escuela FROM Persona p INNER JOIN Usuario u ON p.curp = u.curp" +
             " WHERE u.usuario = (:user)", nativeQuery = true)

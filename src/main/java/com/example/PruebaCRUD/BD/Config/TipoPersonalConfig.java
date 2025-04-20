@@ -26,6 +26,7 @@ public class TipoPersonalConfig {
                 tipoPersonalRepository.save(new TipoPersonal(1, "Docente"));
                 tipoPersonalRepository.save(new TipoPersonal(2, "Jefe Gestión Escolar"));
                 tipoPersonalRepository.save(new TipoPersonal(3, "Personal Gestión Escolar"));
+                tipoPersonalRepository.save(new TipoPersonal(4, "Jefe Departamento"));
             }
         };
     }

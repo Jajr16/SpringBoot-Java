@@ -1,5 +1,8 @@
 package com.example.PruebaCRUD.DTO;
 
+import java.util.List;
+import java.util.Optional;
+
 /**
  * Clase DTO la cuál sirve para pasar o recibir datos entre un cliente y un servidor, en este caso, ayudará a pasar
  * datos de la respuesta del proceso de Login
@@ -9,6 +12,7 @@ public class LoginResponseDTO {
     private Integer Error_code;
     private String Message;
     private String Rol;
+    private Optional<List<String>> cargos;
 
     // ==================== CONSTRUCTORES =====================
     public LoginResponseDTO() {}
@@ -18,6 +22,13 @@ public class LoginResponseDTO {
         this.Error_code = Error_Code;
         this.Message = Message;
         this.Rol = rol;
+    }
+    public LoginResponseDTO(String Usuario, Integer Error_Code, String Message, String rol, Optional<List<String>> cargos) {
+        this.Usuario = Usuario;
+        this.Error_code = Error_Code;
+        this.Message = Message;
+        this.Rol = rol;
+        this.cargos = cargos;
     }
 
     public LoginResponseDTO(Integer Error_Code, String Message) {
@@ -58,12 +69,30 @@ public class LoginResponseDTO {
         Usuario = usuario;
     }
 
+    public Integer getError_code() {
+        return Error_code;
+    }
+
+    public void setError_code(Integer error_code) {
+        Error_code = error_code;
+    }
+
+    public Optional<List<String>> getCargos() {
+        return cargos;
+    }
+
+    public void setCargos(Optional<List<String>> cargos) {
+        this.cargos = cargos;
+    }
+
     @Override
     public String toString() {
-        return "LoginDTO{" +
-                "Error_Code=" + Error_code +
+        return "LoginResponseDTO{" +
+                "Usuario='" + Usuario + '\'' +
+                ", Error_code=" + Error_code +
                 ", Message='" + Message + '\'' +
                 ", Rol='" + Rol + '\'' +
+                ", cargos=" + cargos +
                 '}';
     }
 }

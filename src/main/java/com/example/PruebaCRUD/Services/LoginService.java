@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Clase que contendrá la lógica que para realizar las funciones principales de los endpoints
@@ -28,21 +30,30 @@ public class LoginService {
      */
     public LoginResponseDTO login(String username, String password) {
         System.out.println("EL USUARIO ES " + username);
-        Object[] result = (Object[]) usuarioRepository.callLoginFunction(username, password);
+        List<Object[]> results = usuarioRepository.callLoginFunction(username, password);
 
-        if (result == null) {
+        if (results == null || results.isEmpty()) {
             return new LoginResponseDTO(0, "Error inesperado.");
         }
+
+        Object[] result = results.get(0);  // solo esperamos una fila
 
         System.out.println("EL RESULTADO DEL LOGIN FUE " + Arrays.toString(result));
 
         String message = (String) result[0];
         int error_code = (int) result[1];
         String role = (String) result[2];
+        String cargosStr = (String) result[3]; // puede ser null
 
         System.out.println("EL ROL DEL LOGIN FUE " + role);
+        System.out.println("LOS CARGOS SON " + cargosStr);
 
-        return new LoginResponseDTO(username, error_code, message, role);
+        Optional<List<String>> cargos = Optional.empty();
+        if (cargosStr != null && !cargosStr.isEmpty()) {
+            cargos = Optional.of(Arrays.asList(cargosStr.split(",\\s*")));
+        }
+
+        return new LoginResponseDTO(username, error_code, message, role, cargos);
     }
 
 

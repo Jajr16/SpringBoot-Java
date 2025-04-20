@@ -52,55 +52,94 @@ public class DatabaseInitializer {
 
     private String loginFunction() {
         return """
-                CREATE OR REPLACE FUNCTION login(
-                       p_username VARCHAR(18),
-                       p_password VARCHAR(100),
-                       OUT p_message VARCHAR(255),
-                       OUT error_code INT,
-                       OUT p_rol VARCHAR(255)
-                   )
-                   LANGUAGE plpgsql
-                   AS $$
-                   DECLARE
-                       hashed_password TEXT; -- Cambiar a TEXT
-                       user_found INT;
-                   BEGIN
-                       -- Verificar si el usuario existe
-                       SELECT COUNT(*)
-                       INTO user_found
-                       FROM usuario
-                       WHERE usuario = p_username;
-                
-                       IF user_found = 0 THEN
-                           -- Usuario no encontrado
-                           error_code := -2;
-                           p_message := 'Usuario o contraseña incorrectos.';
-                           p_rol := NULL;
-                
-                       ELSE
-                           -- Obtener la contraseña encriptada y el rol
-                           SELECT u.password::TEXT, t.tipo
-                           INTO hashed_password, p_rol
-                           FROM usuario u
-                           INNER JOIN tipousuario t ON u.tipou = t.idtu
-                           WHERE u.usuario = p_username;
-                
-                           -- Comparar contraseñas usando crypt()
-                           IF crypt(p_password::TEXT, hashed_password::TEXT) = hashed_password THEN
-                               -- Contraseña correcta
-                               error_code := 0;
-                               p_message := 'Inicio de sesión exitoso.';
-                           ELSE
-                               -- Contraseña incorrecta
-                               error_code := -1;
-                               p_message := 'Usuario o contraseña incorrectos.';
-                               p_rol := NULL;
-                           END IF;
-                       END IF;
-                
-                       RETURN;
-                   END;
-                   $$;
+              -- FUNCIÓN PARA EL LOGIN
+              CREATE OR REPLACE FUNCTION login(
+                  p_username VARCHAR(18),
+                  p_password VARCHAR(100)
+              )
+              RETURNS TABLE (
+                  p_message VARCHAR(255),
+                  error_code INT,
+                  p_rol VARCHAR(255),
+                  cargos TEXT
+              )
+              LANGUAGE plpgsql
+              AS $$
+              DECLARE
+                  hashed_password TEXT;
+                  user_found INT;
+                  rol_base TEXT;
+                  cargo_base TEXT;
+              BEGIN
+                  -- Verificar si el usuario existe
+                  SELECT COUNT(*) INTO user_found
+                  FROM usuario
+                  WHERE usuario = p_username;
+    
+                  IF user_found = 0 THEN
+                      RETURN QUERY SELECT\s
+                          'Usuario o contraseña incorrectos.'::VARCHAR(255),\s
+                          -2::INT,\s
+                          NULL::VARCHAR(255),\s
+                          NULL::TEXT;
+                  ELSE
+                      -- Obtener contraseña y tipo de usuario
+                      SELECT u.password::TEXT, t.tipo
+                      INTO hashed_password, rol_base
+                      FROM usuario u
+                      INNER JOIN tipousuario t ON u.tipou = t.idtu
+                      WHERE u.usuario = p_username;
+    
+                      -- Verificar contraseña
+                      IF crypt(p_password, hashed_password) = hashed_password THEN
+    
+                          IF rol_base = 'Personal Academico' THEN
+                              -- Ver si es docente
+                              SELECT tp.cargo
+                              INTO cargo_base
+                              FROM tipopersonal tp
+                              INNER JOIN personalacademico pa ON pa.tipopa = tp.tipopa
+                              INNER JOIN usuario u ON pa.rfc = u.usuario
+                              WHERE u.usuario = p_username;
+    
+                              IF cargo_base = 'Docente' THEN
+                                  RETURN QUERY\s
+                                  SELECT\s
+                                      'Inicio de sesión exitoso.'::VARCHAR(255),\s
+                                      0::INT,\s
+                                      cargo_base::VARCHAR(255),\s
+                                      (
+                                          SELECT STRING_AGG(c.cargo, ', ')::TEXT
+                                          FROM cargodocente cd
+                                         INNER JOIN cargo c ON c.id_cargo = cd.id_cargo
+                                          INNER JOIN usuario u ON cd.rfc = u.usuario
+                                          WHERE u.usuario = p_username
+                                      );
+                              ELSE
+                                  RETURN QUERY SELECT\s
+                                      'Inicio de sesión exitoso.'::VARCHAR(255),\s
+                                      0::INT,\s
+                                      cargo_base::VARCHAR(255),\s
+                                      NULL::TEXT;
+                              END IF;
+                          ELSE
+                              RETURN QUERY SELECT\s
+                                  'Inicio de sesión exitoso.'::VARCHAR(255),\s
+                                  0::INT,\s
+                                  rol_base::VARCHAR(255),\s
+                                  NULL::TEXT;
+                          END IF;
+    
+                      ELSE
+                          RETURN QUERY SELECT\s
+                              'Usuario o contraseña incorrectos.'::VARCHAR(255),\s
+                              -1::INT,\s
+                              NULL::VARCHAR(255),\s
+                              NULL::TEXT;
+                      END IF;
+                  END IF;
+              END;
+              $$;
             """;
     }
 
