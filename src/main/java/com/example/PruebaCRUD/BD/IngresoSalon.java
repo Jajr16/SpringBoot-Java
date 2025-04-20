@@ -34,7 +34,7 @@ public class IngresoSalon {
     private Time hora;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "docente", nullable = false)
+    @JoinColumn(name = "docente", nullable = false) 
     private PersonalAcademico docente;
 
     @ManyToOne(fetch = FetchType.LAZY)
