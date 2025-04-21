@@ -34,15 +34,15 @@ public class ETSService {
     private final TurnoRepository turnoRepository;
     private final UnidadAprendizajeRepository unidadAprendizajeRepository;
     private final AplicaRepository aplicaRepository;
-    private final DocenteRepository docenteRepository;
+    private final PersonalAcademicoRepository personalAcademicoRepository;
     private final PersonaRepository personaRepository;
 
     @Autowired // Notación que permite inyectar dependencias
     public ETSService(SalonRepository salonRepository, ETSRepository etsRepository,
                       SalonETSRepository salonETSRepository, com.example.PruebaCRUD.Repositories.periodoETSRepository
                                   periodoETSRepository, TurnoRepository turnoRepository, UnidadAprendizajeRepository
-                                  unidadAprendizajeRepository, AplicaRepository aplicaRepository, DocenteRepository
-                                  docenteRepository, PersonaRepository personaRepository) {
+                                  unidadAprendizajeRepository, AplicaRepository aplicaRepository, PersonalAcademicoRepository
+                                  personalAcademicoRepository, PersonaRepository personaRepository) {
         this.salonRepository = salonRepository;
         this.etsRepository = etsRepository;
         this.salonETSRepository = salonETSRepository;
@@ -50,7 +50,7 @@ public class ETSService {
         this.turnoRepository = turnoRepository;
         this.unidadAprendizajeRepository = unidadAprendizajeRepository;
         this.aplicaRepository = aplicaRepository;
-        this.docenteRepository = docenteRepository;
+        this.personalAcademicoRepository = personalAcademicoRepository;
         this.personaRepository = personaRepository;
     }
 
@@ -94,7 +94,7 @@ public class ETSService {
         if (ets.getDocenteCURP() != null) { // Si el docente asignado al ETS no es nulo entra aquí
             // Busca un registro que coincida con la persona que el cliente mandó (tanto que exista como que sea docente)
             Optional<Persona> persona = personaRepository.findPersonaByCURP(AES.Desencriptar(ets.getDocenteCURP()));
-            Optional<PersonalAcademico> docente = docenteRepository.findByCURP(persona.get());
+            Optional<PersonalAcademico> docente = personalAcademicoRepository.findByCURP(persona.get());
 
             if (docente.isEmpty()) {
                 datos.put("Error", true);

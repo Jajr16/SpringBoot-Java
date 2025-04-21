@@ -8,10 +8,8 @@ import com.example.PruebaCRUD.DTO.*;
 import com.example.PruebaCRUD.DTO.Saes.*;
 import com.example.PruebaCRUD.Frames.DivisionFrames;
 import com.example.PruebaCRUD.Repositories.*;
-import com.example.PruebaCRUD.utils.CloudinaryUploader;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +21,6 @@ import java.util.concurrent.CompletableFuture;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -41,37 +38,32 @@ public class PersonaService {
     private final SexoRepository sexoRepository;
     private final UnidadAcademicaRepository unidadAcademicaRepository;
     private final AlumnoRepository alumnoRepository;
-    private final DocenteRepository docenteRepository;
+    private final PersonalAcademicoRepository personalAcademicoRepository;
     private final PersonalSeguridadRepository personalSeguridadRepository;
     private final TurnoRepository turnoRepository;
     private final CargoPSRepository cargoPSRepository;
     private final UsuarioRepository usuarioRepository;
     private final TipoPersonalRepository tipoPersonalRepository;
-    private final PersonalAcademicoRepository personalAcademicoRepository;
     private final CargoRepository cargoRepository;
     private final CargoDocenteRepository cargoDocenteRepository;
     private final ProgramaAcademicoRepository programaAcademicoRepository;
 
-    private Cloudinary cloudinary;
-    private final CloudinaryUploader cloudinaryUploader;
+    private final Cloudinary cloudinary;
 
     @Autowired // Notación que permite inyectar dependencias
     public PersonaService(PersonaRepository personaRepository, SexoRepository sexoRepository,
                           UnidadAcademicaRepository unidadAcademicaRepository,
-                          AlumnoRepository alumnoRepository, DocenteRepository docenteRepository,
-                          PersonalSeguridadRepository personalSeguridadRepository, TurnoRepository turnoRepository,
-                          CargoPSRepository cargoPSRepository, UsuarioRepository usuarioRepository,
-                          TipoPersonalRepository tipoPersonalRepository,
+                          AlumnoRepository alumnoRepository, PersonalSeguridadRepository personalSeguridadRepository,
+                          TurnoRepository turnoRepository, CargoPSRepository cargoPSRepository,
+                          UsuarioRepository usuarioRepository, TipoPersonalRepository tipoPersonalRepository,
                           PersonalAcademicoRepository personalAcademicoRepository, CargoRepository cargoRepository,
                           CargoDocenteRepository cargoDocenteRepository,
                           ProgramaAcademicoRepository programaAcademicoRepository,
-                          Cloudinary cloudinary,
-                          CloudinaryUploader cloudinaryUploader) {
+                          Cloudinary cloudinary) {
         this.personaRepository = personaRepository;
         this.sexoRepository = sexoRepository;
         this.unidadAcademicaRepository = unidadAcademicaRepository;
         this.alumnoRepository = alumnoRepository;
-        this.docenteRepository = docenteRepository;
         this.personalSeguridadRepository = personalSeguridadRepository;
         this.turnoRepository = turnoRepository;
         this.cargoPSRepository = cargoPSRepository;
@@ -82,7 +74,6 @@ public class PersonaService {
         this.cargoDocenteRepository = cargoDocenteRepository;
         this.programaAcademicoRepository = programaAcademicoRepository;
         this.cloudinary = cloudinary;
-        this.cloudinaryUploader = cloudinaryUploader;
     }
 
     // =================== ALUMNOS ======================
@@ -305,12 +296,12 @@ public class PersonaService {
     // =================== DOCENTES =====================
 //    Función para traer a todos los docentes
     public List<DocentesDTOSaes> getDocentes() {
-        return docenteRepository.findDocentes();
+        return personalAcademicoRepository.findDocentes();
     }
 
 //    Función para traer a todos los docentes
     public List<DocentesDTOToETS> getDocentesToETS() {
-        return docenteRepository.findDocentesToSaes();
+        return personalAcademicoRepository.findDocentesToSaes();
     }
 
      /**

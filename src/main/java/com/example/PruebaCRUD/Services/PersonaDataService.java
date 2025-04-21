@@ -1,8 +1,7 @@
 package com.example.PruebaCRUD.Services;
 
 import com.example.PruebaCRUD.DTO.DataPersonaDTO;
-import com.example.PruebaCRUD.DTO.ListAlumnosDTO;
-import com.example.PruebaCRUD.Repositories.PersonaDataRepository;
+import com.example.PruebaCRUD.Repositories.PersonaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +11,14 @@ import java.util.List;
 @Service
 public class PersonaDataService {
 
-    private final PersonaDataRepository personaDataRepository;
+    private final PersonaRepository personaRepository;
 
     @Autowired
-    public PersonaDataService(PersonaDataRepository personaDataRepository) {this.personaDataRepository = personaDataRepository;}
+    public PersonaDataService(PersonaRepository personaRepository) {this.personaRepository = personaRepository;}
 
     public List<DataPersonaDTO> NombreUsuario(String usuario){
 
-        List<Object[]> results = personaDataRepository.callobtenerpersona(usuario);
+        List<Object[]> results = personaRepository.callobtenerpersona(usuario);
 
         List<DataPersonaDTO> responseList = new ArrayList<>();
 

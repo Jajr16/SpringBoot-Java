@@ -1,8 +1,9 @@
 package com.example.PruebaCRUD.Services;
 
+import com.example.PruebaCRUD.BD.InscripcionETS;
 import com.example.PruebaCRUD.BD.Sexo;
 import com.example.PruebaCRUD.DTO.ListAlumnosDTO;
-import com.example.PruebaCRUD.Repositories.ListaAlumnosRepository;
+import com.example.PruebaCRUD.Repositories.InscripcionETSRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +13,13 @@ import java.util.List;
 @Service
 public class ListaAlumnoService {
 
-    private final ListaAlumnosRepository listaAlumnosRepository;
+    private final InscripcionETSRepository inscripcionETS;
 
     @Autowired
-    public ListaAlumnoService(ListaAlumnosRepository listaAlumnosRepository) {this.listaAlumnosRepository = listaAlumnosRepository;}
+    public ListaAlumnoService(InscripcionETSRepository inscripcionETS) {this.inscripcionETS = inscripcionETS;}
 
     public List<ListAlumnosDTO> ListarAlumnos(Integer idetss) {
-        List<Object[]> results = listaAlumnosRepository.callObtenerAsistenciaDetalles(idetss);
+        List<Object[]> results = inscripcionETS.callObtenerAsistenciaDetalles(idetss);
 
         List<ListAlumnosDTO> responseList = new ArrayList<>();
 

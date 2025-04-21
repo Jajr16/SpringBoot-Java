@@ -3,7 +3,7 @@ package com.example.PruebaCRUD.Services;
 import com.example.PruebaCRUD.DTO.ComparacionDTO;
 import com.example.PruebaCRUD.DTO.CredencialDTO;
 import com.example.PruebaCRUD.DTO.DatosWebDTO;
-import com.example.PruebaCRUD.Repositories.CredencialRepository;
+import com.example.PruebaCRUD.Repositories.AlumnoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,17 +13,17 @@ import java.util.List;
 @Service
 public class CredencialService {
     @Autowired
-    private CredencialRepository credencialRepository;
+    private AlumnoRepository alumnoRepository;
 
     public List<CredencialDTO> findCredencialPorBoleta(String boleta) {
-        return credencialRepository.findbyBoleta(boleta);
+        return alumnoRepository.findbyBoleta(boleta);
     }
 
     public ComparacionDTO compararDatos(String boleta, DatosWebDTO datosWeb) {
         System.out.println("\n=== INICIO DE COMPARACIÓN ===");
 
         // 1. Obtener datos del sistema
-        List<CredencialDTO> datosSistemaList = credencialRepository.findbyBoleta(boleta);
+        List<CredencialDTO> datosSistemaList = alumnoRepository.findbyBoleta(boleta);
         if (datosSistemaList.isEmpty()) {
             System.out.println("ERROR: Boleta no encontrada en el sistema");
             return new ComparacionDTO(false, List.of("Boleta no encontrada en el sistema"));

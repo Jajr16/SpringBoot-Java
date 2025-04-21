@@ -30,7 +30,7 @@ public class ImagenRedService {
     private IngresoSalonRepository ingresoSalonRepository;
 
     @Autowired
-    private AplicaRepository2 aplicaRepository2;
+    private AplicaRepository aplicaRepository;
 
     @Autowired
     private PersonalAcademicoRepository personalAcademicoRepository;
@@ -51,7 +51,7 @@ public class ImagenRedService {
 
             BoletaETSPK id = new BoletaETSPK(boleta, idets);
 
-            String docenteRfcResultado = aplicaRepository2.callObtenerDocenteRfc(idets);
+            String docenteRfcResultado = aplicaRepository.callObtenerDocenteRfc(idets);
 
             if (docenteRfcResultado == null) {
                 throw new DocenteNoEncontradoException("No se encontró docente RFC para idets " + idets);

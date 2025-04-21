@@ -3,6 +3,7 @@ package com.example.PruebaCRUD.Repositories;
 import com.example.PruebaCRUD.BD.InscripcionETS;
 import com.example.PruebaCRUD.BD.PKCompuesta.InscripcionETSPK;
 import com.example.PruebaCRUD.DTO.AlumnoDTO;
+import com.example.PruebaCRUD.DTO.DetalleAlumnosDTO;
 import com.example.PruebaCRUD.DTO.Saes.InscripcionesDTOSaes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -64,4 +65,31 @@ public interface InscripcionETSRepository extends JpaRepository<InscripcionETS, 
 
     @Query("SELECT DISTINCT ie.id.Boleta, ie.id.idETS FROM InscripcionETS ie")
     List<Object[]> findDistinctBoletaIdets();
+
+    @Query("SELECT new com.example.PruebaCRUD.DTO.DetalleAlumnosDTO(" +
+            "p.nombre as nombreAlumno, " +
+            "p.apellido_p as apellidoPAlumno, " +
+            "p.apellido_m as apellidoMAlumno, " +
+            "a.boleta, " +
+            "e.idUA.nombre as nombreETS, " +
+            "e.id_ETS as idETS, " +  // Añade esta línea para obtener el idETS
+            "e.Turno.nombre as nombreTurno, " +
+            "s.numSalonSETS.numSalon as salon, " +
+            "e.Fecha as fecha, " +
+            "pp.nombre as nombreDocente, " +
+            "pp.apellido_p as apellidoPDocente, " +
+            "pp.apellido_m as apellidoMDocente) " +
+            "FROM InscripcionETS i " +
+            "JOIN i.boletaIns a " +
+            "JOIN a.CURP p " +
+            "JOIN i.idETSIns e " +
+            "LEFT JOIN SalonETS s ON s.idETSSETS.id_ETS = e.id_ETS " +
+            "LEFT JOIN Aplica ap ON ap.idETS.id_ETS = e.id_ETS " +
+            "LEFT JOIN ap.docenteRFC pa " +
+            "LEFT JOIN pa.CURP pp " +
+            "WHERE a.boleta = :boleta")
+    List<DetalleAlumnosDTO> findDetalleAlumnoporboleta(@Param("boleta") String boleta);
+
+    @Query(value = "SELECT * FROM obtenerasistenciadetalles(:idets)", nativeQuery = true)
+    List<Object[]> callObtenerAsistenciaDetalles(@Param("idets") Integer idets);
 }

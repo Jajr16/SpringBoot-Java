@@ -2,7 +2,7 @@ package com.example.PruebaCRUD.Services;
 
 
 import com.example.PruebaCRUD.DTO.ReporteSqlDTO;
-import com.example.PruebaCRUD.Repositories.ReporteRepository;
+import com.example.PruebaCRUD.Repositories.AlumnoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +15,10 @@ import java.util.List;
 public class ReporteService {
 
     @Autowired
-    private ReporteRepository reporteRepository;
+    private AlumnoRepository alumnoRepository;
 
     public List<ReporteSqlDTO> obtenerDatosReporte(Integer idets, String boleta) {
-        List<Object[]> resultados = reporteRepository.obtenerDatosReporte(idets, boleta);
+        List<Object[]> resultados = alumnoRepository.obtenerDatosReporte(idets, boleta);
         List<ReporteSqlDTO> reportes = new ArrayList<>();
 
         for (Object[] resultado : resultados) {
@@ -46,7 +46,7 @@ public class ReporteService {
     }
 
     public String obtenerImagenAlumno(Integer idets, String boleta) {
-        return reporteRepository.obtenerImagenAlumno(idets, boleta);
+        return alumnoRepository.obtenerImagenAlumno(idets, boleta);
     }
 }
 

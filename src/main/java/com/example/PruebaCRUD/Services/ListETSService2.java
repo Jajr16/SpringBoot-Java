@@ -1,6 +1,6 @@
 package com.example.PruebaCRUD.Services;
 
-import com.example.PruebaCRUD.Repositories.AplicaRepository2;
+import com.example.PruebaCRUD.Repositories.AplicaRepository;
 import com.example.PruebaCRUD.Repositories.InscripcionETSRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,15 +13,15 @@ import java.util.List;
 @Service
 public class ListETSService2 {
 
-    private final AplicaRepository2 aplicaRepository2;
+    private final AplicaRepository aplicaRepository;
 
     @Autowired
-    public ListETSService2(AplicaRepository2 aplicaRepository2) {
-        this.aplicaRepository2 = aplicaRepository2;
+    public ListETSService2(AplicaRepository aplicaRepository) {
+        this.aplicaRepository = aplicaRepository;
     }
 
     public List<ListETSResponseDTO> inscripcionesETS(String docente_rfc) {
-        List<Object[]> results = aplicaRepository2.callListAplica(docente_rfc);
+        List<Object[]> results = aplicaRepository.callListAplica(docente_rfc);
 
         List<ListETSResponseDTO> responseList = new ArrayList<>();
 
@@ -44,7 +44,7 @@ public class ListETSService2 {
     }
 
     public Boolean confirmInscripcion(String docente_rfc) {
-        return aplicaRepository2.existsByDocenteRFCRfc(docente_rfc);
+        return aplicaRepository.existsByDocenteRFCRfc(docente_rfc);
     }
 
 }

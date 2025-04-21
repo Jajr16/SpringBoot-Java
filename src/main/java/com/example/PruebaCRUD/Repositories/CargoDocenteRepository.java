@@ -10,6 +10,4 @@ import org.springframework.stereotype.Repository;
  * Extiende de JpaRepository (ayuda a gestionar los datos de una BD)
  */
 @Repository
-public interface CargoDocenteRepository extends JpaRepository<CargoDocente, CargoDocentePK> {
-
-}
+public interface CargoDocenteRepository extends JpaRepository<CargoDocente, CargoDocentePK> {}

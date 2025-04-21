@@ -4,6 +4,7 @@ import com.example.PruebaCRUD.BD.Persona;
 import com.example.PruebaCRUD.DTO.PersonaDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,4 +33,6 @@ public interface PersonaRepository extends JpaRepository<Persona, String> {
             """)
     List<PersonaDTO> findAllAsDTO();
 
+    @Query(value = "SELECT * FROM obtenerpersona(:usuario)", nativeQuery = true)
+    List<Object[]> callobtenerpersona(@Param("usuario") String usuario);
 }

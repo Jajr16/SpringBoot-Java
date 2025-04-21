@@ -1,7 +1,7 @@
 package com.example.PruebaCRUD.Services;
 
 import com.example.PruebaCRUD.DTO.EstudianteEspecificoDTO;
-import com.example.PruebaCRUD.Repositories.EstudianteEspecificoRepository;
+import com.example.PruebaCRUD.Repositories.AlumnoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,15 +10,15 @@ import java.util.List;
 @Service
 public class EstudianteEspecificoService {
 
-    private final EstudianteEspecificoRepository estudianteEspecificoRepository;
+    private final AlumnoRepository alumnoRepository;
 
     @Autowired
-    public EstudianteEspecificoService(EstudianteEspecificoRepository estudianteEspecificoRepository){this.estudianteEspecificoRepository = estudianteEspecificoRepository;}
+    public EstudianteEspecificoService(AlumnoRepository alumnoRepository){this.alumnoRepository = alumnoRepository;}
 
 
     // Método para obtener los datos de un estudiante específico por boleta
     public EstudianteEspecificoDTO obtenerEstudiantePorBoleta(String boleta) {
-        List<Object[]> results = estudianteEspecificoRepository.callAlumnoEspecificoData(boleta);
+        List<Object[]> results = alumnoRepository.callAlumnoEspecificoData(boleta);
 
         // Verificar si hay resultados
         if (!results.isEmpty()) {

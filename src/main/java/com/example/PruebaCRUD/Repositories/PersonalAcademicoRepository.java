@@ -1,9 +1,15 @@
 package com.example.PruebaCRUD.Repositories;
 
+import com.example.PruebaCRUD.BD.Persona;
 import com.example.PruebaCRUD.BD.PersonalAcademico;
+import com.example.PruebaCRUD.DTO.Saes.DocentesDTOSaes;
+import com.example.PruebaCRUD.DTO.Saes.DocentesDTOToETS;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -14,4 +20,41 @@ import java.util.Optional;
 public interface PersonalAcademicoRepository extends JpaRepository<PersonalAcademico, String> {
     // Notación findBy(Columna con primera mayúscula) proporcionada por JPA
     Optional<PersonalAcademico> findByRfc(String RFC);
+
+    /**
+     * En lugar de hacer la notación de findBy que nos proporciona JPA, se realiza una consulta más detallada y
+     * personalizable con las clases del proyecto
+     */
+    @Query("""
+            SELECT new com.example.PruebaCRUD.DTO.Saes.DocentesDTOSaes(
+                CONCAT(p.nombre, " ", p.apellido_p, " ", p.apellido_m) as nombre,
+                pera.correoi
+                ) FROM PersonalAcademico as pera
+            INNER JOIN Persona p ON pera.CURP.CURP = p.CURP
+            INNER JOIN CargoDocente cd ON cd.RFCCD.rfc = pera.rfc
+            INNER JOIN Cargo c ON c.id_cargo = cd.idCargoCD.id_cargo
+            WHERE pera.TipoPA.cargo = 'Docente'
+            """)
+    List<DocentesDTOSaes> findDocentes();
+
+    @Query("""
+            SELECT new com.example.PruebaCRUD.DTO.Saes.DocentesDTOToETS(
+                p.CURP,
+                CONCAT(p.nombre, " ", p.apellido_p, " ", p.apellido_m) as nombre
+                ) FROM PersonalAcademico as pera
+            INNER JOIN Persona p ON pera.CURP.CURP = p.CURP
+            INNER JOIN CargoDocente cd ON cd.RFCCD.rfc = pera.rfc
+            INNER JOIN Cargo c ON c.id_cargo = cd.idCargoCD.id_cargo
+            WHERE pera.TipoPA.cargo = 'Docente'
+            """)
+    List<DocentesDTOToETS> findDocentesToSaes();
+
+    @Query(value = """
+            SELECT 1 FROM personalacademico pa INNER JOIN tipopersonal tp ON pa.tipopa = tp.tipopa WHERE
+            pa.curp = (:curp) AND tp.cargo = 'Docente'
+            """, nativeQuery = true)
+    Optional<PersonalAcademico> existsByCURP(@Param("curp") String curp);
+
+    // Notación findBy(Columna con primera mayúscula) proporcionada por JPA
+    Optional<PersonalAcademico> findByCURP(Persona persona);
 }
