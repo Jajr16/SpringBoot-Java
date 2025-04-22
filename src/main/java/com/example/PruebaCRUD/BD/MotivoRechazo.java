@@ -24,14 +24,15 @@ public class MotivoRechazo {
     }) // Relaciones a otras columnas de otras tablas
     private IngresoSalon ingresoSalon;
 
-    // Constructor sin argumentos (requerido por JPA)
-    public MotivoRechazo() {
-    }
 
     @Column(name = "motivo", nullable = false)
     private String motivo;
 
     // ==================== CONSTRUCTORES =====================
+    // Constructor sin argumentos (requerido por JPA)
+    public MotivoRechazo() {
+    }
+
     public MotivoRechazo(BoletaETSPK id, String motivo) {
         this.id = id;
         this.motivo = motivo;

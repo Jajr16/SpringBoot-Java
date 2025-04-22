@@ -19,8 +19,6 @@ public class TokenNotificacion {
     @Column(nullable = false)
     private String token;
 
-
-
 //    ============== GETTERS AND SETTERS ================
     public Long getId() {
         return id;

@@ -261,7 +261,7 @@ package "Entities" {
         + getIdPA() : ProgramaAcademico
         + setIdPA(ProgramaAcademico) : void
         + getCURP() : Persona
-        + setCURP(CURP : Persona) : void
+        + setCURP(Persona) : void
     }
 
     class Persona {
@@ -600,19 +600,112 @@ package "Entities" {
         + setMensaje(String) : void
     }
 
+    class MotivoRechazo {
+        - id : BoletaETSPK
+        - ingresoSalon : IngresoSalon
+        - motivo : String
+
+        + getId() : BoletaETSPK
+        + setId(BoletaETSPK) : void
+        + setIngresoSalon(IngresoSalon) : void
+    }
+
+    class Reemplazo {
+        - id : AplicaPK
+        - reemplazoPK : Aplica
+        - motivo : String
+        - estatus : Integer
+
+        + getId() : AplicaPK
+        + setId(AplicaPK id) : void
+        + setReemplazoPK(Aplica) : void
+        + getMotivo() : String
+        + setMotivo(String) : void
+        + getEstatus() : Integer
+        + setEstatus(Integer) : void
+    }
+
+    class ResultadoRN {
+        - id : BoletaETSPK
+        - ingresoSalon : IngresoSalon
+        - imagenAlumno : String
+        - precision : Float
+
+        + getId() : BoletaETSPK
+        + setId(BoletaETSPK) : void
+        + setImagenAlumno(String) : void
+        + setPrecision(Float) : void
+    }
+
+    class Salon {
+        - numSalon : Integer
+        - Edificio : Integer
+        - Piso : Integer
+        - tipoSalon : TipoSalon
+
+        + getNumSalon() : Integer
+    }
+
+    class TipoSalon {
+        - idTS : Integer
+        - tipo : String
+
+        + getTipo() : String
+        + setTipo(String) : void
+    }
+
+    class SalonETS {
+        - id : SalonETSPK
+        - numSalonSETS : Salon
+        - idETSSETS : ETS
+
+        + SalonETSPK getId() : SalonETSPK
+        + setId(SalonETSPK) : void
+        + setNumSalon(Salon) : void
+        + getIdETS() : ETS
+        + setIdETS(ETS) : void
+    }
+
+    class SalonETSPK {
+        - numSalon : Integer
+        - idETS : Integer
+
+        + setNumSalon(Integer) : void
+        + getIdETS() : Integer
+        + setIdETS(Integer) : void
+    }
+
+    class TipoEstado {
+        - idtipo : Integer
+        - tipo : String
+
+        + getTipo() : String
+        + setTipo(String) : void
+    }
+
+    class TokenNotificacion {
+        - id : Long
+        - usuario : Usuario
+        - token : String
+
+        + getId() : Long
+        + setId(Long) : void
+        + getUsuario() : Usuario
+        + setUsuario(Usuario) : void
+        + getToken() : String
+        + setToken(String) : void
+    }
+
 }
 
 ' Relaciones
 PersonaService --> PersonaRepository
 DocenteService --> DocenteRepository
 PersonaRepository --> Persona
-DocenteRepository --> Docente
-Docente --> Persona
 DocenteService --> PersonaService
 
 Alumno --> Persona : "1..1 CURP"
 Alumno --> ProgramaAcademico : "1..1 idPA"
-Alumno --> InscripcionETS : "1..* inscETSAl"
 
 Persona --> Sexo : "1..1 sexo"
 Persona --> UnidadAcademica : "1..1 unidadAcademica"
