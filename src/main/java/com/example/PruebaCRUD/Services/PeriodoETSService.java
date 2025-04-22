@@ -37,24 +37,8 @@ public class PeriodoETSService {
       * Lógica para devolver los días faltantes para el periodo de ETS
       */
     public TimeToETSDTO getTimeToETS() {
-        // Se obtiene el año y mes actual
-        Integer año = LocalDate.now().getYear();
-        Integer mes = LocalDate.now().getMonthValue();
-
         LocalDate today = LocalDate.now();
-
-        //Se inicializa la variable que servirá para armar el periodo en el estamos actualmente
-        String periodo = "";
-
-        // Obtiene los últimos dos dígitos del año actual
-        String año_abreviado = año.toString().substring(2);
-
-        // Se arma el periodo
-        if (mes >= 8 || mes <= 1) {
-            periodo = año_abreviado.concat("/1");
-        } else {
-            periodo = año_abreviado.concat("/2");
-        }
+        String periodo = crearPeriodo();
 
         // Se busca la fecha de inicio del periodo mediante el periodo
         String fechaETS = periodRepo.findFechaByPeriodo(periodo);
@@ -122,5 +106,25 @@ public class PeriodoETSService {
 
     public List<PeriodosETSProjectionSaes> obtenerPeriodos() {
         return periodRepo.findAllBy();
+    }
+
+    public static String crearPeriodo() {
+        int año = LocalDate.now().getYear();
+        int mes = LocalDate.now().getMonthValue();
+
+        //Se inicializa la variable que servirá para armar el periodo en el estamos actualmente
+        String periodo = "";
+
+        // Obtiene los últimos dos dígitos del año actual
+        String año_abreviado = Integer.toString(año).substring(2);
+
+        // Se arma el periodo
+        if (mes >= 8 || mes <= 1) {
+            periodo = año_abreviado.concat("/1");
+        } else {
+            periodo = año_abreviado.concat("/2");
+        }
+
+        return periodo;
     }
 }

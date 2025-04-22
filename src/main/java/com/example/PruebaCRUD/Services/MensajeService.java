@@ -31,14 +31,12 @@ import java.util.*;
 public class MensajeService {
     private final MensajeRepository mensajeRepository;
     private final ChatRepository chatRepository;
-    private final UsuarioRepository usuarioRepository;
     private final FirebaseService firebaseService;
 
     @Autowired
-    public MensajeService(MensajeRepository mensajeRepository, UsuarioRepository usuarioRepository,
+    public MensajeService(MensajeRepository mensajeRepository,
                           FirebaseService firebaseService, ChatRepository chatRepository) {
         this.mensajeRepository = mensajeRepository;
-        this.usuarioRepository = usuarioRepository;
         this.firebaseService = firebaseService;
         this.chatRepository = chatRepository;
     }

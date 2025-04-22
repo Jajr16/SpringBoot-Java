@@ -1,6 +1,6 @@
 package com.example.PruebaCRUD.Controllers.Saes;
 
-import com.example.PruebaCRUD.Services.EscuelaProgramaService;
+import com.example.PruebaCRUD.Services.ProgramaAcademicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,22 +13,22 @@ import java.util.Map;
 @RestController // Notación que defina el controlador REST (Solicitudes HTTP)
 @RequestMapping("/saes") // Mapear la url a este método
 public class EscuelaProgramaControllerSaes {
-    private final EscuelaProgramaService escuelaProgramaService;
+    private final ProgramaAcademicoService programaAcademicoService;
 
     @Autowired
-    public EscuelaProgramaControllerSaes(EscuelaProgramaService escuelaProgramaService) {
-        this.escuelaProgramaService = escuelaProgramaService;
+    public EscuelaProgramaControllerSaes(ProgramaAcademicoService programaAcademicoService) {
+        this.programaAcademicoService = programaAcademicoService;
     }
 
     @PostMapping("/programasAcademicos")
     public List<?> getProgramasAcademicos(@RequestBody Map<String, Integer> body) {
         Integer escuela = body.get("escuela");
-        System.out.println("BUENO AQUI ES "+ escuela);
-        return this.escuelaProgramaService.getProgramasAcademicos(escuela);
+        System.out.println("LA ESCUELA QUE RECIBE ES "+ escuela);
+        return this.programaAcademicoService.getProgramasAcademicos(escuela);
     }
 
     @GetMapping("/AllprogramasAcademicos")
     public List<?> getAllProgramasAcademicos() {
-        return this.escuelaProgramaService.getAllProgramasAcademicos();
+        return this.programaAcademicoService.getAllProgramasAcademicos();
     }
 }

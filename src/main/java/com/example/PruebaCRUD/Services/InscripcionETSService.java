@@ -4,6 +4,8 @@ import com.example.PruebaCRUD.BD.Alumno;
 import com.example.PruebaCRUD.BD.ETS;
 import com.example.PruebaCRUD.BD.InscripcionETS;
 import com.example.PruebaCRUD.BD.PKCompuesta.InscripcionETSPK;
+import com.example.PruebaCRUD.DTO.DetalleAlumnosDTO;
+import com.example.PruebaCRUD.DTO.ListAlumnosDTO;
 import com.example.PruebaCRUD.DTO.Saes.InscripcionesDTOSaes;
 import com.example.PruebaCRUD.DTO.Saes.ListInsETSProjectionSaes;
 import com.example.PruebaCRUD.DTO.Saes.NewInscripcionRequestSaes;
@@ -16,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -112,6 +115,42 @@ public class InscripcionETSService {
 
     public List<InscripcionesDTOSaes> getInscripciones(String usuario) {
         return this.inscripcionETSRepository.getInscripciones(usuario);
+    }
+
+    public List<ListAlumnosDTO> ListarAlumnos(Integer idetss) {
+        List<Object[]> results = inscripcionETSRepository.callObtenerAsistenciaDetalles(idetss);
+
+        List<ListAlumnosDTO> responseList = new ArrayList<>();
+
+        System.out.println("resultado" + results);
+
+        // Iterar sobre cada resultado y mapearlo a un DTO
+        for (Object[] result : results) {
+            Integer idets = (Integer) result[0];
+
+            String boleta = (String) result[1];
+            String curp = (String) result[2];
+            String nombreA = (String) result[3];
+            String apellidoP = (String) result[4];
+            String apellidoM = (String) result[5];
+
+            String sexo = (String) result[6];
+
+            String correo = (String) result[7];
+            String carrera = (String) result[8];
+
+            Integer aceptado = (Integer) result[9];
+
+            // Crear un DTO y agregarlo a la lista de respuestas
+            responseList.add(new ListAlumnosDTO(idets, boleta, curp, nombreA, apellidoP, apellidoM,sexo,correo,carrera,aceptado));
+        }
+
+        return responseList;
+    }
+
+    public List<DetalleAlumnosDTO> findDetalleAlumnoporboleta(String boleta) {
+        System.out.println(inscripcionETSRepository.findDetalleAlumnoporboleta(boleta));
+        return inscripcionETSRepository.findDetalleAlumnoporboleta(boleta);
     }
 
 }

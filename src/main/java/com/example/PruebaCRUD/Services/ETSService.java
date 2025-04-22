@@ -4,7 +4,11 @@ import com.example.PruebaCRUD.BD.*;
 import com.example.PruebaCRUD.BD.PKCompuesta.AplicaPK;
 import com.example.PruebaCRUD.BD.PKCompuesta.SalonETSPK;
 import com.example.PruebaCRUD.CryptAES.AES;
+import com.example.PruebaCRUD.DTO.DetailETSDTO;
+import com.example.PruebaCRUD.DTO.ETSDTO;
+import com.example.PruebaCRUD.DTO.Saes.ETSDTOSaes;
 import com.example.PruebaCRUD.DTO.Saes.NewETSDTOSaes;
+import com.example.PruebaCRUD.DTO.SalonesDTO;
 import com.example.PruebaCRUD.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +22,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
  /**
@@ -173,5 +178,48 @@ public class ETSService {
         );
     }
 
+     public List<ETSDTOSaes> detailAdminETS() {
+         return etsRepository.findETS();
+     }
+
+     public DetailETSDTO detallesETS(Integer ets){
+         // Obtiene un ETS por ID
+         Optional<ETSDTO> result = etsRepository.findById_ETS(ets);
+
+         if (result.isEmpty()) {
+             throw new RuntimeException("No se encontraron ETS");
+         }
+
+         // Guarda todos los datos con respecto al DTO de ETS
+         ETSDTO detailETS =  new ETSDTO(
+                 result.get().getIdETS(),
+                 result.get().getUnidadAprendizaje(),
+                 result.get().getTipoETS(),
+                 result.get().getIdPeriodo(),
+                 result.get().getTurno(),
+                 result.get().getFecha(),
+                 result.get().getCupo(),
+                 result.get().getDuracion(),
+                 result.get().getHora()
+         );
+
+         // Busca salones asignados al ETS
+         List<SalonesDTO> Salon = salonETSRepository.findByIdETSSETS(ets);
+
+         if(Salon.isEmpty()) {
+             // Devuelve los detalles del ETS
+             return new DetailETSDTO(detailETS);
+         }
+
+         // Devuelve los detalles del ETS junto con sus salones asignados
+         return new DetailETSDTO(
+                 detailETS,
+                 Salon
+         );
+     }
+
+     public List<?> getSalonesToETS() {
+         return this.salonRepository.findAllBy();
+     }
 
 }

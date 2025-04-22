@@ -1,6 +1,7 @@
 package com.example.PruebaCRUD.Controllers.Saes;
 
 import com.example.PruebaCRUD.Services.CargoService;
+import com.example.PruebaCRUD.Services.DocenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,15 +15,15 @@ import java.util.List;
 @RestController // Notación que defina el controlador REST (Solicitudes HTTP)
 @RequestMapping("/saes") // Mapear la url a este método
 public class CargoControllerSaes {
-    private final CargoService cargoService;
+    private final DocenteService docenteService;
 
-    @Autowired // Notación que permite inyectar dependencias, en este caso, CargoService
-    public CargoControllerSaes(CargoService cargoService) {
-        this.cargoService = cargoService;
+    @Autowired // Notación que permite inyectar dependencias, en este caso, DocenteService
+    public CargoControllerSaes(DocenteService docenteService) {
+        this.docenteService = docenteService;
     }
 
     @GetMapping("/CargoToDocente")
     public List<?> getCargos() {
-        return this.cargoService.getCargos();
+        return this.docenteService.getCargos();
     }
 }

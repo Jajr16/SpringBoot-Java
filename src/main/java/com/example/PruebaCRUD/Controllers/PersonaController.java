@@ -1,6 +1,7 @@
 package com.example.PruebaCRUD.Controllers;
 
 import com.example.PruebaCRUD.BD.Persona;
+import com.example.PruebaCRUD.DTO.DataPersonaDTO;
 import com.example.PruebaCRUD.DTO.PersonaDTO;
 import com.example.PruebaCRUD.Services.PersonaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,12 @@ public class PersonaController {
         return this.personaService.deletePersona(curp);
     }
 
-//    @PutMapping
-//    public ResponseEntity<Object> actualizarPersona(@RequestBody Persona persona) {
-//        return this.personaService.newPersona(persona);
-//    }
+    @GetMapping("/datos/{usuario}")
+    public ResponseEntity<List<DataPersonaDTO>> nombre(@PathVariable("usuario") String usuario) {
+
+        List<DataPersonaDTO> response = personaService.NombreUsuario(usuario);
+
+
+        return ResponseEntity.ok(response);
+    }
 }

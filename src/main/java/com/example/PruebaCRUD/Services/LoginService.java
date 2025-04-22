@@ -55,6 +55,4 @@ public class LoginService {
 
         return new LoginResponseDTO(username, error_code, message, role, cargos);
     }
-
-
 }

@@ -29,7 +29,6 @@ public class FirebaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(FirebaseService.class);
     private final TokenNotificacionRepository tokenNotificacionRepository;
-    private static FirebaseApp firebaseApp;
 
     @Autowired
     public FirebaseService(TokenNotificacionRepository tokenNotificacionRepository) {
@@ -42,7 +41,7 @@ public class FirebaseService {
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .build();
-            firebaseApp = FirebaseApp.initializeApp(options);
+            FirebaseApp firebaseApp = FirebaseApp.initializeApp(options);
         } catch (IOException e) {
             logger.error("Error al inicializar Firebase", e);
         }

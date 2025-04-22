@@ -17,7 +17,7 @@ public class IngresoInstalacionController {
     @Autowired
     private IngresoInstalacionService ingresoInstalacionService;
 
-    @PostMapping("registrar-asistencia")
+    @PostMapping("/registrar-asistencia")
     public ResponseEntity<?> registrarAsistencia(
             @RequestParam String boleta,
             @RequestParam String fecha,

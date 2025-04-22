@@ -33,8 +33,6 @@ public class ReporteNoPresenteService {
     @Autowired
     private IngresoSalonRepository ingresoSalonRepository;
 
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
     private final ZoneId mexicoCityZone = ZoneId.of("America/Mexico_City");
 
     @Scheduled(fixedRate = 5000)

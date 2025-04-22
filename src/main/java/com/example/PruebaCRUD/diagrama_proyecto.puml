@@ -1,0 +1,363 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+
+' Definición de estilos
+skinparam class {
+    BackgroundColor White
+    ArrowColor Black
+    BorderColor Black
+}
+
+
+
+' Services
+package "Services" {
+    class AlumnoService {
+        - datos : HashMap<String, Object>
+        - alumnoRepository : AlumnoRepository
+        - inscripcionETSRepository : InscripcionETSRepository
+        - periodRepo : periodoETSRepository
+        - unidadAcademicaRepository : UnidadAcademicaRepository
+        - programaAcademicoRepository : ProgramaAcademicoRepository
+        - personaService : PersonaService
+        - cloudinary : Cloudinary
+
+        + AlumnoService(AlumnoRepository, InscripcionETSRepository, periodoETSRepository,
+            UnidadAcademicaRepository, ProgramaAcademicoRepository, Cloudinary, PersonaService)
+        + findAlumnosInscritosETS() : List<AlumnoDTO>
+        + getAlumnos(String) : List<ListInsAlumnProjectionSaes>
+        + compararDatos(String, DatosWebDTO) : ComparacionDTO
+        + findCredencialPorBoleta(String) : List<CredencialDTO>
+        + getAlumnos() : List<AlumnoDTOSaes>
+        + @Transactional newVideoAlumno(NewVideoAlumnoDTOSaes) : ResponseEntity<Object>
+        + @Transactional newAlumno(NewAlumnoDTOSaes, MultipartFile, MultipartFile) : ResponseEntity<Object>
+        + obtenerEstudiantePorBoleta(String) : EstudianteEspecificoDTO
+        + obtenerUrlPorBoleta(String) : String
+        + obtenerDatosReporte(Integer, String) : List<ReporteSqlDTO>
+        + obtenerImagenAlumno(Integer, String) : String
+    }
+
+     class DocenteService {
+        - datos : HashMap<String, Object>
+        - personaService : PersonaService
+        - cargoRepository : CargoRepository
+        - personalAcademicoRepository : PersonalAcademicoRepository
+        - usuarioRepository : UsuarioRepository
+        - tipoPersonalRepository : TipoPersonalRepository
+        - unidadAcademicaRepository : UnidadAcademicaRepository
+        - cargoDocenteRepository : CargoDocenteRepository
+        - aplicaRepository : AplicaRepository
+
+        + DocenteService(CargoRepository, PersonalAcademicoRepository, UsuarioRepository,
+        TipoPersonalRepository, UnidadAcademicaRepository, CargoDocenteRepository, PersonaService, AplicaRepository)
+        + getCargos() : List<?>
+        + getDocentes() : List<DocentesDTOSaes>
+        + getDocentesToETS() : List<DocentesDTOToETS>
+        + newDocente(NewDocentesDTOSaes) : ResponseEntity<Object>
+        + obtenerRfcDocente(int) : String
+     }
+
+     class ETSService {
+        - datos : HashMap<String, Object>
+        - salonRepository : SalonRepository
+        - etsRepository : ETSRepository
+        - salonETSRepository : SalonETSRepository
+        - periodoETSRepository : periodoETSRepository
+        - turnoRepository : TurnoRepository
+        - unidadAprendizajeRepository : UnidadAprendizajeRepository
+        - aplicaRepository : AplicaRepository
+        - personalAcademicoRepository : PersonalAcademicoRepository
+        - personaRepository : PersonaRepository
+
+        + newETS(NewETSDTOSaes) : ResponseEntity<Object>
+        + detailAdminETS() : List<ETSDTOSaes>
+        + detallesETS(Integer) : DetailETSDTO
+     }
+
+     class FirebaseService {
+        - logger : Logger
+        - tokenNotificacionRepository : TokenNotificacionRepository
+
+        + enviarNoti(String, String, String, String, String) : void
+        - enviarMensajeFCM(String, String, String, String, String, String) : void
+     }
+
+     class ImagenRedService {
+        - {static} IMAGES_DIR : String
+        - resultadoRNRepository : ResultadoRNRepository
+        - ingresoSalonRepository : IngresoSalonRepository
+        - aplicaRepository : AplicaRepository
+        - personalAcademicoRepository : PersonalAcademicoRepository
+        - tipoEstadoRepository : TipoEstadoRepository
+        - motivoRechazoRepository : MotivoRechazoRepository
+
+        + guardarImagenYActualizarBD(MultipartFile, String, int, String, String, String, String) : String
+        - guardarImagenYActualizarBDCompleto(MultipartFile, String, int, String, String, String, String) : void
+     }
+
+     class IngresoInstalacionService {
+        - ingresoInstalacionRepository : IngresoInstalacionRepository
+
+        + registrarEntrada(String, String, String, Integer) : List<IngresoInstalacionDTO>
+     }
+
+     class IngresoSalonService {
+        - ingresoSalonRepository : IngresoSalonRepository
+
+        + verificarIngreso(Integer, String) : String
+        + eliminarReporte(Integer, String) : boolean
+     }
+
+     class InscripcionETSService {
+        - datos : HashMap<String, Object>
+        - etsRepository : ETSRepository
+        - inscripcionETSRepository : InscripcionETSRepository
+        - alumnoRepository : AlumnoRepository
+
+        + getMaterias(String) : List<ListInsETSProjectionSaes>
+        + newInscripcion(NewInscripcionRequestSaes) : ResponseEntity<Object>
+        + getInscripciones(String) : List<InscripcionesDTOSaes>
+        + ListarAlumnos(Integer) : List<ListAlumnosDTO>
+        + findDetalleAlumnoporboleta(String) : List<DetalleAlumnosDTO>
+     }
+
+     class ListETSService {
+        - inscripcionETSRepository : InscripcionETSRepository
+        - aplicaRepository : AplicaRepository
+
+        + inscripcionesETS(String) : List<ListETSResponseDTO>
+        + confirmInscripcion(String) : Boolean
+        + aplicacionETS(String) : List<ListETSResponseDTO>
+     }
+
+     class LoginService {
+        - usuarioRepository : UsuarioRepository
+
+        + login(String, String) : LoginResponseDTO
+     }
+
+     class MensajeService {
+        - mensajeRepository : MensajeRepository
+        - chatRepository : ChatRepository
+        - firebaseService : FirebaseService
+
+        + enviarMensaje(Usuario, Usuario, String) : void
+        + getUsers() : List<ListadoUsuariosDTO>
+        + getChat(String user) : ResponseEntity<Object>
+        + getHistorialMensajes(String, String) : ResponseEntity<List<MensajeDTO>>
+     }
+
+     class PeriodoETSService {
+        - datos : HashMap<String, Object>
+        - periodRepo : periodoETSRepository
+
+        + getPeriodos() : List<periodoETS>
+        + getTimeToETS() : TimeToETSDTO
+        + newPeriodo(periodoETS) : ResponseEntity<Object>
+        + obtenerPeriodos() : List<PeriodosETSProjectionSaes>
+        + {static} crearPeriodo() : String
+     }
+
+     class PersonalSeguridadService {
+        - cargoPSRepository : CargoPSRepository
+        - personalSeguridadRepository : PersonalSeguridadRepository
+        - usuarioRepository : UsuarioRepository
+        - turnoRepository : TurnoRepository
+        - unidadAcademicaRepository : UnidadAcademicaRepository
+        - personaService : PersonaService
+        - datos : HashMap<String, Object>
+
+        + getCargos() : List<?>
+        + getPS() : List<PersonalSeguridadDTOSaes>
+        + newPersonalSeguridad(NewPersonalSeguridadDTOSaes) : ResponseEntity<Object>
+     }
+
+    class PersonaService {
+        - datos: HashMap<String, Object>
+        - personaRepository: PersonaRepository
+        - sexoRepository: SexoRepository
+        - unidadAcademicaRepository: UnidadAcademicaRepository
+
+        + getPersona(): List<PersonaDTO>
+        + newPersona(Persona): ResponseEntity<Object>
+        + deletePersona(String): ResponseEntity<Object>
+        + NombreUsuario(String): List<DataPersonaDTO>
+        {static} - Persona(String, String, String, String, String, UnidadAcademica): Persona
+    }
+
+    class ProgramaAcademicoService {
+        - escuelaProgramaRepository : EscuelaProgramaRepository
+
+        + getProgramasAcademicos(Integer escuela) : List<?>
+        + getAllProgramasAcademicos() : List<?>
+    }
+
+    class ReemplazoService {
+        - reemplazoRepository : ReemplazoRepository
+        - aplicaRepository : AplicaRepository
+
+        + crearSolicitudReemplazo(SolicitudReemplazoDTO) : SolicitudReemplazoDTO
+        + verificarSolicitudPendiente(Integer, String) : VerificacionSolicitudResponseDTO
+    }
+
+    class ReporteNoPresenteService {
+        - inscripcionETSRepository : InscripcionETSRepository
+        - etsRepository : ETSRepository
+        - ingresoSalonRepository : IngresoSalonRepository
+        - mexicoCityZone : ZoneId
+
+        + verificarYCrearIngresosRetrasados() : void
+    }
+
+    class TokenNotificationService {
+        - usuarioRepository : UsuarioRepository
+        - tokenNotificacionRepository : TokenNotificacionRepository
+
+        + registrarToken(String, String) : TokenResponseDTO
+    }
+
+    class UnidadAcademicaService {
+        - unidadAcademicaRepository : UnidadAcademicaRepository
+
+        + getUA() : List<UnidadAcademica>
+    }
+
+    class UnidadAprendizajeService {
+        - unidadAprendizajeRepository : UnidadAprendizajeRepository
+
+        + getUApren() : List<UnidadAprendizajeProjectionSaes>
+    }
+}
+
+' Repositories
+package "Repositories" {
+    interface PersonaRepository {
+
+    }
+
+    interface DocenteRepository {
+        + findAll()
+        + findById()
+        + save()
+    }
+}
+
+' Entities
+package "Entities" {
+    class Alumno {
+        - boleta : String
+        - CorreoI : String
+        - imagenCredencial : String
+        - idPA : ProgramaAcademico
+        - CURP : Persona
+        - inscETSAl : List<InscripcionETS>
+
+        + getBoleta() : String
+        + setBoleta(String) : void
+        + getCorreoI() : String
+        + setCorreoI(String) : void
+        + getImagenCredencial() : String
+        + setImagenCredencial(String) : void
+        + getIdPA() : ProgramaAcademico
+        + setIdPA(ProgramaAcademico) : void
+        + getCURP() : Persona
+        + setCURP(CURP : Persona) : void
+        + getInscETSAl() : List<InscripcionETS>
+        + setInscETSAl(List<InscripcionETS>) : void
+    }
+
+    class Persona {
+        - CURP : String
+        - nombre : String
+        - apellido_p : String
+        - apellido_m : String
+        - sexo : Sexo
+        - unidadAcademica : UnidadAcademica
+
+        + getCURP() : String
+        + setCURP(String) : void
+        + getNombre() : String
+        + setNombre(String) : void
+        + setApellido_P(String) : void
+        + setApellido_M(String) : void
+        + Sexo getSexo() : Sexo
+        + setSexo(Sexo) : void
+        + getUnidadAcademica() : UnidadAcademica
+        + setUnidadAcademica(UnidadAcademica) : void
+    }
+
+    class Sexo {
+        - idSexo : Integer
+        - nombre : String
+
+        + getNombre() : String
+        + setNombre(String) : void
+    }
+
+    class UnidadAcademica {
+        - id_Escuela : Integer
+        - nombre : String
+
+        + getNombre() : String
+        + setNombre(String) : void
+    }
+
+    class ProgramaAcademico {
+        - idPA : String
+        - nombre : String
+        - Descripcion : String
+        - detailsEP : List<EscuelaPrograma>
+
+        + getIdPA() : String
+        + setIdPA(String) : void
+        + getNombre() : String
+        + setNombre(String) : void
+    }
+
+    class EscuelaPrograma {
+        - id : EscuelaProgramaPK
+        - idUA : UnidadAcademica
+        - idPAcad : ProgramaAcademico
+
+        + getId() : EscuelaProgramaPK
+        + setId(EscuelaProgramaPK) : void
+        + getIdPA() : ProgramaAcademico
+        + setIdPA(ProgramaAcademico) : void
+    }
+
+    class EscuelaProgramaPK {
+        - idEscuela : Integer
+        - idPA : String
+
+        + getIdPA() :  String
+        + setIdPA(String) : void
+        + equals(Object) : boolean
+        + hashCode() : int
+    }
+
+}
+
+' Relaciones
+PersonaService --> PersonaRepository
+DocenteService --> DocenteRepository
+PersonaRepository --> Persona
+DocenteRepository --> Docente
+Docente --> Persona
+DocenteService --> PersonaService
+
+Alumno --> Persona : "1..1 CURP"
+Alumno --> ProgramaAcademico : "1..1 idPA"
+Alumno --> InscripcionETS : "1..* inscETSAl"
+
+Persona --> Sexo : "1..1 sexo"
+Persona --> UnidadAcademica : "1..1 unidadAcademica"
+
+ProgramaAcademico --> EscuelaPrograma : "0..* detailsEP"
+
+EscuelaPrograma --> UnidadAcademica : "1..1 idUA"
+EscuelaPrograma --> ProgramaAcademico : "1..1 idPAcad"
+EscuelaPrograma --> EscuelaProgramaPK : "1..1 id"
+
+
+@enduml
