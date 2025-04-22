@@ -1,7 +1,7 @@
 package com.example.PruebaCRUD.Controllers;
 
 import com.example.PruebaCRUD.DTO.DocenteDTO;
-import com.example.PruebaCRUD.Services.PersonalAcademicoService;
+import com.example.PruebaCRUD.Services.DocenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +12,11 @@ import java.util.List;
 @RequestMapping("/api/docentes")
 public class PersonalAcademicoController {
 
-    private final PersonalAcademicoService personalAcademicoService;
+    private final DocenteService docenteService;
 
     @Autowired
-    public PersonalAcademicoController(PersonalAcademicoService personalAcademicoService) {
-        this.personalAcademicoService = personalAcademicoService;
+    public PersonalAcademicoController(DocenteService docenteService) {
+        this.docenteService = docenteService;
     }
 
     /**
@@ -25,7 +25,7 @@ public class PersonalAcademicoController {
      */
     @GetMapping
     public ResponseEntity<List<DocenteDTO>> obtenerTodosDocentes() {
-        List<DocenteDTO> docentes = personalAcademicoService.obtenerTodosLosDocentes();
+        List<DocenteDTO> docentes = docenteService.obtenerTodosLosDocentes();
         return ResponseEntity.ok(docentes);
     }
 }

@@ -43,7 +43,6 @@ public class PersonaController {
 
         List<DataPersonaDTO> response = personaService.NombreUsuario(usuario);
 
-
         return ResponseEntity.ok(response);
     }
 }

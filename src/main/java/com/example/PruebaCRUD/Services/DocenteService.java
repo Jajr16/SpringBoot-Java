@@ -2,6 +2,7 @@ package com.example.PruebaCRUD.Services;
 
 import com.example.PruebaCRUD.BD.*;
 import com.example.PruebaCRUD.BD.PKCompuesta.CargoDocentePK;
+import com.example.PruebaCRUD.DTO.DocenteDTO;
 import com.example.PruebaCRUD.DTO.Saes.DocentesDTOSaes;
 import com.example.PruebaCRUD.DTO.Saes.DocentesDTOToETS;
 import com.example.PruebaCRUD.DTO.Saes.NewDocentesDTOSaes;
@@ -54,7 +55,7 @@ public class DocenteService {
 
     //    Función para traer a todos los docentes
     public List<DocentesDTOSaes> getDocentes() {
-        return personalAcademicoRepository.findDocentes();
+        return personalAcademicoRepository.findDocentesSaes();
     }
 
     //    Función para traer a todos los docentes
@@ -165,5 +166,13 @@ public class DocenteService {
 
     public String obtenerRfcDocente(int idets) {
         return aplicaRepository.callObtenerDocenteRfc(idets);
+    }
+
+    /**
+     * Obtiene todos los docentes con su información básica en formato DTO
+     * @return Lista de DocenteDTO con RFC y nombre completo
+     */
+    public List<DocenteDTO> obtenerTodosLosDocentes() {
+        return personalAcademicoRepository.findDocentes();
     }
 }
