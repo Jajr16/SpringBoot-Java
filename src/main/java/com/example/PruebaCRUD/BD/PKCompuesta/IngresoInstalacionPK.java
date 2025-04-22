@@ -29,7 +29,7 @@ public class IngresoInstalacionPK implements Serializable { // Serializable indi
 
 //    ================== CONSTRUCTOR ===================
     public IngresoInstalacionPK() {}
-    
+
     public IngresoInstalacionPK(String boleta, Integer idets, Date fecha, Time hora) {
         this.boleta = boleta;
         this.idets = idets;

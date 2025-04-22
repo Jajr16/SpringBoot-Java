@@ -527,9 +527,79 @@ package "Entities" {
         + setTipo(String) : void
     }
 
-    class IngresoInstalacion {
+    class IngresoInstalacionPK {
+        - boleta : String
+        - idets : Integer
+        - fecha : Date
+        - hora : Time
 
+        + getBoleta() : String
+        + setBoleta(String) : void
+        + getIdets() : Integer
+        + setIdets(Integer) : void
+        + getFecha() : Date
+        + setFecha(Date) : void
+        + getHora() : Time
+        + setHora(Time) : void
     }
+
+    class IngresoInstalacion {
+        - id : IngresoInstalacionPK
+
+        + getId() : IngresoInstalacionPK
+        + setId(IngresoInstalacionPK) : void
+    }
+
+    class IngresoSalon {
+        - id : BoletaETSPK
+        - inscripcionETS : InscripcionETS
+        - fecha : Date
+        - hora : Time
+        - docente : PersonalAcademico
+        - estado : TipoEstado
+
+        + getId() : BoletaETSPK
+        + setId(BoletaETSPK) : void
+        + setInscripcionETS(InscripcionETS) : void
+        + getFecha() : Date
+        + setFecha(Date) : void
+        + getHora() : Time
+        + setHora(Time hora) : void
+        + getDocente() : PersonalAcademico
+        + setDocente(PersonalAcademico) : void
+        + getTipo() : TipoEstado
+        + setTipo(TipoEstado) : void
+    }
+
+    class BoletaETSPK {
+        - boleta : String
+        - idets : Integer
+
+        + getBoleta() : String
+        + setBoleta(String) : void
+        + getIdets() : Integer
+        + setIdets(Integer) : void
+    }
+
+    class MensajePK {
+        - chat : Chat
+        - fechahora : LocalDateTime
+
+        + getFechahora() : LocalDateTime
+    }
+
+    class Mensaje {
+        - id : MensajePK
+        - usuario : Usuario
+        - mensaje : String
+
+        + getRemitente() : Usuario
+        + getId() : MensajePK
+        + setId(MensajePK) : void
+        + getMensaje() : String
+        + setMensaje(String) : void
+    }
+
 }
 
 ' Relaciones
