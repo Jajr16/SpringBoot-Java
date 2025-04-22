@@ -5,7 +5,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # Etapa 2: Imagen final con Java y FFmpeg
-FROM openjdk:17-jdk-slim
+FROM openjdk:22-jdk-slim
 
 # Instala FFmpeg en la imagen final
 RUN apt-get update && \
