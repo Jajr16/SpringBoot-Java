@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
  */
 @Service // Anotación que indica que esta clase es un servicio de negocio
 public class TokenNotificationService {
-    private UsuarioRepository usuarioRepository;
-    private TokenNotificacionRepository tokenNotificacionRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final TokenNotificacionRepository tokenNotificacionRepository;
 
     @Autowired
     public TokenNotificationService(UsuarioRepository usuarioRepository, TokenNotificacionRepository tokenNotificacionRepository) {

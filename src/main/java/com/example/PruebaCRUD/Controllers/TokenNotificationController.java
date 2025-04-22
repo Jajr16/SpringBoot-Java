@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController // Notación que defina el controlador REST (Solicitudes HTTP)
 @RequestMapping(path = "/notificaciones") // Mapear la url a este método
 public class TokenNotificationController {
-    private TokenNotificationService tokenNotificationService;
+    private final TokenNotificationService tokenNotificationService;
 
     @Autowired
     public TokenNotificationController(TokenNotificationService tokenNotificationService){

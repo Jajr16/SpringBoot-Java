@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "com.example.PruebaCRUD.Repositories")
 @EntityScan(basePackages = "com.example.PruebaCRUD.BD")
-@RestController // Notación que hace que esto se vuelva un controlador.
+@ComponentScan(basePackages = {
+		"com.example.PruebaCRUD",
+		"com.example.PruebaCRUD.Services"
+})
 public class PruebaCrudApplication {
 
 	public static void main(String[] args) {
