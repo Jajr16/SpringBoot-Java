@@ -19,9 +19,6 @@ public interface AplicaRepository extends JpaRepository<Aplica, AplicaPK> {
     @Query(value = "SELECT * FROM ListAplica(:docente_rfc)", nativeQuery = true)
     List<Object[]> callListAplica(@Param("docente_rfc") String docente_rfc);
 
-    // Notación existsBy(Columna con primera mayúscula) proporcionada por JPA
-    boolean existsByDocenteRFCRfc(@Param("docente_rfc") String docente_rfc);
-
     @Query(value = "SELECT obtener_docente_rfc(:idets)", nativeQuery = true)
     String callObtenerDocenteRfc(@Param("idets") int idets);
 
