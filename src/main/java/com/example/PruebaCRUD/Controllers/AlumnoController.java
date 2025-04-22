@@ -102,7 +102,7 @@ public class AlumnoController {
         }
     }
 
-    @GetMapping("/alumno/inscritosETS/{ETSid}") // Notación para manejar solicitudes GET
+    @GetMapping("/inscritosETS/{ETSid}") // Notación para manejar solicitudes GET
     public ResponseEntity<List<ListAlumnosDTO>> inscripList(@PathVariable("ETSid") String idets) {
         System.out.println("dato" + idets);
         List<ListAlumnosDTO> response = inscripcionETSService.ListarAlumnos(Integer.valueOf(idets));

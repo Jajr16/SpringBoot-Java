@@ -12,6 +12,7 @@ import java.util.List;
  * Clase API que tendrá los endpoints
  */
 @RestController // Notación que defina el controlador REST (Solicitudes HTTP)
+@RequestMapping("/ETS")
 public class ListInscripcionesController {
     private final ListETSService listETSService;
 
@@ -20,14 +21,14 @@ public class ListInscripcionesController {
         this.listETSService = listETSService;
     }
 
-    @GetMapping("/ETS/InscripcionAlumno/{boleta}") // Notación para manejar solicitudes GET
+    @GetMapping("/InscripcionAlumno/{boleta}") // Notación para manejar solicitudes GET
     public ResponseEntity<List<ListETSResponseDTO>> inscripList(@PathVariable("boleta") String boleta) {
         List<ListETSResponseDTO> response = listETSService.inscripcionesETS(boleta);
 
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/ETS/InscripcionDocente/{docente_rfc}") // Notación para manejar solicitudes GET
+    @GetMapping("/InscripcionDocente/{docente_rfc}") // Notación para manejar solicitudes GET
     public ResponseEntity<List<ListETSResponseDTO>> LitaAplicacion(@PathVariable("docente_rfc") String boleta) {
         List<ListETSResponseDTO> response = listETSService.aplicacionETS(boleta);
 
