@@ -16,13 +16,6 @@ import java.util.List;
  */
 @Repository
 public interface EscuelaProgramaRepository extends JpaRepository<EscuelaPrograma, EscuelaProgramaPK> {
-    // Notación findBy(Columna con primera mayúscula) proporcionada por JPA
-    List<EscuelaPrograma> findByIdUANombre(String nombre);
-
-    List<EscuelaPrograma> findByIdPAcadNombre(String nombre);
-
-    List<EscuelaPrograma> findByIdUANombreAndIdPAcadNombre(String nombreEscuela, String nombrePrograma);
-
     @Query("""
             SELECT new com.example.PruebaCRUD.DTO.Saes.EscuelaProgramaDTOSaes (
                 pa.nombre,

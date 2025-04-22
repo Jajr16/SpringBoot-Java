@@ -16,6 +16,8 @@ public class DatabaseInitializer {
     @PostConstruct
     public void initDatabase() {
         try {
+            jdbcTemplate.execute("CREATE EXTENSION IF NOT EXISTS pgcrypto;");
+
             // Eliminar y luego crear las funciones
             jdbcTemplate.execute(dropFunctionIfExists("login"));
             jdbcTemplate.execute(loginFunction());
@@ -81,11 +83,46 @@ public class DatabaseInitializer {
             System.out.println("Funciones, triggers y constraints creados correctamente.");
         } catch (Exception e) {
             System.err.println("Error al inicializar la base de datos: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     private String dropFunctionIfExists(String functionName) {
-        return "DROP FUNCTION IF EXISTS " + functionName + " CASCADE;";
+        switch (functionName) {
+            case "login":
+                return "DROP FUNCTION IF EXISTS login(VARCHAR, VARCHAR) CASCADE;";
+            case "listinscripcionesets":
+                return "DROP FUNCTION IF EXISTS listinscripcionesETS(VARCHAR) CASCADE;";
+            case "listaplica":
+                return "DROP FUNCTION IF EXISTS listaplica(VARCHAR) CASCADE;";
+            case "buscardatosestudiante":
+                return "DROP FUNCTION IF EXISTS buscardatosestudiante(VARCHAR) CASCADE;";
+            case "obtenerasistenciadetalles":
+                return "DROP FUNCTION IF EXISTS obtenerasistenciadetalles(INTEGER) CASCADE;";
+            case "obtenerpersona":
+                return "DROP FUNCTION IF EXISTS obtenerpersona(VARCHAR) CASCADE;";
+            case "obtener_datos_reporte":
+                return "DROP FUNCTION IF EXISTS obtener_datos_reporte(INTEGER, VARCHAR) CASCADE;";
+            case "obtener_imagen_alumno":
+                return "DROP FUNCTION IF EXISTS obtener_imagen_alumno(INTEGER, VARCHAR) CASCADE;";
+            case "verificar_ingreso_salon":
+                return "DROP FUNCTION IF EXISTS verificar_ingreso_salon(VARCHAR, INTEGER) CASCADE;";
+            case "eliminar_reporte_alumno":
+                return "DROP FUNCTION IF EXISTS eliminar_reporte_alumno(INTEGER, VARCHAR) CASCADE;";
+            case "obtener_docente_rfc":
+                return "DROP FUNCTION IF EXISTS obtener_docente_rfc(INTEGER) CASCADE;";
+            case "validar_programa_academico":
+                return "DROP FUNCTION IF EXISTS validar_programa_academico() CASCADE;";
+            case "crear_usuarioa":
+                return "DROP FUNCTION IF EXISTS crear_usuarioa() CASCADE;";
+            case "crear_usuariopa":
+                return "DROP FUNCTION IF EXISTS crear_usuariopa() CASCADE;";
+            case "crear_usuariopps":
+                return "DROP FUNCTION IF EXISTS crear_usuariopps() CASCADE;";
+            default:
+                return "DROP FUNCTION IF EXISTS " + functionName + " CASCADE;";
+        }
+
     }
 
     private String dropTriggerIfExists(String triggerName, String tableName) {
