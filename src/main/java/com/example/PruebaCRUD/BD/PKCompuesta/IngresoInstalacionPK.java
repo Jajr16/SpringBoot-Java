@@ -28,12 +28,15 @@ public class IngresoInstalacionPK implements Serializable { // Serializable indi
     private Time hora;
 
 //    ================== CONSTRUCTOR ===================
+    public IngresoInstalacionPK() {}
+    
     public IngresoInstalacionPK(String boleta, Integer idets, Date fecha, Time hora) {
         this.boleta = boleta;
         this.idets = idets;
         this.fecha = fecha;
         this.hora = hora;
     }
+
 
     //    ================== GETTER AND SETTER ===================
     public String getBoleta() {

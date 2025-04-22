@@ -466,6 +466,70 @@ package "Entities" {
         + setDocenteRFC(PersonalAcademico) : void
         + setTitular(boolean) : void
     }
+
+    class Cargo {
+        - id_cargo : Integer
+        - cargo : String
+
+        + getIdCargo() : Integer
+        + getCargo() : String
+        + setCargo(String) : void
+    }
+
+    class CargoDocentePK {
+        - RFC : String
+        - idCargo : Integer
+
+        + setRFC(String) : void
+        + setIdCargo(Integer) : void
+        + equals(Object) : boolean
+        + hashCode() : int
+    }
+
+    class CargoDocente {
+        - id : CargoDocentePK
+        - RFCCD : PersonalAcademico
+        - idCargoCD : Cargo
+
+        + CargoDocentePK getId() : CargoDocentePK
+        + setId(CargoDocentePK) : void
+        + setRFC(PersonalAcademico) : void
+        + setIdCargo(Cargo) : void
+    }
+
+    class Chat {
+        - id : Long
+        - remitente : Usuario
+        - destinatario : Usuario
+
+        + getId() : Long
+        + setId(Long id) : void
+    }
+
+    class Usuario {
+        - usuario : String
+        - Password : String
+        - TipoU : TipoUsuario
+        - CURP : Persona
+
+        + getUsuario() : String
+        + setUsuario(String) : void
+        + getCURP() : Persona
+        + setCURP(Persona) : void
+        + getTipoU() : TipoUsuario
+    }
+
+    class TipoUsuario {
+        - idTU : Integer
+        - tipo : String
+
+        + getTipo() : String
+        + setTipo(String) : void
+    }
+
+    class IngresoInstalacion {
+
+    }
 }
 
 ' Relaciones
