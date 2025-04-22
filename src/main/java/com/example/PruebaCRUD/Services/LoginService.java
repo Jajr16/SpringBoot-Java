@@ -37,13 +37,16 @@ public class LoginService {
         }
 
         Object[] result = results.get(0);  // solo esperamos una fila
-
         System.out.println("EL RESULTADO DEL LOGIN FUE " + Arrays.toString(result));
 
         String message = (String) result[0];
         int error_code = (int) result[1];
         String role = (String) result[2];
-        String cargosStr = (String) result[3]; // puede ser null
+
+        String cargosStr = null;
+        if (result.length > 3 && result[3] != null) {
+            cargosStr = (String) result[3];
+        }
 
         System.out.println("EL ROL DEL LOGIN FUE " + role);
         System.out.println("LOS CARGOS SON " + cargosStr);
