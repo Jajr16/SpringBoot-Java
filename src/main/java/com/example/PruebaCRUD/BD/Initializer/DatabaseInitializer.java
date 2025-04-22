@@ -16,32 +16,66 @@ public class DatabaseInitializer {
     @PostConstruct
     public void initDatabase() {
         try {
-            // Ejecutar todas las funciones
+            // Eliminar y luego crear las funciones
+            jdbcTemplate.execute(dropFunctionIfExists("login"));
             jdbcTemplate.execute(loginFunction());
+
+            jdbcTemplate.execute(dropFunctionIfExists("listinscripcionesets"));
             jdbcTemplate.execute(listInscripcionesETSFunction());
+
+            jdbcTemplate.execute(dropFunctionIfExists("listaplica"));
             jdbcTemplate.execute(listAplicaFunction());
+
+            jdbcTemplate.execute(dropFunctionIfExists("buscardatosestudiante"));
             jdbcTemplate.execute(buscarDatosEstudianteFunction());
+
+            jdbcTemplate.execute(dropFunctionIfExists("obtenerasistenciadetalles"));
             jdbcTemplate.execute(obtenerAsistenciaDetallesFunction());
+
+            jdbcTemplate.execute(dropFunctionIfExists("obtenerpersona"));
             jdbcTemplate.execute(obtenerPersonaFunction());
+
+            jdbcTemplate.execute(dropFunctionIfExists("obtener_datos_reporte"));
             jdbcTemplate.execute(obtenerDatosReporteFunction());
+
+            jdbcTemplate.execute(dropFunctionIfExists("obtener_imagen_alumno"));
             jdbcTemplate.execute(obtenerImagenAlumnoFunction());
+
+            jdbcTemplate.execute(dropFunctionIfExists("verificar_ingreso_salon"));
             jdbcTemplate.execute(verificarIngresoSalonFunction());
+
+            jdbcTemplate.execute(dropFunctionIfExists("eliminar_reporte_alumno"));
             jdbcTemplate.execute(eliminarReporteAlumnoFunction());
+
+            jdbcTemplate.execute(dropFunctionIfExists("obtener_docente_rfc"));
             jdbcTemplate.execute(obtenerDocenteRfcFunction());
 
-            // Ejecutar funciones de validación y creación de usuarios
+            jdbcTemplate.execute(dropFunctionIfExists("validar_programa_academico"));
             jdbcTemplate.execute(validarProgramaAcademicoFunction());
+
+            jdbcTemplate.execute(dropFunctionIfExists("crear_usuarioa"));
             jdbcTemplate.execute(crearUsuarioAFunction());
+
+            jdbcTemplate.execute(dropFunctionIfExists("crear_usuariopa"));
             jdbcTemplate.execute(crearUsuarioPAFunction());
+
+            jdbcTemplate.execute(dropFunctionIfExists("crear_usuariopps"));
             jdbcTemplate.execute(crearUsuarioPSFunction());
 
-            // Ejecutar triggers
+            // Eliminar y luego crear los triggers
+            jdbcTemplate.execute(dropTriggerIfExists("trigger_validar_programa", "alumno"));
             jdbcTemplate.execute(triggerValidarPrograma());
+
+            jdbcTemplate.execute(dropTriggerIfExists("create_user", "alumno"));
             jdbcTemplate.execute(triggerCreateUser());
+
+            jdbcTemplate.execute(dropTriggerIfExists("create_userpa", "personalacademico"));
             jdbcTemplate.execute(triggerCreateUserPA());
+
+            jdbcTemplate.execute(dropTriggerIfExists("create_userps", "personalseguridad"));
             jdbcTemplate.execute(triggerCreateUserPS());
 
-            // Ejecutar alter tables para las constraints
+            // Alterar las tablas para garantizar constraints
             jdbcTemplate.execute(alterConstraints());
 
             System.out.println("Funciones, triggers y constraints creados correctamente.");
@@ -49,6 +83,15 @@ public class DatabaseInitializer {
             System.err.println("Error al inicializar la base de datos: " + e.getMessage());
         }
     }
+
+    private String dropFunctionIfExists(String functionName) {
+        return "DROP FUNCTION IF EXISTS " + functionName + " CASCADE;";
+    }
+
+    private String dropTriggerIfExists(String triggerName, String tableName) {
+        return "DROP TRIGGER IF EXISTS " + triggerName + " ON " + tableName + ";";
+    }
+
 
     private String loginFunction() {
         return """
