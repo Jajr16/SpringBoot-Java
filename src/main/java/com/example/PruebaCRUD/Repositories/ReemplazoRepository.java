@@ -13,4 +13,7 @@ import java.util.List;
 public interface ReemplazoRepository extends JpaRepository<Reemplazo, AplicaPK> {
     @Query("SELECT r FROM Reemplazo r WHERE r.id.DocenteRFC = :docenteRFC")
     List<Reemplazo> findByDocenteRfc(@Param("docenteRFC") String docenteRFC);
+
+    @Query("SELECT r FROM Reemplazo r WHERE r.estatus = :estatus")
+    List<Reemplazo> findByEstatus(@Param("estatus") Integer estatus);
 }
