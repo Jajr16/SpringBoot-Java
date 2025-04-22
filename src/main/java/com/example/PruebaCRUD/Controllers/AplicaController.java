@@ -1,6 +1,6 @@
 package com.example.PruebaCRUD.Controllers;
 
-import com.example.PruebaCRUD.Services.AplicaService;
+import com.example.PruebaCRUD.Services.DocenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +18,11 @@ import java.util.Map;
 public class AplicaController {
 
     @Autowired
-    private AplicaService aplicaService;
+    private DocenteService docenteService;
 
     @GetMapping("/docente/rfc/{idets}")
     public ResponseEntity<Map<String, String>> obtenerRfcDocente(@PathVariable int idets) {
-        String rfc = aplicaService.obtenerRfcDocente(idets);
+        String rfc = docenteService.obtenerRfcDocente(idets);
         if (rfc != null) {
             Map<String, String> response = new HashMap<>();
             response.put("rfc", rfc);
