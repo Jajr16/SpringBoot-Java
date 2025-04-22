@@ -7,13 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.bind.annotation.RestController;
 
-@SpringBootApplication
-@EnableJpaRepositories(basePackages = "com.example.PruebaCRUD.Repositories")
-@EntityScan(basePackages = "com.example.PruebaCRUD.BD")
-@ComponentScan(basePackages = {
-		"com.example.PruebaCRUD",
-		"com.example.PruebaCRUD.Services"
-})
+@SpringBootApplication(scanBasePackages = "com.example.PruebaCRUD")
 public class PruebaCrudApplication {
 
 	public static void main(String[] args) {
