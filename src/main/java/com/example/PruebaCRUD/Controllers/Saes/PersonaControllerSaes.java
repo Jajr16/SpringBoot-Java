@@ -22,14 +22,13 @@ import java.util.concurrent.ExecutionException;
 @RestController // Notación que defina el controlador REST (Solicitudes HTTP)
 @RequestMapping("/saes") // Mapear la url a este método
 public class PersonaControllerSaes {
-    private final PersonaService personaService;
     private final PersonalSeguridadService personalSeguridadService;
     private final DocenteService docenteService;
     private final AlumnoService alumnoService;
 
     @Autowired // Notación que permite inyectar dependencias, en este caso, PeriodoETSService
-    public PersonaControllerSaes(PersonaService personaService, PersonalSeguridadService personalSeguridadService, DocenteService docenteService, AlumnoService alumnoService) {
-        this.personaService = personaService;
+    public PersonaControllerSaes(PersonalSeguridadService personalSeguridadService,
+                                 DocenteService docenteService, AlumnoService alumnoService) {
         this.personalSeguridadService = personalSeguridadService;
         this.docenteService = docenteService;
         this.alumnoService = alumnoService;
