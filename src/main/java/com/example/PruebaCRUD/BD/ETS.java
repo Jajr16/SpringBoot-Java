@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity // Notación para indicar que esta clase es una entidad (sirve para JPAQL)
 @Table(name = "ets") // Notación que relaciona el nombre de la tabla que se le asigna con la de la BD
-public class ETS {
+    public class ETS {
 
     @Id // Indica que es la llave primaria de la tabla
     // Indica que esta columna se generará automáticamente (autoincrementandose)
@@ -102,11 +102,11 @@ public class ETS {
         this.idPeriodo = idPeriodo;
     }
 
-    public com.example.PruebaCRUD.BD.Turno getTurno() {
+    public Turno getTurno() {
         return Turno;
     }
 
-    public void setTurno(com.example.PruebaCRUD.BD.Turno turno) {
+    public void setTurno(Turno turno) {
         Turno = turno;
     }
 

@@ -386,6 +386,86 @@ package "Entities" {
         + getNombre()
         + setNombre(String nombre)
     }
+
+    class ETS {
+        - id_ETS : Integer
+        - idPeriodo : periodoETS
+        - Turno : Turno
+        - Fecha : Date
+        - hora : Time
+        - Cupo : Integer
+        - idUA : UnidadAprendizaje
+        - Duracion : Integer
+
+        + getIdETS() : Integer
+        + setIdETS(Integer) : void
+        + getTurno() : Turno
+        + setTurno(Turno) : void
+        + getFecha() : Date
+        + getHora() : Time
+        + setHora(Time) : void
+        + setFecha(Date) : void
+        + getIdUA() : UnidadAprendizaje
+        + setIdUA(UnidadAprendizaje) : void
+        + getETS() : List<Aplica>
+        + setETS(List<Aplica>) : void
+    }
+
+    class periodoETS {
+        - idPeriodo : Integer
+        - periodo : String
+        - tipo : char
+        - Fecha_Inicio : Date
+        - Fecha_Fin : Date
+
+        + getPeriodo() : String
+        + setPeriodo(String) : void
+        + getTipo() : char
+        + setTipo(char tipo) : void
+        + getFecha_Inicio() : Date
+        + getFecha_Fin() : Date
+
+    }
+
+    class UnidadAprendizaje {
+        - idUA : String
+        - nombre : String
+        - Descripcion : String
+        - idPA : ProgramaAcademico
+
+        + getIdUA() : String
+        + setIdUA(String) : void
+        + getNombre() : String
+        + setNombre(String) : void
+        + getIdPA() : ProgramaAcademico
+        + setIdPA(ProgramaAcademico) : void
+    }
+
+    class AplicaPK {
+        - idETS : Integer
+        - DocenteRFC : String
+
+        + getIdETS() : Integer
+        + setIdETS(Integer) : void
+        + getDocenteRFC() : String
+        + setDocenteRFC(String) : void
+        + equals(Object) : boolean
+        + hashCode() : int
+    }
+
+    class Aplica {
+        - id : AplicaPK
+        - idETS : ETS
+        - docenteRFC : PersonalAcademico
+        - coordinador : boolean
+
+        + getId() : AplicaPK
+        + setId(AplicaPK) : void
+        + getIdETS() : ETS
+        + setIdETS(ETS) : void
+        + setDocenteRFC(PersonalAcademico) : void
+        + setTitular(boolean) : void
+    }
 }
 
 ' Relaciones

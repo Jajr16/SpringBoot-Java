@@ -62,7 +62,6 @@ public class Aplica {
         return docenteRFC;
     }
 
-
     public void setDocenteRFC(PersonalAcademico docenteRFC) {
         this.docenteRFC = docenteRFC;
     }
