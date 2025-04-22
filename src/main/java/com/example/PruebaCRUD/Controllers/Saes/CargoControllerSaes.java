@@ -1,6 +1,5 @@
 package com.example.PruebaCRUD.Controllers.Saes;
 
-import com.example.PruebaCRUD.Services.CargoService;
 import com.example.PruebaCRUD.Services.DocenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
