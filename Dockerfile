@@ -18,4 +18,4 @@ RUN apt-get update && \
 COPY --from=build /app/target/PruebaCRUD-0.0.1-SNAPSHOT.jar app.jar
 
 # Ejecuta el .jar
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+CMD ["java", "-jar", "/app.jar"]
