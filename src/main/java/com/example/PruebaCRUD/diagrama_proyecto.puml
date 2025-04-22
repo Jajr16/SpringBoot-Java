@@ -251,7 +251,6 @@ package "Entities" {
         - imagenCredencial : String
         - idPA : ProgramaAcademico
         - CURP : Persona
-        - inscETSAl : List<InscripcionETS>
 
         + getBoleta() : String
         + setBoleta(String) : void
@@ -263,8 +262,6 @@ package "Entities" {
         + setIdPA(ProgramaAcademico) : void
         + getCURP() : Persona
         + setCURP(CURP : Persona) : void
-        + getInscETSAl() : List<InscripcionETS>
-        + setInscETSAl(List<InscripcionETS>) : void
     }
 
     class Persona {
@@ -336,6 +333,59 @@ package "Entities" {
         + hashCode() : int
     }
 
+    class TipoPersonal {
+        - tipoPA : Integer
+        - cargo : String
+
+        + getCargo() : String
+        + setCargo(String) : void
+    }
+
+    class PersonalAcademico {
+        - rfc : String
+        - CURP : Persona
+        - correoi : String
+        - TipoPA : TipoPersonal
+
+        + getRFC() : String
+        + setRFC(String) : void
+        + getCURP() : Persona
+        + setCURP(Persona) : void
+        + setCorreoI(String) : void
+        + setTipoPA(TipoPersonal) : void
+    }
+
+    class PersonalSeguridad {
+        - rfc : String
+        - CURP : Persona
+        - Turno : Turno
+        - Cargo : CargoPS
+
+        + getRfc() : String
+        + setRfc(String) : void
+        + getCURP() : Persona
+        + setCURP(Persona) : void
+        + getTurno() : Turno
+        + setTurno(Turno) : void
+        + getCargo() : CargoPS
+        + setCargo(CargoPS) : void
+    }
+
+    class Turno {
+        - idTurno : Integer
+        - nombre : String
+
+        + getNombre() : String
+        + setNombre(String) : void
+    }
+
+    class CargoPS {
+        - idCargo : Integer
+        - nombre : String
+
+        + getNombre()
+        + setNombre(String nombre)
+    }
 }
 
 ' Relaciones
@@ -358,6 +408,10 @@ ProgramaAcademico --> EscuelaPrograma : "0..* detailsEP"
 EscuelaPrograma --> UnidadAcademica : "1..1 idUA"
 EscuelaPrograma --> ProgramaAcademico : "1..1 idPAcad"
 EscuelaPrograma --> EscuelaProgramaPK : "1..1 id"
+
+PersonalAcademico --> Persona : "1..1 CURP"
+PersonalAcademico --> TipoPersonal : "1..1 TipoPA"
+
 
 
 @enduml

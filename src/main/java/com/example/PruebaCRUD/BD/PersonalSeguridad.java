@@ -52,11 +52,11 @@ public class PersonalSeguridad {
         this.CURP = CURP;
     }
 
-    public com.example.PruebaCRUD.BD.Turno getTurno() {
+    public Turno getTurno() {
         return Turno;
     }
 
-    public void setTurno(com.example.PruebaCRUD.BD.Turno turno) {
+    public void setTurno(Turno turno) {
         Turno = turno;
     }
 
