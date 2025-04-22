@@ -19,6 +19,15 @@ public class AplicaPK implements Serializable { // Serializable indica que la cl
     @Column(name = "DocenteRFC")
     private String DocenteRFC;
 
+
+    public AplicaPK() {
+    }
+
+    public AplicaPK(Integer idETS, String docenteRFC) {
+        this.idETS = idETS;
+        this.DocenteRFC = docenteRFC;
+    }
+
     // SETTERS AND GETTERS
     public Integer getIdETS() {
         return idETS;

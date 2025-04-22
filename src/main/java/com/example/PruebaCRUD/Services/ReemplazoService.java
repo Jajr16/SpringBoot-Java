@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReemplazoService {
@@ -24,6 +26,12 @@ public class ReemplazoService {
                             AplicaRepository aplicaRepository) {
         this.reemplazoRepository = reemplazoRepository;
         this.aplicaRepository = aplicaRepository;
+    }
+
+    public List<SolicitudReemplazoDTO> obtenerTodasSolicitudes() {
+        return reemplazoRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -62,6 +70,26 @@ public class ReemplazoService {
     }
 
     @Transactional(readOnly = true)
+    public List<SolicitudReemplazoDTO> obtenerSolicitudesPendientes() {
+        List<Reemplazo> reemplazos = reemplazoRepository.findByEstatus(0); // 0 = PENDIENTE
+        return reemplazos.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private SolicitudReemplazoDTO convertToDTO(Reemplazo reemplazo) {
+        String estado = reemplazo.getEstatus() == 0 ? "PENDIENTE" :
+                reemplazo.getEstatus() == 1 ? "APROBADO" : "RECHAZADO";
+
+        return new SolicitudReemplazoDTO(
+                reemplazo.getId().getIdETS(),
+                reemplazo.getId().getDocenteRFC(),
+                reemplazo.getMotivo(),
+                estado
+        );
+    }
+
+    @Transactional(readOnly = true)
     public VerificacionSolicitudResponseDTO verificarSolicitudPendiente(Integer etsId, String docenteRFC) {
         AplicaPK aplicaPK = new AplicaPK();
         aplicaPK.setIdETS(etsId);
@@ -83,5 +111,45 @@ public class ReemplazoService {
         }
 
         return new VerificacionSolicitudResponseDTO(false, null);
+    }
+
+    @Transactional
+    public void aprobarReemplazo(Integer idETS, String docenteRFC, String docenteReemplazo) {
+        AplicaPK aplicaPK = new AplicaPK(idETS, docenteRFC);
+
+        Reemplazo reemplazo = reemplazoRepository.findById(aplicaPK)
+                .orElseThrow(() -> new RuntimeException("Solicitud no encontrada"));
+
+        // Concatenar el reemplazo al motivo existente
+        String nuevoMotivo = reemplazo.getMotivo() + " | Reemplazo: " + docenteReemplazo;
+        reemplazo.setMotivo(nuevoMotivo);
+
+        reemplazo.setEstatus(1); // 1 = APROBADO
+        reemplazoRepository.save(reemplazo);
+    }
+
+    @Transactional
+    public void rechazarReemplazo(Integer idETS, String docenteRFC, String motivoRechazo) {
+        // 1. Verificar que la solicitud existe y está pendiente
+        AplicaPK aplicaPK = new AplicaPK(idETS, docenteRFC);
+
+        Reemplazo reemplazo = reemplazoRepository.findById(aplicaPK)
+                .orElseThrow(() -> new RuntimeException("No existe la solicitud de reemplazo especificada"));
+
+        if (reemplazo.getEstatus() != 0) {
+            throw new RuntimeException("La solicitud no está en estado PENDIENTE");
+        }
+
+        String motivoActualizado = reemplazo.getMotivo();
+        if (motivoRechazo != null && !motivoRechazo.isEmpty()) {
+            motivoActualizado += " | Rechazado porque: " + motivoRechazo;
+        } else {
+            motivoActualizado += " | Rechazado sin motivo especificado";
+        }
+        reemplazo.setMotivo(motivoActualizado);
+
+        // 3. Cambiar estado a RECHAZADO (2)
+        reemplazo.setEstatus(2); // 2 = RECHAZADO
+        reemplazoRepository.save(reemplazo);
     }
 }

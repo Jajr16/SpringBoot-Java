@@ -41,6 +41,8 @@ public class Aplica {
         this.id = id;
         this.coordinador = coordinador;
     }
+
+
     // ==================== SETTERS AND GETTERS ====================
     public AplicaPK getId() {
         return id;
