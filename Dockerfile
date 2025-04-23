@@ -18,4 +18,4 @@ RUN apt-get update && \
 COPY --from=build /app/target/PruebaCRUD-0.0.1-SNAPSHOT.jar app.jar
 
 # Ejecuta el .jar con puerto dinámico
-CMD sh -c "java -Dserver.port=$PORT -Dspring.profiles.active=prod -jar /app.jar"
+CMD ["java", "-Xmx256m", "-Xms128m", "-jar", "/app.jar"]
