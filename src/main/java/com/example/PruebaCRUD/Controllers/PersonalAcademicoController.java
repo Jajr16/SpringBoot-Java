@@ -25,7 +25,7 @@ public class PersonalAcademicoController {
      */
     @GetMapping
     public ResponseEntity<List<DocenteDTO>> obtenerTodosDocentes() {
-        List<DocenteDTO> docentes = docenteService.obtenerTodosLosDocentes();
+        List<DocenteDTO> docentes = docenteService.getDocentes();
         return ResponseEntity.ok(docentes);
     }
 }

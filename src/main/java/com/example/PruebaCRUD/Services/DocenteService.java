@@ -156,6 +156,7 @@ public class DocenteService {
 
         cargoDocenteRepository.save(cargoDocente);
 
+        // Se devuelve la respuesta de éxito al cliente
         datos.put("message", "Docente registrado con éxito.");
         return new ResponseEntity<>(
                 datos,
