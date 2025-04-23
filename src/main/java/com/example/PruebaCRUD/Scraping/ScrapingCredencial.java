@@ -35,7 +35,7 @@ public class ScrapingCredencial {
             System.out.println("Ya existe una imagen para este ID: " + existingImagePath);
             resultados.put("imagenPath", existingImagePath);
         }
-        
+
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         options.addArguments("--no-sandbox");

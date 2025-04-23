@@ -36,38 +36,49 @@ public class ReemplazoService {
 
     @Transactional
     public SolicitudReemplazoDTO crearSolicitudReemplazo(SolicitudReemplazoDTO solicitudDTO) {
-        // 1. Verificar relación Aplica
-        AplicaPK aplicaPK = new AplicaPK();
-        aplicaPK.setIdETS(solicitudDTO.getIdETS());
-        aplicaPK.setDocenteRFC(solicitudDTO.getDocenteRFC());
+        // Validar datos de entrada
+        if (solicitudDTO.getIdETS() == null || solicitudDTO.getDocenteRFC() == null) {
+            throw new IllegalArgumentException("IdETS y DocenteRFC son obligatorios");
+        }
 
+        // 1. Crear y configurar AplicaPK
+        AplicaPK aplicaPK = new AplicaPK(solicitudDTO.getIdETS(), solicitudDTO.getDocenteRFC());
+
+        // 2. Verificar que existe la relación Aplica
         Aplica aplica = aplicaRepository.findById(aplicaPK)
                 .orElseThrow(() -> new RuntimeException("No existe la relación Aplica especificada"));
 
-        // 2. Verificar solicitud pendiente
-        Optional<Reemplazo> existingReemplazo = reemplazoRepository.findById(aplicaPK);
-        if (existingReemplazo.isPresent() && existingReemplazo.get().getEstatus() == 0) {
-            throw new RuntimeException("Ya existe una solicitud pendiente para este ETS. No puedes enviar otra hasta que se procese esta.");
-        }
+        // 3. Verificar solicitud pendiente
+        reemplazoRepository.findById(aplicaPK)
+                .ifPresent(reemplazo -> {
+                    if (reemplazo.getEstatus() == 0) {
+                        throw new RuntimeException("Ya existe una solicitud pendiente para este ETS");
+                    }
+                });
 
-        // 3. Crear entidad Reemplazo
+        // 4. Crear y configurar nuevo Reemplazo
         Reemplazo reemplazo = new Reemplazo();
         reemplazo.setId(aplicaPK);
         reemplazo.setReemplazoPK(aplica);
         reemplazo.setMotivo(solicitudDTO.getMotivo());
-        reemplazo.setEstatus(0); // 0 = PENDIENTE
+        reemplazo.setEstatus(0);
 
-        // 4. Guardar
-        Reemplazo savedReemplazo = reemplazoRepository.save(reemplazo);
+        try {
+            // 5. Guardar
+            Reemplazo savedReemplazo = reemplazoRepository.save(reemplazo);
 
-        // 5. Devolver DTO
-        return new SolicitudReemplazoDTO(
-                savedReemplazo.getId().getIdETS(),
-                savedReemplazo.getId().getDocenteRFC(),
-                savedReemplazo.getMotivo(),
-                "PENDIENTE"
-        );
+            // 6. Convertir a DTO y retornar
+            return new SolicitudReemplazoDTO(
+                    savedReemplazo.getId().getIdETS(),
+                    savedReemplazo.getId().getDocenteRFC(),
+                    savedReemplazo.getMotivo(),
+                    savedReemplazo.getEstatus() == 0 ? "PENDIENTE" : "OTRO_ESTADO"
+            );
+        } catch (Exception e) {
+            throw new RuntimeException("Error al guardar el reemplazo: " + e.getMessage());
+        }
     }
+
 
     @Transactional(readOnly = true)
     public List<SolicitudReemplazoDTO> obtenerSolicitudesPendientes() {

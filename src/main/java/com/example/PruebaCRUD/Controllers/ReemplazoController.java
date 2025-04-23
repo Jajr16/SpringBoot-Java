@@ -28,6 +28,7 @@ public class ReemplazoController {
 
     @PostMapping
     public ResponseEntity<SolicitudReemplazoDTO> crearSolicitudReemplazo(@RequestBody SolicitudReemplazoDTO solicitudDTO) {
+        System.out.println("LOS PARÁMETROS QUE LE LLEGAN SON: " + solicitudDTO.toString());
         SolicitudReemplazoDTO nuevoReemplazo = reemplazoService.crearSolicitudReemplazo(solicitudDTO);
         return ResponseEntity.ok(nuevoReemplazo);
     }

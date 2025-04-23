@@ -6,6 +6,8 @@ public class SolicitudReemplazoDTO {
     private String motivo;
     private String estatus;
 
+    public SolicitudReemplazoDTO() {}
+
     public SolicitudReemplazoDTO(Integer idETS, String docenteRFC, String motivo, String estatus)  {
         this.idETS = idETS;
         this.docenteRFC = docenteRFC;

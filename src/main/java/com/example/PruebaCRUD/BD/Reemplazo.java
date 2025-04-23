@@ -16,8 +16,8 @@ public class Reemplazo {
      * Relación en la BD de la tabla actual con la clase de la instancia. LAZY indica que las consultas a la tabla
      * principal no van a obtener los datos de la tabla relacionada
      */
+    @MapsId // Relaciona esta variable con la de la clase de la llave primaria
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId("id") // Relaciona esta variable con la de la clase de la llave primaria
     @JoinColumns({
             @JoinColumn(name = "idETS", referencedColumnName = "idETS", nullable = false),
             @JoinColumn(name = "docenterfc", referencedColumnName = "docente_rfc", nullable = false)
