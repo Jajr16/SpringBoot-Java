@@ -54,8 +54,8 @@ public class DocenteService {
     }
 
     //    Función para traer a todos los docentes
-    public List<DocentesDTOSaes> getDocentes() {
-        return personalAcademicoRepository.findDocentesSaes();
+    public List<DocenteDTO> getDocentes() {
+        return personalAcademicoRepository.findDocentes();
     }
 
     //    Función para traer a todos los docentes
@@ -166,13 +166,5 @@ public class DocenteService {
 
     public String obtenerRfcDocente(int idets) {
         return aplicaRepository.callObtenerDocenteRfc(idets);
-    }
-
-    /**
-     * Obtiene todos los docentes con su información básica en formato DTO
-     * @return Lista de DocenteDTO con RFC y nombre completo
-     */
-    public List<DocenteDTO> obtenerTodosLosDocentes() {
-        return personalAcademicoRepository.findDocentes();
     }
 }

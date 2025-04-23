@@ -5,6 +5,7 @@ import com.example.PruebaCRUD.BD.PersonalAcademico;
 import com.example.PruebaCRUD.DTO.Saes.DocentesDTOSaes;
 import com.example.PruebaCRUD.DTO.Saes.DocentesDTOToETS;
 import com.example.PruebaCRUD.DTO.DocenteDTO;
+import com.example.PruebaCRUD.DTO.Saes.DocentesDTOToETS;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

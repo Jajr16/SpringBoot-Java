@@ -1,5 +1,6 @@
 package com.example.PruebaCRUD.Controllers.Saes;
 
+import com.example.PruebaCRUD.DTO.DocenteDTO;
 import com.example.PruebaCRUD.DTO.Saes.*;
 import com.example.PruebaCRUD.Services.AlumnoService;
 import com.example.PruebaCRUD.Services.DocenteService;
@@ -49,8 +50,8 @@ public class PersonaControllerSaes {
     }
 
     @GetMapping("/docentes")
-    public ResponseEntity<List<DocentesDTOSaes>> getDocentes(){
-        List<DocentesDTOSaes> response = this.docenteService.getDocentes();
+    public ResponseEntity<List<DocenteDTO>> getDocentes(){
+        List<DocenteDTO> response = this.docenteService.getDocentes();
         System.out.println(response);
         return ResponseEntity.ok(response);
     }
