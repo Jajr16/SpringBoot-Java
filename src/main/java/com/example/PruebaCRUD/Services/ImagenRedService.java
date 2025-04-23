@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class ImagenRedService {
     private static final String IMAGES_DIR = "./src/main/java/com/example/PruebaCRUD/IMGRED/";
-    private static final String CLOUDINARY_FOLDER = "IMGRED"; // Nombre de la carpeta en Cloudinary
+    private static final String CLOUDINARY_FOLDER = "IMGRED";
 
     @Autowired
     private ResultadoRNRepository resultadoRNRepository;
@@ -47,7 +47,7 @@ public class ImagenRedService {
     private MotivoRechazoRepository motivoRechazoRepository;
 
     @Autowired
-    private Cloudinary cloudinary; // Asegúrate de tener configurado Cloudinary
+    private Cloudinary cloudinary;
 
     public String guardarImagenYActualizarBD(MultipartFile file, String boleta, int idets, String razon, String tipo, String hora, String precision) {
         guardarImagenYActualizarBDCompleto(file, boleta, idets, razon, tipo, hora, precision);
@@ -66,7 +66,6 @@ public class ImagenRedService {
 
             int estadoNum = obtenerEstadoNumero(tipo);
 
-            // Crear o actualizar IngresoSalon (esto sigue siendo síncrono)
             IngresoSalon ingresoSalon = ingresoSalonRepository.findById(id).orElse(null);
             if (ingresoSalon == null) {
                 ingresoSalon = new IngresoSalon();
@@ -93,7 +92,6 @@ public class ImagenRedService {
 
             final IngresoSalon finalIngresoSalon = ingresoSalon;
 
-            // Subir imagen a Cloudinary de forma asíncrona
             CompletableFuture<String> uploadFuture = CompletableFuture.supplyAsync(() -> {
                 if (file == null || file.isEmpty()) {
                     System.out.println("Error: El archivo está nulo o vacío.");
@@ -121,19 +119,17 @@ public class ImagenRedService {
                 }
             });
 
-            // Esperar a que la subida de la imagen se complete (de forma síncrona en el hilo del request)
+
             String imageUrl = null;
             try {
-                imageUrl = uploadFuture.get(); // Esto bloquea el hilo hasta que la Future se complete
+                imageUrl = uploadFuture.get();
                 System.out.println("URL de la imagen cargada (síncrono): " + imageUrl);
             } catch (InterruptedException | java.util.concurrent.ExecutionException e) {
                 System.err.println("Error al esperar la carga de Cloudinary: " + e.getMessage());
                 e.printStackTrace();
-                // Considera lanzar una excepción aquí si la subida falla y es crítico
-                // throw new RuntimeException("Error al subir la imagen", e);
+
             }
 
-            // Actualizar o insertar en la base de datos DESPUÉS de la (intento de) carga
             if (imageUrl != null && precision != null && !precision.isEmpty()) {
                 System.out.println("Intentando guardar/actualizar ResultadoRN para boleta: " + boleta + ", idets: " + idets);
                 ResultadoRN resultadoRN = resultadoRNRepository.findById(id).orElse(null);
@@ -152,7 +148,6 @@ public class ImagenRedService {
                 System.out.println("No se cumplen las condiciones para guardar/actualizar ResultadoRN o la URL de la imagen es nula.");
             }
 
-            // Guardar motivo de rechazo (esto sigue siendo síncrono)
             if (razon != null && !razon.isEmpty()){
                 System.out.println("Intentando guardar MotivoRechazo para boleta: " + boleta + ", idets: " + idets + ", razón: " + razon);
                 MotivoRechazo motivoRechazo = new MotivoRechazo(id, razon);
@@ -176,7 +171,7 @@ public class ImagenRedService {
             case "Rechazado: Verificado por el profesor." -> 3;
             case "Rechazado: Verificado con el código QR de la credencial." -> 2;
             case "Rechazado: Verificado con el reconocimiento facial." -> 1;
-            default -> 0; // O un valor por defecto que manejes
+            default -> 0; 
         };
     }
 
