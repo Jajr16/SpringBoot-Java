@@ -8,7 +8,7 @@ import java.security.cert.CertificateFactory;
 public class SSLConfig {
     public static void configureSSL() throws Exception {
         // Cargar el certificado desde el archivo
-        FileInputStream fis = new FileInputStream("src/main/resources/certs/ipn.mx.crt");
+        FileInputStream fis = new FileInputStream("./src/main/resources/certs/ipn.mx.crt");
         KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
         keyStore.load(null, null);
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
