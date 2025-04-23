@@ -6,11 +6,13 @@ import com.example.PruebaCRUD.Services.InscripcionETSService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -86,17 +88,16 @@ public class AlumnoController {
     }
 
     @GetMapping("/imagenReporte")
-    public ResponseEntity<ByteArrayResource> obtenerImagenReporte(
+    public ResponseEntity<Void> obtenerImagenReporte(
             @RequestParam("idets") Integer idets,
-            @RequestParam("boleta") String boleta) throws IOException {
+            @RequestParam("boleta") String boleta) {
 
         String rutaImagen = alumnoService.obtenerImagenAlumno(idets, boleta);
 
         if (rutaImagen != null && !rutaImagen.isEmpty() && !rutaImagen.equals("No Imagen")) {
-            byte[] imageBytes = Files.readAllBytes(Paths.get(rutaImagen));
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_JPEG);
-            return ResponseEntity.ok().headers(headers).body(new ByteArrayResource(imageBytes));
+            headers.setLocation(URI.create(rutaImagen));
+            return new ResponseEntity<>(headers, HttpStatus.FOUND); // 302 Found (redirección temporal)
         } else {
             return ResponseEntity.notFound().build();
         }
