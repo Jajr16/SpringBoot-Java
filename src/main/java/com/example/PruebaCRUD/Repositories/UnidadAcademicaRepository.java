@@ -15,5 +15,5 @@ import java.util.Optional;
 @Repository
 public interface UnidadAcademicaRepository extends JpaRepository<UnidadAcademica, Integer> {
     // Notación findBy(Columna con primera mayúscula) proporcionada por JPA
-    Optional<UnidadAcademica> findByNombre (String nombre);
+    Optional<UnidadAcademica> findByNombre(String nombre);
 }

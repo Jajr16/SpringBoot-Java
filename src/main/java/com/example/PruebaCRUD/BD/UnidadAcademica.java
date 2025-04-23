@@ -17,7 +17,7 @@ public class UnidadAcademica {
     @Column(name = "id_Escuela") // Notación que indica que la variable será una columna
     private Integer id_Escuela;
 
-    @Column(name = "Nombre", nullable = false, unique = true, length = 100)
+    @Column(name = "nombre", nullable = false, unique = true, length = 100)
     private String nombre;
 
 //    @OneToMany(mappedBy = "idUA", cascade = CascadeType.PERSIST)
