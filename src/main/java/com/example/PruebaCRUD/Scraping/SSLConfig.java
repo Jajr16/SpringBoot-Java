@@ -8,31 +8,31 @@ import java.security.cert.CertificateFactory;
 public class SSLConfig {
     public static void configureSSL() {
         try {
-            // Usar directamente la ruta del archivo, que sabemos que funciona
-            FileInputStream fis = new FileInputStream("src/main/resources/certs/ipn.mx.crt");
+            // Obtener el certificado como recurso del classpath
+            InputStream certStream = SSLConfig.class.getClassLoader().getResourceAsStream("certs/ipn.mx.crt");
+            if (certStream == null) {
+                throw new FileNotFoundException("No se pudo encontrar el certificado en el classpath");
+            }
+
             KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
             keyStore.load(null, null);
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
-            keyStore.setCertificateEntry("ipn_cert", cf.generateCertificate(fis));
+            keyStore.setCertificateEntry("ipn_cert", cf.generateCertificate(certStream));
 
-            // Crear TrustManager que use el certificado
             TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
             tmf.init(keyStore);
 
-            // Configurar SSLContext
             SSLContext sc = SSLContext.getInstance("TLS");
             sc.init(null, tmf.getTrustManagers(), null);
 
-            // Establecer como contexto SSL predeterminado
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 
-            fis.close();
-            System.out.println("Certificado cargado exitosamente");
+            certStream.close();
+            System.out.println("Certificado cargado exitosamente desde el classpath");
 
         } catch (Exception e) {
-            System.err.println("Error al cargar el certificado: " + e.getMessage());
+            System.err.println("Error al configurar SSL: " + e.getMessage());
             e.printStackTrace();
-            // No usar configuración de respaldo, para que sepamos si hay un problema
         }
     }
 }
