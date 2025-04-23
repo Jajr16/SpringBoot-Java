@@ -88,18 +88,18 @@ public class AlumnoController {
     }
 
     @GetMapping("/imagenReporte")
-    public ResponseEntity<Void> obtenerImagenReporte(
+    public ResponseEntity<Map<String, String>> obtenerImagenReporteUrl(
             @RequestParam("idets") Integer idets,
             @RequestParam("boleta") String boleta) {
 
         String rutaImagen = alumnoService.obtenerImagenAlumno(idets, boleta);
 
         if (rutaImagen != null && !rutaImagen.isEmpty() && !rutaImagen.equals("No Imagen")) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(URI.create(rutaImagen));
-            return new ResponseEntity<>(headers, HttpStatus.FOUND); // 302 Found (redirección temporal)
+            Map<String, String> response = new HashMap<>();
+            response.put("imageUrl", rutaImagen);
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
