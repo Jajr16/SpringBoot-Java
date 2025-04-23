@@ -66,7 +66,7 @@ public class ImagenRedService {
 
             int estadoNum = obtenerEstadoNumero(tipo);
 
-            // Crear o actualizar IngresoSalon
+            // Crear o actualizar IngresoSalon (esto sigue siendo síncrono)
             IngresoSalon ingresoSalon = ingresoSalonRepository.findById(id).orElse(null);
             if (ingresoSalon == null) {
                 ingresoSalon = new IngresoSalon();
@@ -91,7 +91,6 @@ public class ImagenRedService {
             }
             ingresoSalonRepository.save(ingresoSalon);
 
-            // Crear una copia efectivamente final de ingresoSalon
             final IngresoSalon finalIngresoSalon = ingresoSalon;
 
             // Subir imagen a Cloudinary de forma asíncrona
@@ -122,34 +121,38 @@ public class ImagenRedService {
                 }
             });
 
-            // Actualizar o insertar en la base de datos después de (intentar) la carga
-            uploadFuture.thenAccept(imageUrl -> {
-                System.out.println("URL de la imagen cargada: " + imageUrl);
-                System.out.println("Precisión recibida: " + precision);
-                if (imageUrl != null && precision != null && !precision.isEmpty()) {
-                    System.out.println("Intentando guardar/actualizar ResultadoRN para boleta: " + boleta + ", idets: " + idets);
-                    ResultadoRN resultadoRN = resultadoRNRepository.findById(id).orElse(null);
-                    Float precisionFloat = Float.parseFloat(precision);
-                    if (resultadoRN == null) {
-                        resultadoRN = new ResultadoRN(id, imageUrl, precisionFloat, finalIngresoSalon);
-                        System.out.println("ResultadoRN creado: " + resultadoRN);
-                    } else {
-                        resultadoRN.setImagenAlumno(imageUrl);
-                        resultadoRN.setPrecision(precisionFloat);
-                        System.out.println("ResultadoRN actualizado: " + resultadoRN);
-                    }
-                    resultadoRNRepository.save(resultadoRN);
-                    System.out.println("ResultadoRN guardado/actualizado");
-                } else {
-                    System.out.println("No se cumplen las condiciones para guardar/actualizar ResultadoRN");
-                }
-            }).exceptionally(throwable -> {
-                System.err.println("Excepción en CompletableFuture: " + throwable.getMessage());
-                throwable.printStackTrace();
-                return null;
-            });
+            // Esperar a que la subida de la imagen se complete (de forma síncrona en el hilo del request)
+            String imageUrl = null;
+            try {
+                imageUrl = uploadFuture.get(); // Esto bloquea el hilo hasta que la Future se complete
+                System.out.println("URL de la imagen cargada (síncrono): " + imageUrl);
+            } catch (InterruptedException | java.util.concurrent.ExecutionException e) {
+                System.err.println("Error al esperar la carga de Cloudinary: " + e.getMessage());
+                e.printStackTrace();
+                // Considera lanzar una excepción aquí si la subida falla y es crítico
+                // throw new RuntimeException("Error al subir la imagen", e);
+            }
 
-            // Guardar motivo de rechazo
+            // Actualizar o insertar en la base de datos DESPUÉS de la (intento de) carga
+            if (imageUrl != null && precision != null && !precision.isEmpty()) {
+                System.out.println("Intentando guardar/actualizar ResultadoRN para boleta: " + boleta + ", idets: " + idets);
+                ResultadoRN resultadoRN = resultadoRNRepository.findById(id).orElse(null);
+                Float precisionFloat = Float.parseFloat(precision);
+                if (resultadoRN == null) {
+                    resultadoRN = new ResultadoRN(id, imageUrl, precisionFloat, finalIngresoSalon);
+                    System.out.println("ResultadoRN creado: " + resultadoRN);
+                } else {
+                    resultadoRN.setImagenAlumno(imageUrl);
+                    resultadoRN.setPrecision(precisionFloat);
+                    System.out.println("ResultadoRN actualizado: " + resultadoRN);
+                }
+                resultadoRNRepository.save(resultadoRN);
+                System.out.println("ResultadoRN guardado/actualizado");
+            } else {
+                System.out.println("No se cumplen las condiciones para guardar/actualizar ResultadoRN o la URL de la imagen es nula.");
+            }
+
+            // Guardar motivo de rechazo (esto sigue siendo síncrono)
             if (razon != null && !razon.isEmpty()){
                 System.out.println("Intentando guardar MotivoRechazo para boleta: " + boleta + ", idets: " + idets + ", razón: " + razon);
                 MotivoRechazo motivoRechazo = new MotivoRechazo(id, razon);
