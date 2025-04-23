@@ -8,7 +8,10 @@ import java.security.KeyStore;
 import java.security.cert.CertificateFactory;
 
 public class SSLConfig {
-    public static void configureSSL() {
+    private static SSLContext sslContext = null;
+
+    public static synchronized void configureSSL() {
+        if (sslContext != null) return;
         try {
             // Obtener el certificado como recurso del classpath
             InputStream certStream = SSLConfig.class.getClassLoader().getResourceAsStream("certs/ipn.mx.crt");
@@ -30,8 +33,9 @@ public class SSLConfig {
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 
             certStream.close();
-            System.out.println("Certificado cargado exitosamente desde el classpath");
+            sslContext = sc;
 
+            System.out.println("Certificado cargado exitosamente desde el classpath");
         } catch (Exception e) {
             System.err.println("Error al configurar SSL: " + e.getMessage());
             e.printStackTrace();

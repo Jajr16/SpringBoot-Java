@@ -14,28 +14,26 @@ import java.io.InputStream;
 import java.net.URL;
 
 public class Scraping {
-
     private static final String IMAGE_PATH = "./src/main/java/com/example/PruebaCRUD/Scraping/images/calendario.png";
     private static final String PDF_PATH = "./src/main/java/com/example/PruebaCRUD/Scraping/files/calendario.pdf";
+    private static final long UN_MES_EN_MILLIS = 30L * 24 * 60 * 60 * 1000; // 30 días en milisegundos
 
-    /**
-     *
-     * @param url Link de la página a la que se ahrá WebScraping
-     * @param cssQuery CSS del elemento que vamos a obtener para descargar el calendario
-     * @return la ruta de la imagen que vamos a descargar
-     */
     public String processPdfToImage(String url, String cssQuery) {
         try {
-
-            File pdfDir = new File("./src/main/java/com/example/PruebaCRUD/Scraping/files");
             File imageDir = new File("./src/main/java/com/example/PruebaCRUD/Scraping/images");
-            if (!pdfDir.exists()) pdfDir.mkdirs();
+            File pdfDir = new File("./src/main/java/com/example/PruebaCRUD/Scraping/files");
             if (!imageDir.exists()) imageDir.mkdirs();
+            if (!pdfDir.exists()) pdfDir.mkdirs();
 
-            // Verificar si la imagen ya existe
             File imageFile = new File(IMAGE_PATH);
 
-            // Certificado SSL para poder realizar el web scraping sin errores
+            // Verificar si la imagen existe y tiene menos de un mes
+            if (imageFile.exists() && !isCacheExpired(imageFile)) {
+                System.out.println("Usando imagen en caché (menos de un mes de antigüedad)");
+                return IMAGE_PATH;
+            }
+
+            // Configurar SSL
             SSLConfig.configureSSL();
 
             // Hacer scraping para obtener la URL del PDF
@@ -46,7 +44,6 @@ public class Scraping {
                 throw new RuntimeException("No se encontró un enlace al PDF válido.");
             }
 
-            // Obtener el href del elemento para descargar el PDF
             String pdfUrl = linkElement.attr("href");
 
             // Descargar el PDF
@@ -63,10 +60,13 @@ public class Scraping {
             // Convertir la primera página del PDF a imagen
             try (PDDocument pdfDocument = PDDocument.load(pdfFile)) {
                 PDFRenderer renderer = new PDFRenderer(pdfDocument);
-                BufferedImage image = renderer.renderImageWithDPI(0, 300); // Primera página, 300 DPI
-                ImageIO.write(image, "png", imageFile); // Guardar como PNG
-                System.out.println("Imagen guardada en: " + IMAGE_PATH);
+                BufferedImage image = renderer.renderImageWithDPI(0, 300);
+                ImageIO.write(image, "png", imageFile);
+                System.out.println("Nueva imagen del calendario guardada en: " + IMAGE_PATH);
             }
+
+            // Eliminar el PDF temporal
+            pdfFile.delete();
 
             return IMAGE_PATH;
 
@@ -74,5 +74,11 @@ public class Scraping {
             e.printStackTrace();
             throw new RuntimeException("Error al procesar el PDF a imagen: " + e.getMessage());
         }
+    }
+
+    private boolean isCacheExpired(File file) {
+        long tiempoActual = System.currentTimeMillis();
+        long tiempoArchivo = file.lastModified();
+        return (tiempoActual - tiempoArchivo) > UN_MES_EN_MILLIS;
     }
 }

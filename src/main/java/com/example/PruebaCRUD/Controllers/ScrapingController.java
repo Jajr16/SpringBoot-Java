@@ -62,28 +62,27 @@ public class ScrapingController {
         System.out.println("Solicitud recibida para capturar credencial: " + credencialUrl);
 
         try {
-            // Paso 1: Extraer boleta del HTML y capturar screenshot
             Map<String, String> scrapingResult = ScrapingCredencial.capturarCredencial(credencialUrl);
             String boleta = scrapingResult.get("boleta");
             String imagePath = scrapingResult.get("imagenPath");
 
             if (boleta == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                return ResponseEntity.badRequest()
                         .body(new CredencialResponseDTO("No se encontró la boleta en el HTML", null));
             }
 
-            Path path = Paths.get(imagePath);
-            byte[] imageBytes = Files.readAllBytes(path);
+            // Leer imagen
+            byte[] imageBytes = Files.readAllBytes(new File(imagePath).toPath());
             String base64Image = Base64.getEncoder().encodeToString(imageBytes);
 
+            // Buscar credenciales
             List<CredencialDTO> credenciales = alumnoService.findCredencialPorBoleta(boleta);
 
-            CredencialResponseDTO response = new CredencialResponseDTO(base64Image, credenciales);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return ResponseEntity.ok(new CredencialResponseDTO(base64Image, credenciales));
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("Error en el scraping: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.internalServerError()
                     .body(new CredencialResponseDTO("Error al procesar la credencial: " + e.getMessage(), null));
         }
     }
