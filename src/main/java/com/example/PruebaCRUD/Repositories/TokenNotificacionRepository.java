@@ -15,7 +15,7 @@ public interface TokenNotificacionRepository extends JpaRepository<TokenNotifica
     Optional<TokenNotificacion> findByUsuarioUsuario(String usuarioId);
     Optional<TokenNotificacion> findByToken(String token);
 
-    // Opcionalmente, podrías agregar:
+
     void deleteByUsuarioUsuario(String usuarioId);
 }
 
