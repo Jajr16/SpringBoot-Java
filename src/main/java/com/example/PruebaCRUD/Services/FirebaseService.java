@@ -1,49 +1,76 @@
 package com.example.PruebaCRUD.Services;
 
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.*;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.messaging.AndroidConfig;
-import com.google.firebase.messaging.AndroidNotification;
-import java.io.IOException;
-import java.io.FileInputStream;
-
-import com.example.PruebaCRUD.BD.TokenNotificacion;
-import com.example.PruebaCRUD.Repositories.TokenNotificacionRepository;
+import com.google.firebase.messaging.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
+
+import com.example.PruebaCRUD.BD.TokenNotificacion;
+import com.example.PruebaCRUD.Repositories.TokenNotificacionRepository;
+
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class FirebaseService {
-
     private static final Logger logger = LoggerFactory.getLogger(FirebaseService.class);
     private final TokenNotificacionRepository tokenNotificacionRepository;
+    private final FirebaseApp firebaseApp;
 
     @Autowired
     public FirebaseService(TokenNotificacionRepository tokenNotificacionRepository) {
         this.tokenNotificacionRepository = tokenNotificacionRepository;
+        this.firebaseApp = initializeFirebaseApp();
     }
 
-    static {
+    private FirebaseApp initializeFirebaseApp() {
         try {
-            FileInputStream serviceAccount = new FileInputStream("./src/main/java/com/example/PruebaCRUD/serviceAccountKey.json");
-            FirebaseOptions options = new FirebaseOptions.Builder()
-                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .build();
-            FirebaseApp firebaseApp = FirebaseApp.initializeApp(options);
+            if (!FirebaseApp.getApps().isEmpty()) {
+                return FirebaseApp.getInstance();
+            }
+
+            // Intenta primero con el archivo local
+            try {
+                FileInputStream serviceAccount =
+                        new FileInputStream("./src/main/java/com/example/PruebaCRUD/serviceAccountKey.json");
+                FirebaseOptions options = FirebaseOptions.builder()
+                        .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                        .build();
+                logger.info("Firebase inicializado con archivo local de credenciales");
+                return FirebaseApp.initializeApp(options);
+            } catch (IOException localFileError) {
+                logger.info("No se encontró archivo local de credenciales, intentando con variables de entorno");
+
+                // Si no encuentra el archivo local, intenta con las variables de entorno
+                String credentials = System.getenv("FIREBASE_CREDENTIALS");
+                if (credentials != null && !credentials.isEmpty()) {
+                    GoogleCredentials googleCredentials = GoogleCredentials.fromStream(
+                            new ByteArrayInputStream(credentials.getBytes())
+                    );
+
+                    FirebaseOptions options = FirebaseOptions.builder()
+                            .setCredentials(googleCredentials)
+                            .setProjectId(System.getenv("FIREBASE_PROJECT_ID"))
+                            .build();
+
+                    logger.info("Firebase inicializado con variables de entorno");
+                    return FirebaseApp.initializeApp(options);
+                } else {
+                    throw new RuntimeException("No se encontraron credenciales de Firebase");
+                }
+            }
         } catch (IOException e) {
-            logger.error("Error al inicializar Firebase", e);
+            logger.error("Error al inicializar Firebase: {}", e.getMessage(), e);
+            throw new RuntimeException("No se pudo inicializar Firebase", e);
         }
     }
 
@@ -66,32 +93,36 @@ public class FirebaseService {
         }
     }
 
-    private void enviarMensajeFCM(String titulo, String cuerpo, String token, String destinatario, String remitente, String mensaje) throws FirebaseMessagingException {
-        Map<String, String> data = new HashMap<>();
-        data.put("message", mensaje);
-        data.put("sender", remitente);
-        data.put("destinatario", destinatario);
+    private void enviarMensajeFCM(String titulo, String cuerpo, String token, String destinatario,
+                                  String remitente, String mensaje) throws FirebaseMessagingException {
+        try {
+            Map<String, String> data = new HashMap<>();
+            data.put("message", mensaje);
+            data.put("sender", remitente);
+            data.put("destinatario", destinatario);
 
-        System.out.println("Payload de la notificación FCM: {}" + data);
+            logger.debug("Enviando notificación FCM con payload: {}", data);
 
-        Message msg = Message.builder()
-                .putData("message", mensaje)
-                .putData("sender", remitente)
-                .putData("destinatario", destinatario)
-                .setToken(token)
-                .setNotification(Notification.builder()
-                        .setTitle(titulo)
-                        .setBody(cuerpo)
-                        .build())
-                .setAndroidConfig(AndroidConfig.builder()
-                        .setNotification(AndroidNotification.builder()
-                                .setTitle(titulo)
-                                .setBody(cuerpo)
-                                .build())
-                        .build())
-                .build();
+            Message msg = Message.builder()
+                    .putAllData(data)
+                    .setToken(token)
+                    .setNotification(Notification.builder()
+                            .setTitle(titulo)
+                            .setBody(cuerpo)
+                            .build())
+                    .setAndroidConfig(AndroidConfig.builder()
+                            .setNotification(AndroidNotification.builder()
+                                    .setTitle(titulo)
+                                    .setBody(cuerpo)
+                                    .build())
+                            .build())
+                    .build();
 
-        String response = FirebaseMessaging.getInstance().send(msg);
-        logger.info("Mensaje enviado correctamente a FCM. ID del mensaje: {}", response);
+            String response = FirebaseMessaging.getInstance().send(msg);
+            logger.info("Mensaje FCM enviado correctamente. ID: {}", response);
+        } catch (FirebaseMessagingException e) {
+            logger.error("Error al enviar mensaje FCM: {}", e.getMessage(), e);
+            throw e;
+        }
     }
 }
