@@ -7,16 +7,16 @@ import org.springframework.stereotype.Repository;
  * datos de los ETS
  */
 public class ChatsDTO {
-    private String destinatario;
+    private String usuario;
     private String nombre;
 
-    // ==================== CONSTRUCTORES =====================
     public ChatsDTO() {}
 
-    public ChatsDTO(String destinatario, String nombre) {
-        this.destinatario = destinatario;
+    public ChatsDTO(String usuario, String nombre) {
+        this.usuario = usuario;
         this.nombre = nombre;
     }
+
 
     // ==================== SETTERS AND GETTERS ====================
     public String getNombre() {
@@ -27,19 +27,19 @@ public class ChatsDTO {
         this.nombre = nombre;
     }
 
-    public String getDestinatario() {
-        return destinatario;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setDestinatario(String destinatario) {
-        this.destinatario = destinatario;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     @Override
     public String toString() {
-        return "{" +
-                "destinatario='" + destinatario + '\'' +
-                "nombre='" + nombre + '\'' +
+        return "ChatsDTO{" +
+                "usuario='" + usuario + '\'' +
+                ", nombre='" + nombre + '\'' +
                 '}';
     }
 }

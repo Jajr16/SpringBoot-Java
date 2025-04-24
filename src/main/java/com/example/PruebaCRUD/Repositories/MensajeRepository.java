@@ -21,15 +21,15 @@ public interface MensajeRepository extends JpaRepository<Mensaje, MensajePK> {
     List<Mensaje> findById_Chat_IdOrderById_FechahoraAsc(Long chatId);
 
     @Query("""
-            SELECT new com.example.PruebaCRUD.DTO.ListadoUsuariosDTO(
-                u.usuario,
-                CONCAT(p.nombre, " ", p.apellido_p, " ", p.apellido_m) as nombre,
-                tu.tipo
-            ) FROM Usuario u
-            INNER JOIN Persona p ON u.CURP.CURP = p.CURP
-            INNER JOIN TipoUsuario tu ON u.TipoU.idTU = tu.idTU
-            WHERE tu.tipo != 'Personal Seguridad'
-            """)
+        SELECT new com.example.PruebaCRUD.DTO.ListadoUsuariosDTO(
+            u.usuario,
+            CONCAT(p.nombre, ' ', p.apellido_p, ' ', p.apellido_m),
+            tu.tipo
+        ) FROM Usuario u
+        INNER JOIN u.CURP p
+        INNER JOIN u.TipoU tu
+        WHERE tu.tipo != 'Personal Seguridad'
+    """)
     List<ListadoUsuariosDTO> findUsers();
 
 }

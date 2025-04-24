@@ -7,13 +7,13 @@ package com.example.PruebaCRUD.DTO;
 public class ListadoUsuariosDTO {
     String usuario;
     String nombre;
-    String tipou;
+    String tipo;
 
     // ==================== CONSTRUCTORES =====================
-    public ListadoUsuariosDTO(String usuario, String nombre, String tipou) {
+    public ListadoUsuariosDTO(String usuario, String nombre, String tipo) {
         this.usuario = usuario;
         this.nombre = nombre;
-        this.tipou = tipou;
+        this.tipo = tipo;
     }
     // ==================== SETTERS AND GETTERS ====================
 
@@ -33,12 +33,12 @@ public class ListadoUsuariosDTO {
         this.nombre = nombre;
     }
 
-    public String getTipoU() {
-        return tipou;
+    public String gettipo() {
+        return tipo;
     }
 
-    public void setTipoU(String tipoU) {
-        this.tipou = tipoU;
+    public void settipo(String tipo) {
+        this.tipo = tipo;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class ListadoUsuariosDTO {
         return "ListadoUsuariosDTO{" +
                 "usuario='" + usuario + '\'' +
                 ", nombre='" + nombre + '\'' +
-                ", tipoU='" + tipou + '\'' +
+                ", tipo='" + tipo + '\'' +
                 '}';
     }
 }
