@@ -13,6 +13,9 @@ import java.util.Optional;
 @Repository
 public interface TokenNotificacionRepository extends JpaRepository<TokenNotificacion, Long> {
     Optional<TokenNotificacion> findByUsuarioUsuario(String usuarioId);
-
     Optional<TokenNotificacion> findByToken(String token);
+
+    // Opcionalmente, podrías agregar:
+    void deleteByUsuarioUsuario(String usuarioId);
 }
+

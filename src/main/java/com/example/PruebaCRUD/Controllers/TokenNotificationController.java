@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
  * Clase API que tendrá los endpoints
  */
 @RestController // Notación que defina el controlador REST (Solicitudes HTTP)
-@RequestMapping(path = "/notificaciones") // Mapear la url a este método
+@RequestMapping(path = "/" +
+        "notificaciones") // Mapear la url a este método
 public class TokenNotificationController {
     private final TokenNotificationService tokenNotificationService;
 

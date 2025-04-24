@@ -6,13 +6,9 @@ import com.example.PruebaCRUD.DTO.TokenResponseDTO;
 import com.example.PruebaCRUD.Repositories.TokenNotificacionRepository;
 import com.example.PruebaCRUD.Repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-/**
- * Clase que contendrá la lógica que para realizar las funciones principales de los endpoints
- */
-@Service // Anotación que indica que esta clase es un servicio de negocio
+@Service
 public class TokenNotificationService {
     private final UsuarioRepository usuarioRepository;
     private final TokenNotificacionRepository tokenNotificacionRepository;
@@ -25,12 +21,21 @@ public class TokenNotificationService {
 
     public TokenResponseDTO registrarToken(String usuarioT, String token) {
         try {
-            Usuario usuario = usuarioRepository.findById(usuarioT).orElseThrow();
+            Usuario usuario = usuarioRepository.findById(usuarioT)
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-            if (tokenNotificacionRepository.findByToken(token).isPresent()) {
-                return new TokenResponseDTO("El token ya está registrado", 400);
+            // Buscar si existe un token para este usuario
+            var tokenExistente = tokenNotificacionRepository.findByUsuarioUsuario(usuarioT);
+
+            if (tokenExistente.isPresent()) {
+                // Actualizar el token existente
+                TokenNotificacion tokenNotificacion = tokenExistente.get();
+                tokenNotificacion.setToken(token);
+                tokenNotificacionRepository.save(tokenNotificacion);
+                return new TokenResponseDTO("Token actualizado correctamente", 200);
             }
 
+            // Si no existe, crear un nuevo registro
             TokenNotificacion tokenNotificacion = new TokenNotificacion();
             tokenNotificacion.setUsuario(usuario);
             tokenNotificacion.setToken(token);
@@ -38,7 +43,7 @@ public class TokenNotificationService {
 
             return new TokenResponseDTO("Token registrado correctamente", 200);
         } catch (Exception e) {
-            return new TokenResponseDTO("Error al registrar el token: " + e.getMessage(), 500);  // Internal Server Error
+            return new TokenResponseDTO("Error al registrar el token: " + e.getMessage(), 500);
         }
     }
 }
