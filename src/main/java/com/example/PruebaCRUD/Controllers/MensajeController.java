@@ -56,7 +56,20 @@ public class MensajeController {
 
     @GetMapping("/{usuario}")
     public ResponseEntity<Object> getChat(@PathVariable String usuario) {
-        return this.mensajeService.getChat(usuario);
+        try {
+            if (usuario == null || usuario.trim().isEmpty()) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "Ocurrió un error, usuario inválido."));
+            }
+
+            return this.mensajeService.getChat(usuario);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of(
+                            "error", "Error al obtener los chats",
+                            "mensaje", e.getMessage()
+                    ));
+        }
     }
 
     @GetMapping("/historial/{remitente}/{destinatario}")

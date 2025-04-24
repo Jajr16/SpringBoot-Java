@@ -76,22 +76,34 @@ public class MensajeService {
     }
 
     public ResponseEntity<Object> getChat(String user) {
-        List<ChatsDTO> chats = chatRepository.findChatsRemitente(user);
+        try {
+            System.out.println("Buscando chats para usuario: " + user);
 
-        if (chats.isEmpty()) {
-            chats = chatRepository.findChatsDestinatario(user);
+            List<ChatsDTO> chatsRemitente = chatRepository.findChatsRemitente(user);
+            System.out.println("Chats como remitente: " + chatsRemitente.size());
+
+            List<ChatsDTO> chats = new ArrayList<>(chatsRemitente);
+
+            List<ChatsDTO> chatsDestinatario = chatRepository.findChatsDestinatario(user);
+            System.out.println("Chats como destinatario: " + chatsDestinatario.size());
+
+            chats.addAll(chatsDestinatario);
 
             if (chats.isEmpty()) {
-                Map<String, String> response = new HashMap<>();
-                response.put("mensaje", "Aún no has hablado con nadie.");
-                return new ResponseEntity<>(response, HttpStatus.OK);
+                return ResponseEntity.ok()
+                        .body(Map.of("mensaje", "Aún no has hablado con nadie."));
             }
-        }
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("chats", chats);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+            return ResponseEntity.ok()
+                    .body(Map.of("chats", chats));
+
+        } catch (Exception e) {
+            System.err.println("Error al obtener chats: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
     }
+
 
     public ResponseEntity<List<MensajeDTO>> getHistorialMensajes(String remitente, String destinatario) {
         Optional<Chat> chat = chatRepository.findChatByUsers(remitente, destinatario);
