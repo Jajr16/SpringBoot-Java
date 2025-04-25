@@ -1,5 +1,6 @@
 package com.example.PruebaCRUD.Services;
 
+import com.example.PruebaCRUD.Scraping.SSLConfig;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -37,7 +38,9 @@ public class FirebaseService {
 
     private FirebaseMessaging initializeFirebase() {
         try {
-            // Configurar el truststore una sola vez al inicio
+            // Usar la configuración específica para Firebase
+            SSLConfig.configureForFirebase();
+
             System.setProperty("com.google.api.client.googleapis.auth.oauth2.GoogleCredentials.USE_SYSTEM_TRUSTED_STORE", "true");
 
             if (!FirebaseApp.getApps().isEmpty()) {

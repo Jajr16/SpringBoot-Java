@@ -63,7 +63,7 @@ public class Scraping {
         }
 
         // Configurar SSL
-        SSLConfig.configureSSL();
+        SSLConfig.configureForIPN();
 
         // Hacer scraping para obtener la URL del PDF
         Document document = Jsoup.connect(url).get();
