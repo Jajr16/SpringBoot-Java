@@ -1,10 +1,8 @@
 package com.example.PruebaCRUD.Controllers.Saes;
 
-import com.example.PruebaCRUD.DTO.DocenteDTO;
 import com.example.PruebaCRUD.DTO.Saes.*;
 import com.example.PruebaCRUD.Services.AlumnoService;
 import com.example.PruebaCRUD.Services.DocenteService;
-import com.example.PruebaCRUD.Services.PersonaService;
 import com.example.PruebaCRUD.Services.PersonalSeguridadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -50,8 +47,8 @@ public class PersonaControllerSaes {
     }
 
     @GetMapping("/docentes")
-    public ResponseEntity<List<DocenteDTO>> getDocentes(){
-        List<DocenteDTO> response = this.docenteService.getDocentes();
+    public ResponseEntity<List<DocentesDTOSaes>> getDocentes(){
+        List<DocentesDTOSaes> response = this.docenteService.getDocentesSaes();
         System.out.println(response);
         return ResponseEntity.ok(response);
     }

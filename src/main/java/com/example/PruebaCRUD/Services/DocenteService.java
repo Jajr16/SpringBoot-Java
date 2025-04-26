@@ -59,6 +59,11 @@ public class DocenteService {
     }
 
     //    Función para traer a todos los docentes
+    public List<DocentesDTOSaes> getDocentesSaes() {
+        return personalAcademicoRepository.findDocentesSaes();
+    }
+
+    //    Función para traer a todos los docentes
     public List<DocentesDTOToETS> getDocentesToETS() {
         return personalAcademicoRepository.findDocentesToSaes();
     }
