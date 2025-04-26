@@ -3,7 +3,10 @@ package com.example.PruebaCRUD.BD;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "chat", uniqueConstraints = { @UniqueConstraint(columnNames = { "remitente", "destinatario" }) })
+@Table(name = "chat", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "remitente", "destinatario" }),
+        @UniqueConstraint(columnNames = { "destinatario", "remitente" })
+})
 public class Chat {
 
     @Id
