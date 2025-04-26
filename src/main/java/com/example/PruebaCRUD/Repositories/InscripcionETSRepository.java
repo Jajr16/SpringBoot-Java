@@ -48,7 +48,7 @@ public interface InscripcionETSRepository extends JpaRepository<InscripcionETS, 
                 e.Fecha as fecha,
                 e.Cupo as cupo,
                 pets.periodo as periodo,
-                CONCAT(a.CURP.nombre, " ", a.CURP.apellido_p, " ", a.CURP.apellido_m) as nombre
+                CONCAT(a.CURP.nombre, ' ', a.CURP.apellido_p, ' ', a.CURP.apellido_m) as nombre
             ) FROM InscripcionETS ie
             INNER JOIN ETS e ON e.id_ETS = ie.idETSIns.id_ETS
             INNER JOIN Alumno a ON a.boleta = ie.boletaIns.boleta
@@ -72,7 +72,7 @@ public interface InscripcionETSRepository extends JpaRepository<InscripcionETS, 
             "p.apellido_m as apellidoMAlumno, " +
             "a.boleta, " +
             "e.idUA.nombre as nombreETS, " +
-            "e.id_ETS as idETS, " +  // Añade esta línea para obtener el idETS
+            "e.id_ETS as idETS, " +
             "e.Turno.nombre as nombreTurno, " +
             "s.numSalonSETS.numSalon as salon, " +
             "e.Fecha as fecha, " +

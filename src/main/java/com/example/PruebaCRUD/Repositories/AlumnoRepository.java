@@ -22,7 +22,7 @@ public interface AlumnoRepository extends JpaRepository<Alumno, String> {
      */
     @Query("""
             SELECT new com.example.PruebaCRUD.DTO.Saes.AlumnoDTOSaes(
-                CONCAT(p.nombre, " ", p.apellido_p, " ", p.apellido_m) as nombre,
+                CONCAT(p.nombre, ' ', p.apellido_p, ' ', p.apellido_m) as nombre,
                 a.boleta,
                 pa.nombre,
                 a.CorreoI

@@ -47,7 +47,7 @@ public interface PersonalAcademicoRepository extends JpaRepository<PersonalAcade
     @Query("""
             SELECT new com.example.PruebaCRUD.DTO.Saes.DocentesDTOToETS(
                 p.CURP,
-                CONCAT(p.nombre, " ", p.apellido_p, " ", p.apellido_m) as nombre
+                CONCAT(p.nombre, ' ', p.apellido_p, ' ', p.apellido_m) as nombre
                 ) FROM PersonalAcademico as pera
             INNER JOIN Persona p ON pera.CURP.CURP = p.CURP
             INNER JOIN CargoDocente cd ON cd.RFCCD.rfc = pera.rfc
