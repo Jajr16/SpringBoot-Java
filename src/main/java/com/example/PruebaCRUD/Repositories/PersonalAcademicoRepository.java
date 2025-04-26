@@ -33,7 +33,7 @@ public interface PersonalAcademicoRepository extends JpaRepository<PersonalAcade
      * personalizable con las clases del proyecto
      */
     @Query("""
-            SELECT new com.example.PruebaCRUD.DTO.Saes.DocentesDTOSaes(
+            SELECT DISTINCT new com.example.PruebaCRUD.DTO.Saes.DocentesDTOSaes(
                 CONCAT(p.nombre, ' ', p.apellido_p, ' ', p.apellido_m) as nombre,
                 pera.correoi
                 ) FROM PersonalAcademico as pera
