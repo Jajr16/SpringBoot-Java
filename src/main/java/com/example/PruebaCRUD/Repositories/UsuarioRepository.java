@@ -1,6 +1,7 @@
 package com.example.PruebaCRUD.Repositories;
 
 import com.example.PruebaCRUD.BD.Usuario;
+import com.example.PruebaCRUD.DTO.ListadoUsuariosDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,4 +29,24 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     @Query(value = "SELECT p.id_escuela FROM Persona p INNER JOIN Usuario u ON p.curp = u.curp" +
             " WHERE u.usuario = (:user)", nativeQuery = true)
     Integer findEscuela(@Param("user") String user);
+
+    @Query("""
+        SELECT new com.example.PruebaCRUD.DTO.ListadoUsuariosDTO(
+            u.usuario,
+            CONCAT(p.nombre, ' ', p.apellido_p, ' ', p.apellido_m),
+            tu.tipo
+        ) FROM Usuario u
+        INNER JOIN u.CURP p
+        INNER JOIN u.TipoU tu
+        WHERE tu.tipo != 'Personal Seguridad'
+        AND p.unidadAcademica = (
+            SELECT userP.unidadAcademica
+            FROM Usuario searchUser
+            INNER JOIN searchUser.CURP userP
+            WHERE searchUser.usuario = :usuario
+        )
+        AND u.usuario != :usuario
+        ORDER BY p.nombre
+    """)
+    List<ListadoUsuariosDTO> findUsers(@Param("usuario") String usuario);
 }

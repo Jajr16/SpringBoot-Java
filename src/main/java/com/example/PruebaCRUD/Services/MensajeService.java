@@ -32,13 +32,15 @@ public class MensajeService {
     private final MensajeRepository mensajeRepository;
     private final ChatRepository chatRepository;
     private final FirebaseService firebaseService;
+    private final UsuarioRepository usuarioRepository;
 
     @Autowired
     public MensajeService(MensajeRepository mensajeRepository,
-                          FirebaseService firebaseService, ChatRepository chatRepository) {
+                          FirebaseService firebaseService, ChatRepository chatRepository, UsuarioRepository usuarioRepository) {
         this.mensajeRepository = mensajeRepository;
         this.firebaseService = firebaseService;
         this.chatRepository = chatRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     public void enviarMensaje(Usuario remitente, Usuario destinatario, String contenido) {
@@ -72,7 +74,7 @@ public class MensajeService {
     }
 
     public List<ListadoUsuariosDTO> getUsers(String usuario) {
-        return this.mensajeRepository.findUsers(usuario);
+        return this.usuarioRepository.findUsers(usuario);
     }
 
     public ResponseEntity<Object> getChat(String user) {

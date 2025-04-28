@@ -20,26 +20,4 @@ import java.util.List;
 public interface MensajeRepository extends JpaRepository<Mensaje, MensajePK> {
     // Obtener los mensajes de un chat específico ordenados por fecha
     List<Mensaje> findById_Chat_IdOrderById_FechahoraAsc(Long chatId);
-
-    @Query("""
-        SELECT new com.example.PruebaCRUD.DTO.ListadoUsuariosDTO(
-            u.usuario,
-            CONCAT(p.nombre, ' ', p.apellido_p, ' ', p.apellido_m),
-            tu.tipo
-        ) FROM Usuario u
-        INNER JOIN u.CURP p
-        INNER JOIN u.TipoU tu
-        WHERE tu.tipo != 'Personal Seguridad'
-        AND p.unidadAcademica = (
-            SELECT userP.unidadAcademica
-            FROM Usuario searchUser
-            INNER JOIN searchUser.CURP userP
-            WHERE searchUser.usuario = :usuario
-        )
-        AND u.usuario != :usuario
-        ORDER BY p.nombre
-    """)
-    List<ListadoUsuariosDTO> findUsers(@Param("usuario") String usuario);
-
-
 }
