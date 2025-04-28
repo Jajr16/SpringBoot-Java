@@ -49,9 +49,9 @@ public class MensajeController {
 
     }
 
-    @GetMapping("/PersonasToChat")
-    public List<ListadoUsuariosDTO> getUsersToChat() {
-        return this.mensajeService.getUsers();
+    @GetMapping("/PersonasToChat/{usuario}")
+    public List<ListadoUsuariosDTO> getUsersToChat(@PathVariable String usuario) {
+        return this.mensajeService.getUsers(usuario);
     }
 
     @GetMapping("/{usuario}")

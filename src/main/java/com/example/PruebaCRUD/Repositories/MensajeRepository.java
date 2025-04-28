@@ -7,6 +7,7 @@ import com.example.PruebaCRUD.DTO.ChatsDTO;
 import com.example.PruebaCRUD.DTO.ListadoUsuariosDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,8 +29,10 @@ public interface MensajeRepository extends JpaRepository<Mensaje, MensajePK> {
         ) FROM Usuario u
         INNER JOIN u.CURP p
         INNER JOIN u.TipoU tu
+        INNER JOIN p.unidadAcademica ua
         WHERE tu.tipo != 'Personal Seguridad'
+        AND p.unidadAcademica.id_Escuela = (SELECT ua.id_Escuela FROM ua WHERE p.CURP = (SELECT u.CURP.CURP FROM u WHERE u.usuario = :usuario))
     """)
-    List<ListadoUsuariosDTO> findUsers();
+    List<ListadoUsuariosDTO> findUsers(@Param("usuario") String usuario);
 
 }

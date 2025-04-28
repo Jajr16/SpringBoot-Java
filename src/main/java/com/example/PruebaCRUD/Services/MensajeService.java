@@ -71,8 +71,8 @@ public class MensajeService {
         firebaseService.enviarNoti(destinatario.getUsuario(), "Nuevo mensaje", contenido, remitente.getUsuario(), contenido);
     }
 
-    public List<ListadoUsuariosDTO> getUsers() {
-        return this.mensajeRepository.findUsers();
+    public List<ListadoUsuariosDTO> getUsers(String usuario) {
+        return this.mensajeRepository.findUsers(usuario);
     }
 
     public ResponseEntity<Object> getChat(String user) {
