@@ -74,6 +74,7 @@ public class MensajeService {
     }
 
     public List<ListadoUsuariosDTO> getUsers(String usuario) {
+        System.out.println("EL RESULTADO DE LA CONSULTA FUE " + this.usuarioRepository.findUsers(usuario));
         return this.usuarioRepository.findUsers(usuario);
     }
 
