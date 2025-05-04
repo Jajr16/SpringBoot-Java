@@ -358,6 +358,7 @@ public class AlumnoService {
 
         // Devolver respuesta
         datos.put("message", "Alumno registrado con éxito.");
+        datos.put("image_path", credencialUrl);
         return new ResponseEntity<>(datos, HttpStatus.CREATED);
     }
 
