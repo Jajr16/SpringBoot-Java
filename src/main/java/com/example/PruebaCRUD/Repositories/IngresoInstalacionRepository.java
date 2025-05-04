@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface IngresoInstalacionRepository extends JpaRepository<IngresoInstalacion, IngresoInstalacionPK> {
@@ -28,7 +29,6 @@ public interface IngresoInstalacionRepository extends JpaRepository<IngresoInsta
             "JOIN ie.idETSIns e " +
             "WHERE a.boleta = :boleta AND e.id_ETS = :idETS")
     List<IngresoInstalacionDTO> findAlumnosInscritosETS(@Param("boleta") String boleta, @Param("idETS") Integer idETS);
-
 
     @Modifying
     @Transactional
@@ -47,4 +47,6 @@ public interface IngresoInstalacionRepository extends JpaRepository<IngresoInsta
             @Param("boleta") String boleta,
             @Param("fecha") Date fecha,
             @Param("idets") Integer idets);
+
+
 }

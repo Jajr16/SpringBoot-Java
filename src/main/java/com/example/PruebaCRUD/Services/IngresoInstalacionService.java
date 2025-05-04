@@ -9,8 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.sql.Time;
 
 @Service
@@ -58,3 +59,5 @@ public class IngresoInstalacionService {
         }
     }
 }
+
+
