@@ -18,7 +18,7 @@ public class IngresoInstalacion {
             @JoinColumn(name = "boleta", referencedColumnName = "boleta", insertable = false, updatable = false),
             @JoinColumn(name = "idets", referencedColumnName = "idets", insertable = false, updatable = false)
     })
-    private IngresoSalon ingresoSalon;
+    private InscripcionETS inscripcionETS;
 
     // ==================== CONSTRUCTORES =====================
     public IngresoInstalacion() {}

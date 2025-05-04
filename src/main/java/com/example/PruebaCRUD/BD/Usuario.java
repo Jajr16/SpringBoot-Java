@@ -25,11 +25,11 @@ public class Usuario {
     @JoinColumn(name = "tipou", nullable = false) // Notación para especificar el nombre de la columna que tendrá la relación
     private TipoUsuario TipoU;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "CURP", nullable = false)
     private Persona CURP;
 
-     // ==================== CONSTRUCTORES =====================
+    // ==================== CONSTRUCTORES =====================
     public Usuario() {}
 
     public Usuario(String usuario, String password, TipoUsuario tipoU, Persona CURP) {
