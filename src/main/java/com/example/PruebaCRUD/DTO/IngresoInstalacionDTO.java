@@ -8,18 +8,14 @@ public class IngresoInstalacionDTO {
     private String nombre;
     private String apellidoP;
     private String apellidoM;
-    private String idETS;
-//    private Date fecha;
-//    private Time hora;
+    private Integer idETS;
 
-    public IngresoInstalacionDTO(String boleta, String nombre, String apellidoP, String apellidoM, String idETS) {
+    public IngresoInstalacionDTO(String boleta, String nombre, String apellidoP, String apellidoM, Integer idETS) {
         this.boleta = boleta;
         this.nombre = nombre;
         this.apellidoP = apellidoP;
         this.apellidoM = apellidoM;
         this.idETS = idETS;
-//        this.fecha = fecha;
-//        this.hora = hora;
     }
 
     public String getBoleta() {
@@ -54,11 +50,11 @@ public class IngresoInstalacionDTO {
         this.apellidoM = apellidoM;
     }
 
-    public String getIdETS() {
+    public Integer getIdETS() {
         return idETS;
     }
 
-    public void setIdETS(String idETS) {
+    public void setIdETS(Integer idETS) {
         this.idETS = idETS;
     }
 
