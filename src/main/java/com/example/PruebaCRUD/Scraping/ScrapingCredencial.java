@@ -1,141 +1,206 @@
 package com.example.PruebaCRUD.Scraping;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ScrapingCredencial {
+    private static final String IMAGE_DIR = "/app/src/main/resources/static/images/credenciales/"; // Ruta absoluta en el contenedor
+    private static final int MAX_RETRIES = 3;
+    private static final Duration TIMEOUT = Duration.ofSeconds(10);
 
-    private static final String IMAGE_DIR = "./src/main/java/com/example/PruebaCRUD/Scraping/images/";
+    static {
+        try {
+            System.out.println("Verificando el directorio de imágenes...");
+            Path dirPath = Paths.get(IMAGE_DIR);
+            if (!Files.exists(dirPath)) {
+                Files.createDirectories(dirPath);
+                System.out.println("Directorio creado: " + dirPath);
+            }
+        } catch (Exception e) {
+            System.err.println("Error en configuración inicial: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
 
-    public static Map<String, String> capturarCredencial(String credencialUrl) throws IOException {
-        System.out.println("Iniciando captura de credencial...");
-
-        // Configura WebDriverManager para manejar automáticamente ChromeDriver
-        WebDriverManager.chromedriver().setup();
-
+    public static Map<String, String> capturarCredencial(String credencialUrl) throws IOException, InterruptedException {
+        System.out.println("Iniciando captura de credencial para URL: " + credencialUrl);
         Map<String, String> resultados = new HashMap<>();
 
-        // Extraer ID del alumno
         String alumnoId = extractAlumnoId(credencialUrl);
         if (alumnoId == null) {
             throw new IOException("No se pudo extraer un identificador válido de la URL.");
         }
         resultados.put("alumnoId", alumnoId);
 
-        // Verificar si ya existe una imagen para este ID
+        String imageName = "credencial_" + alumnoId + ".png";
         String existingImagePath = findExistingImage(alumnoId);
+
         if (existingImagePath != null) {
-            System.out.println("Ya existe una imagen para este ID: " + existingImagePath);
-            resultados.put("imagenPath", existingImagePath);
+            System.out.println("Usando imagen existente: " + existingImagePath);
+            resultados.put("imagenPath", "/images/credenciales/" + imageName); // Ruta relativa para el frontend
+            resultados.putAll(extraerDatosAlumnoConReintentos(credencialUrl));
             return resultados;
         }
-
-        // Configuración optimizada de Chrome
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments(
-                "--headless=new",         // Headless moderno
-                "--no-sandbox",           // Necesario para CI/CD
-                "--disable-dev-shm-usage"  // Para entornos con poca memoria
-        );
 
         WebDriver driver = null;
-        try {
-            driver = new ChromeDriver(options);
-            driver.get(credencialUrl);
-            Thread.sleep(3000); // Espera para carga inicial
+        Exception lastException = null;
 
-            // Extraer datos del HTML
-            resultados.putAll(extraerDatosAlumno(driver));
+        for (int intento = 1; intento <= MAX_RETRIES; intento++) {
+            try {
+                System.out.println("Intento " + intento + " de captura de credencial");
+                driver = createWebDriver();
+                WebDriverWait wait = new WebDriverWait(driver, TIMEOUT);
 
-            // Tomar screenshot solo si no existe la imagen
-            if (!resultados.containsKey("imagenPath")) {
-                // Ajustar tamaño de ventana para captura completa
-                JavascriptExecutor js = (JavascriptExecutor) driver;
-                long scrollHeight = (long) js.executeScript("return document.body.scrollHeight");
-                driver.manage().window().setSize(new Dimension(1920, (int) scrollHeight));
+                System.out.println("Navegando a la URL...");
+                driver.get(credencialUrl);
 
-                // Capturar y guardar imagen
-                byte[] screenshotBytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-                String imageName = "credencial_" + alumnoId + ".png";
-                Path destination = Paths.get(IMAGE_DIR, imageName);
+                wait.until(webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+                wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".boleta")));
 
-                // Crear directorio si no existe
-                Files.createDirectories(destination.getParent());
-                Files.write(destination, screenshotBytes);
+                resultados.putAll(extraerDatosAlumno(driver, wait));
 
-                resultados.put("imagenPath", destination.toAbsolutePath().toString());
-                System.out.println("Screenshot guardado en: " + destination);
-            }
+                File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+                File imageFile = new File(IMAGE_DIR, imageName);
+                Files.copy(screenshot.toPath(), imageFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-            return resultados;
+                resultados.put("imagenPath", "/images/credenciales/" + imageName); // Ruta relativa para el frontend
+                System.out.println("Captura exitosa. Imagen guardada en: " + imageFile.getAbsolutePath());
 
-        } catch (Exception e) {
-            throw new IOException("Error al procesar la credencial: " + e.getMessage(), e);
-        } finally {
-            if (driver != null) {
-                driver.quit(); // Cierra el driver siempre
+                return resultados;
+
+            } catch (Exception e) {
+                lastException = e;
+                System.err.println("Error en intento " + intento + ": " + e.getMessage());
+                e.printStackTrace();
+                if (driver != null) {
+                    try {
+                        System.out.println("URL actual: " + driver.getCurrentUrl());
+                        System.out.println("Título de la página: " + driver.getTitle());
+                    } catch (Exception pageError) {
+                        System.err.println("No se pudo obtener información de la página: " + pageError.getMessage());
+                    }
+                }
+                if (intento < MAX_RETRIES) {
+                    System.out.println("Esperando antes del siguiente intento...");
+                    Thread.sleep(2000 * intento);
+                }
+            } finally {
+                if (driver != null) {
+                    try {
+                        driver.quit();
+                        System.out.println("WebDriver cerrado correctamente");
+                    } catch (Exception e) {
+                        System.err.println("Error al cerrar el driver: " + e.getMessage());
+                    }
+                }
             }
         }
+        throw new IOException("Error después de " + MAX_RETRIES + " intentos", lastException);
     }
 
-    // Métodos auxiliares
-    private static Map<String, String> extraerDatosAlumno(WebDriver driver) {
+    private static WebDriver createWebDriver() {
+        System.out.println("Creando nueva instancia de ChromeDriver...");
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments(
+                "--headless",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+                "--window-size=1920,1080",
+                "--remote-allow-origins=*"
+        );
+        return new ChromeDriver(options);
+    }
+
+    private static Map<String, String> extraerDatosAlumnoConReintentos(String credencialUrl) throws IOException, InterruptedException {
+        WebDriver driver = null;
+        Exception lastException = null;
+        for (int i = 0; i < MAX_RETRIES; i++) {
+            try {
+                driver = createWebDriver();
+                WebDriverWait wait = new WebDriverWait(driver, TIMEOUT);
+                driver.get(credencialUrl);
+                return extraerDatosAlumno(driver, wait);
+            } catch (Exception e) {
+                lastException = e;
+                System.err.println("Error en extracción de datos (intento " + (i + 1) + "): " + e.getMessage());
+                if (i < MAX_RETRIES - 1) {
+                    Thread.sleep(2000 * (i + 1));
+                }
+            } finally {
+                if (driver != null) {
+                    driver.quit();
+                }
+            }
+        }
+        throw new IOException("Error en la extracción de datos después de " + MAX_RETRIES + " intentos", lastException);
+    }
+
+    private static Map<String, String> extraerDatosAlumno(WebDriver driver, WebDriverWait wait) {
         Map<String, String> datos = new HashMap<>();
         System.out.println("\n=== INICIO DE EXTRACCIÓN DE DATOS ===");
-
         try {
-            // Ejemplo: Extraer boleta (ajusta los selectores según tu HTML real)
-            WebElement boletaElement = driver.findElement(By.cssSelector(".boleta"));
+            WebElement boletaElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".boleta")));
             String boleta = boletaElement.getText().replaceAll("[^0-9]", "");
             datos.put("boleta", boleta);
-            System.out.println("[EXTRACCIÓN] Boleta obtenida: " + boleta);
+            System.out.println("[OK] Boleta: " + boleta);
 
-            // Ejemplo: Extraer CURP (con validación básica)
-            WebElement curpElement = driver.findElement(By.cssSelector(".curp"));
+            WebElement curpElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".curp")));
             String curp = curpElement.getText().trim().toUpperCase();
             if (!curp.matches("^[A-Z]{4}[0-9]{6}[A-Z]{6}[0-9A-Z]{2}$")) {
-                System.err.println("CURP con formato inválido: " + curp);
+                System.err.println("[ADVERTENCIA] CURP con formato inválido: " + curp);
             }
             datos.put("curp", curp);
             System.out.println("[OK] CURP: " + curp);
 
-            // Agrega más extracciones según sea necesario (nombre, carrera, etc.)
-            datos.put("nombre", driver.findElement(By.cssSelector(".nombre")).getText().trim());
-            datos.put("carrera", driver.findElement(By.cssSelector(".carrera")).getText().trim());
+            datos.put("nombre", wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".nombre"))).getText().trim());
+            datos.put("carrera", wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".carrera"))).getText().trim());
+            datos.put("escuela", wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".escuela"))).getText().trim());
 
-        } catch (NoSuchElementException e) {
-            System.err.println("[ERROR] Elemento no encontrado: " + e.getMessage());
+            System.out.println("[OK] Datos extraídos correctamente");
+        } catch (TimeoutException e) {
+            System.err.println("[ERROR] Timeout esperando elementos: " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            System.err.println("[ERROR] Error inesperado en extracción: " + e.getMessage());
+            throw e;
         }
-
         System.out.println("=== FIN DE EXTRACCIÓN ===\n");
         return datos;
     }
 
     private static String extractAlumnoId(String url) {
         int index = url.indexOf("?h=");
-        return (index != -1) ? url.substring(index + 3, Math.min(url.length(), index + 150)) : null;
+        if (index != -1) {
+            return url.substring(index + 3, Math.min(url.length(), index + 150));
+        }
+        return null;
     }
 
-    private static String findExistingImage(String alumnoId) throws IOException {
-        Path dirPath = Paths.get(IMAGE_DIR);
-        if (!Files.exists(dirPath)) {
-            Files.createDirectories(dirPath);
+    private static String findExistingImage(String alumnoId) {
+        File dir = new File(IMAGE_DIR);
+        if (!dir.exists()) {
+            dir.mkdirs();
             return null;
         }
-
-        try (var stream = Files.list(dirPath)) {
-            return stream
-                    .filter(path -> path.getFileName().toString().startsWith("credencial_" + alumnoId))
-                    .findFirst()
-                    .map(Path::toAbsolutePath)
-                    .map(Path::toString)
-                    .orElse(null);
+        String prefix = "credencial_" + alumnoId;
+        File[] matchingFiles = dir.listFiles((dir1, name) -> name.startsWith(prefix) && name.endsWith(".png"));
+        if (matchingFiles != null && matchingFiles.length > 0) {
+            return matchingFiles[0].getName(); // Solo el nombre para usar con /images/...
         }
+        return null;
     }
 }
