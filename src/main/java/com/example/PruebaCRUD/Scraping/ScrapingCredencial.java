@@ -1,6 +1,5 @@
 package com.example.PruebaCRUD.Scraping;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -10,13 +9,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Stream;
 
 public class ScrapingCredencial {
 
-    private static final String IMAGE_DIR = "/app/src/main/resources/static/images/credenciales/";
+    private static final String IMAGE_DIR = "/app/src/main/resources/static/images/credenciales/"; // Ruta ABSOLUTA dentro del contenedor
 
     public static Map<String, String> capturarCredencial(String credencialUrl) throws IOException {
         System.out.println("Iniciando captura de credencial...");
@@ -29,21 +28,18 @@ public class ScrapingCredencial {
         }
         resultados.put("alumnoId", alumnoId);
 
-
         // Verificar si ya existe una imagen para este ID
         String existingImagePath = findExistingImage(alumnoId);
         if (existingImagePath != null) {
             System.out.println("Ya existe una imagen para este ID: " + existingImagePath);
-            resultados.put("imagenPath", existingImagePath);
+            resultados.put("imagenPath", "/images/credenciales/" + Paths.get(existingImagePath).getFileName().toString()); // Ruta relativa para el frontend
+            return resultados;
         }
 
-        WebDriverManager.chromedriver().setup();
-
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless", "--window-size=1920,1080", "--no-sandbox",
-                "--disable-dev-shm-usage", "--disable-gpu", "--remote-allow-origins=*");
+        options.addArguments("--headless", "--window-size=1920,1080", "--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu", "--remote-allow-origins=*");
+        options.setBinary(System.getenv("CHROME_BIN")); // Usar la variable de entorno del Dockerfile
         WebDriver driver = new ChromeDriver(options);
-
 
         try {
             driver.get(credencialUrl);
@@ -52,20 +48,18 @@ public class ScrapingCredencial {
             // Extraer datos del HTML
             resultados.putAll(extraerDatosAlumno(driver));
 
-            // Solo tomar screenshot si no existe la imagen
-            if (existingImagePath == null) {
-                JavascriptExecutor js = (JavascriptExecutor) driver;
-                long scrollHeight = (long) js.executeScript("return document.body.scrollHeight");
-                driver.manage().window().setSize(new Dimension(1920, (int) scrollHeight));
+            // Tomar screenshot
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            long scrollHeight = (long) js.executeScript("return document.body.scrollHeight");
+            driver.manage().window().setSize(new Dimension(1920, (int) scrollHeight));
 
-                File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-                String imageName = "credencial_" + alumnoId + ".png";
-                File imageFile = new File(IMAGE_DIR, imageName);
-                Files.copy(screenshot.toPath(), imageFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            String imageName = "credencial_" + alumnoId + ".png";
+            File imageFile = new File(IMAGE_DIR, imageName);
+            Files.copy(screenshot.toPath(), imageFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-                resultados.put("imagenPath", imageFile.getAbsolutePath());
-                System.out.println("Screenshot guardado en: " + imageFile.getAbsolutePath());
-            }
+            resultados.put("imagenPath", "/images/credenciales/" + imageName); // Ruta relativa para el frontend
+            System.out.println("Screenshot guardado en: " + imageFile.getAbsolutePath());
 
             return resultados;
 
@@ -137,9 +131,8 @@ public class ScrapingCredencial {
             return null;
         }
 
-        // Buscar archivos que comiencen con "credencial_[ID]"
-        String prefix = "credencial_" + alumnoId;
-        File[] matchingFiles = dir.listFiles((dir1, name) -> name.startsWith(prefix));
+        String prefix = "credencial_" + alumnoId + ".png";
+        File[] matchingFiles = dir.listFiles((dir1, name) -> name.equals(prefix));
 
         if (matchingFiles != null && matchingFiles.length > 0) {
             return matchingFiles[0].getAbsolutePath();
