@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -59,30 +60,42 @@ public class ScrapingController {
     @GetMapping("/ImageDAE/capturar")
     public ResponseEntity<CredencialResponseDTO> capturarCredencial(
             @RequestParam("url") String credencialUrl) {
-        System.out.println("Solicitud recibida para capturar credencial: " + credencialUrl);
+        System.out.println("=== SOLICITUD RECIBIDA ===");
+        System.out.println("URL recibida: " + credencialUrl);
+        System.out.println("Hora: " + LocalDateTime.now());
 
         try {
-            // Paso 1: Extraer boleta del HTML y capturar screenshot
+            System.out.println("Iniciando proceso de scraping...");
             Map<String, String> scrapingResult = ScrapingCredencial.capturarCredencial(credencialUrl);
+
+            System.out.println("Resultados del scraping:");
+            scrapingResult.forEach((k, v) -> System.out.println(k + ": " + v));
+
             String boleta = scrapingResult.get("boleta");
             String imagePath = scrapingResult.get("imagenPath");
 
             if (boleta == null) {
+                System.err.println("No se encontró la boleta en el HTML");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new CredencialResponseDTO("No se encontró la boleta en el HTML", null));
             }
 
+            System.out.println("Procesando imagen...");
             Path path = Paths.get(imagePath);
             byte[] imageBytes = Files.readAllBytes(path);
             String base64Image = Base64.getEncoder().encodeToString(imageBytes);
 
+            System.out.println("Buscando credenciales en la base de datos...");
             List<CredencialDTO> credenciales = alumnoService.findCredencialPorBoleta(boleta);
 
-            CredencialResponseDTO response = new CredencialResponseDTO(base64Image, credenciales);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            System.out.println("Proceso completado exitosamente");
+            return ResponseEntity.ok(new CredencialResponseDTO(base64Image, credenciales));
 
         } catch (IOException e) {
-            System.err.println("Error en el scraping: " + e.getMessage());
+            System.err.println("=== ERROR DURANTE EL PROCESO ===");
+            System.err.println("Mensaje: " + e.getMessage());
+            e.printStackTrace();
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new CredencialResponseDTO("Error al procesar la credencial: " + e.getMessage(), null));
         }

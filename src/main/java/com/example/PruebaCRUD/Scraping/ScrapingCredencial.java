@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 
 public class ScrapingCredencial {
 
-    private static final String IMAGE_DIR = "/app/src/main/resources/static/images/credenciales/"; 
+    private static final String IMAGE_DIR = "/app/src/main/resources/static/images/credenciales/";
 
     public static Map<String, String> capturarCredencial(String credencialUrl) throws IOException {
         System.out.println("Iniciando captura de credencial...");
@@ -38,13 +38,12 @@ public class ScrapingCredencial {
         }
 
         WebDriverManager.chromedriver().setup();
+
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless", "--window-size=1920,1080");
+        options.addArguments("--headless", "--window-size=1920,1080", "--no-sandbox",
+                "--disable-dev-shm-usage", "--disable-gpu", "--remote-allow-origins=*");
         WebDriver driver = new ChromeDriver(options);
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--remote-allow-origins=*");
+
 
         try {
             driver.get(credencialUrl);
