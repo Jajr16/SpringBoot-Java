@@ -8,7 +8,7 @@ RUN mvn clean package -DskipTests
 FROM openjdk:17-jdk-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV CHROME_VERSION 136.0.7103 # Usamos la parte principal de la versión
+ENV CHROME_BIN=/usr/bin/google-chrome-stable
 
 RUN apt-get update && apt-get install -y \
     wget \
@@ -16,13 +16,14 @@ RUN apt-get update && apt-get install -y \
     apt-transport-https \
     ca-certificates \
     software-properties-common \
-    unzip
+    unzip \
+    curl
 
 RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /usr/share/keyrings/google-chrome.gpg && \
     echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    google-chrome-stable=${CHROME_VERSION}-1 \ # Intentamos con la versión principal
+    google-chrome-stable \
     xvfb \
     libgtk-3-0 \
     libgbm1 \
@@ -53,11 +54,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
-# Descargar y configurar ChromeDriver para la versión de Chrome
-RUN wget "https://chromedriver.storage.googleapis.com/136.0.7103.49/chromedriver_linux64.zip" -O /tmp/chromedriver.zip && \
+# Obtener la versión de Chrome instalada y descargar el ChromeDriver correspondiente
+RUN wget "https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.49/linux64/chromedriver-linux64.zip" -O /tmp/chromedriver.zip && \
     unzip /tmp/chromedriver.zip -d /opt/chromedriver && \
-    chmod +x /opt/chromedriver/chromedriver && \
-    ln -s /opt/chromedriver/chromedriver /usr/local/bin/chromedriver && \
+    chmod +x /opt/chromedriver/chromedriver-linux64/chromedriver && \
+    ln -s /opt/chromedriver/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver && \
     rm /tmp/chromedriver.zip
 
 ENV CHROME_BIN=/usr/bin/google-chrome-stable
@@ -83,9 +84,9 @@ echo "Verificando permisos de directorios..."\n\
 ls -la /usr/local/bin/chromedriver\n\
 echo "Starting application..."\n\
 java -Dwebdriver.chrome.driver=/usr/local/bin/chromedriver \
-     -Dwebdriver.chrome.verboseLogging=true \
-     -Xmx512m -Xms256m \
-     -jar /app/app.jar' > /start.sh && \
+         -Dwebdriver.chrome.verboseLogging=true \
+         -Xmx512m -Xms256m \
+         -jar /app/app.jar' > /start.sh && \
 chmod +x /start.sh
 
 EXPOSE 8080

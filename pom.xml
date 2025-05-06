@@ -78,15 +78,17 @@
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>4.8.0</version>  <!-- Puedes ajustar la versión si es necesario -->
+			<version>4.19.1</version>  <!-- Puedes ajustar la versión si es necesario -->
 		</dependency>
 
-		<!-- WebDriverr Manager (para manejar ChromeDriver automáticamente) -->
-		<dependency>
-			<groupId>io.github.bonigarcia</groupId>
-			<artifactId>webdrivermanager</artifactId>
-			<version>5.7.0</version>  <!-- Última versión estable -->
-		</dependency>
+
+
+<!--		&lt;!&ndash; WebDriverr Manager (para manejar ChromeDriver automáticamente) &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>io.github.bonigarcia</groupId>-->
+<!--			<artifactId>webdrivermanager</artifactId>-->
+<!--			<version>5.7.0</version>  &lt;!&ndash; Última versión estable &ndash;&gt;-->
+<!--		</dependency>-->
 
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
