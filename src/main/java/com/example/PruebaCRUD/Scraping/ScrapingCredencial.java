@@ -120,7 +120,10 @@ public class ScrapingCredencial {
                 "--disable-dev-shm-usage",
                 "--disable-gpu",
                 "--window-size=1920,1080",
-                "--remote-allow-origins=*"
+                "--remote-allow-origins=*",
+                "--disable-extensions",
+                "--user-data-dir=/app/chrome-data",
+                "--homedir=/app"
         );
         return new ChromeDriver(options);
     }
