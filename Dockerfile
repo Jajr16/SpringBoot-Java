@@ -11,7 +11,6 @@ FROM openjdk:17-jdk-slim
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     ffmpeg \
-    libx264-dev \
     chromium \
     chromium-driver \
     libnss3 \
@@ -33,6 +32,12 @@ RUN apt-get update && \
     libxss1 \
     libxtst6 \
     xvfb \
+    libasound2 \
+    libatk1.0-0 \
+    libcups2 \
+    libdbus-1-3 \
+    libdrm2 \
+    libpangocairo-1.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
 # Configura variable de entorno para Chrome
