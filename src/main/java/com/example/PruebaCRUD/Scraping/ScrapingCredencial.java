@@ -37,20 +37,14 @@ public class ScrapingCredencial {
             resultados.put("imagenPath", existingImagePath);
         }
 
-
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless", "--window-size=1920,1080");
         WebDriver driver = new ChromeDriver(options);
-
-        options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--disable-gpu");
         options.addArguments("--remote-allow-origins=*");
-
-
-
 
         try {
             driver.get(credencialUrl);

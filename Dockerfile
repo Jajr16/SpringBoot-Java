@@ -8,6 +8,7 @@ RUN mvn clean package -DskipTests
 FROM openjdk:17-jdk-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV CHROME_VERSION 123.0.6312.105 # Fija una versión específica de Chrome
 
 RUN apt-get update && apt-get install -y \
     wget \
@@ -20,32 +21,36 @@ RUN apt-get update && apt-get install -y \
 RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /usr/share/keyrings/google-chrome.gpg && \
     echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    google-chrome-stable \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    google-chrome-stable=${CHROME_VERSION}-1 \
     xvfb \
-    libglib2.0-0 \
+    libgtk-3-0 \
+    libgbm1 \
     libnss3 \
+    libxss1 \
+    libasound2 \
+    libatk1.0-0 \
+    libcairo2 \
+    libcups2 \
+    libdbus-1-3 \
+    libexpat1 \
     libfontconfig1 \
+    libfreetype6 \
+    libglib2.0-0 \
     libx11-6 \
     libx11-xcb1 \
     libxcb1 \
     libxcomposite1 \
-    libxcursor1 \
     libxdamage1 \
     libxext6 \
     libxfixes3 \
     libxi6 \
-    libxrandr2 \
     libxrender1 \
-    libxss1 \
-    libxtst6 \
-    libgbm1 \
     libpango-1.0-0 \
     libpangocairo-1.0-0 \
     fonts-liberation \
-    libu2f-udev \
     xdg-utils \
+    wget \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -71,9 +76,9 @@ echo "Verificando instalación de ChromeDriver..."\n\
 chromedriver --version\n\
 echo "Iniciando Xvfb..."\n\
 Xvfb :99 -screen 0 1920x1080x24 -ac +extension GLX +render -noreset &\n\
-sleep 5\n\
+sleep 10\n\
 echo "Verificando permisos de directorios..."\n\
-ls -la /app/src/main/resources/static/images/credenciales\n\
+ls -la /app/chromedriver/chromedriver\n\
 ls -la /usr/local/bin/chromedriver\n\
 ls -la /root/.cache/selenium\n\
 echo "Verificando ChromeDriver..."\n\
@@ -83,7 +88,7 @@ java -Dwebdriver.chrome.driver=/usr/local/bin/chromedriver \
      -Dwebdriver.chrome.verboseLogging=true \
      -Xmx512m -Xms256m \
      -jar /app/app.jar' > /start.sh && \
-    chmod +x /start.sh
+chmod +x /start.sh
 
 EXPOSE 8080
 
