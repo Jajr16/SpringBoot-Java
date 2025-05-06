@@ -163,6 +163,7 @@ public class ScrapingCredencial {
             if (!curp.matches("^[A-Z]{4}[0-9]{6}[A-Z]{6}[0-9A-Z]{2}$")) {
                 System.err.println("[ADVERTENCIA] CURP con formato inválido: " + curp);
             }
+
             datos.put("curp", curp);
             System.out.println("[OK] CURP: " + curp);
 
