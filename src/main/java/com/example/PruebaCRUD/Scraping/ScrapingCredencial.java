@@ -15,12 +15,24 @@ import java.util.Map;
 
 public class ScrapingCredencial {
 
-    private static final String IMAGE_DIR = "src/main/resources/static/images/credenciales/";
+    private static final String IMAGE_DIR = "/app/src/main/resources/static/images/credenciales/";
     private static final long UN_MES_EN_MILLIS = 30L * 24 * 60 * 60 * 1000;
 
     static {
-        WebDriverManager.chromedriver().setup();
+        configurarWebDriver();
         crearDirectoriosSiNoExisten();
+    }
+
+    private static void configurarWebDriver() {
+        try {
+            // Configuración específica para Docker
+            System.setProperty("webdriver.chrome.whitelistedIps", "");
+            WebDriverManager.chromedriver()
+                    .driverVersion("latest")
+                    .setup();
+        } catch (Exception e) {
+            System.err.println("Error configurando WebDriver: " + e.getMessage());
+        }
     }
 
     public static Map<String, String> capturarCredencial(String credencialUrl) throws IOException {
@@ -33,13 +45,11 @@ public class ScrapingCredencial {
         }
         resultados.put("alumnoId", alumnoId);
 
-        // Verificar imagen existente
         String imageName = "credencial_" + alumnoId + ".png";
         Path imagePath = Paths.get(IMAGE_DIR, imageName);
 
         if (Files.exists(imagePath) && !isCacheExpired(imagePath.toFile())) {
             System.out.println("Usando imagen en caché: " + imagePath);
-            // Guardar ruta relativa para acceso web
             resultados.put("imagenPath", "/images/credenciales/" + imageName);
             resultados.putAll(extraerDatosAlumno(credencialUrl));
             return resultados;
@@ -47,50 +57,69 @@ public class ScrapingCredencial {
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments(
-                "--headless",
+                "--headless=new",
                 "--no-sandbox",
                 "--disable-dev-shm-usage",
                 "--remote-allow-origins=*",
                 "--disable-gpu",
-                "--window-size=1920,1080"
+                "--window-size=1920,1080",
+                "--disable-software-rasterizer",
+                "--disable-extensions",
+                "--ignore-certificate-errors",
+                "--disable-dev-tools"
         );
 
-        // Configuración específica del sistema operativo
-        if (System.getProperty("os.name").toLowerCase().contains("win")) {
-            System.out.println("Usando Chrome en Windows");
-            options.setBinary("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
-        } else {
-            System.out.println("Usando Chrome en Linux");
-            options.setBinary("/usr/bin/chromium");
+        // Configuración específica para Docker
+        options.setBinary("/usr/bin/google-chrome-stable");
+
+        // Configurar preferencias
+        Map<String, Object> prefs = new HashMap<>();
+        prefs.put("profile.default_content_settings.popups", 0);
+        prefs.put("download.default_directory", IMAGE_DIR);
+        options.setExperimentalOption("prefs", prefs);
+
+        WebDriver driver = null;
+        int maxRetries = 3;
+        Exception lastException = null;
+
+        for (int i = 0; i < maxRetries; i++) {
+            try {
+                driver = new ChromeDriver(options);
+                driver.get(credencialUrl);
+                Thread.sleep(3000);
+
+                resultados.putAll(extraerDatosAlumno(driver));
+
+                JavascriptExecutor js = (JavascriptExecutor) driver;
+                long scrollHeight = (long) js.executeScript("return document.body.scrollHeight");
+                driver.manage().window().setSize(new Dimension(1920, (int) scrollHeight));
+
+                File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+                Files.copy(screenshot.toPath(), imagePath, StandardCopyOption.REPLACE_EXISTING);
+
+                resultados.put("imagenPath", "/images/credenciales/" + imageName);
+                System.out.println("Nueva imagen guardada en: " + imagePath);
+
+                return resultados;
+
+            } catch (Exception e) {
+                lastException = e;
+                System.err.println("Intento " + (i + 1) + " fallido: " + e.getMessage());
+                if (driver != null) {
+                    driver.quit();
+                }
+                if (i == maxRetries - 1) {
+                    throw new IOException("Error después de " + maxRetries + " intentos", lastException);
+                }
+                try {
+                    Thread.sleep(2000 * (i + 1));
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                }
+            }
         }
 
-        WebDriver driver = new ChromeDriver(options);
-
-        try {
-            driver.get(credencialUrl);
-            Thread.sleep(3000);
-
-            resultados.putAll(extraerDatosAlumno(driver));
-
-            // Tomar screenshot
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            long scrollHeight = (long) js.executeScript("return document.body.scrollHeight");
-            driver.manage().window().setSize(new Dimension(1920, (int) scrollHeight));
-
-            File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            Files.copy(screenshot.toPath(), imagePath, StandardCopyOption.REPLACE_EXISTING);
-
-            // Guardar ruta relativa para acceso web
-            resultados.put("imagenPath", "/images/credenciales/" + imageName);
-            System.out.println("Nueva imagen guardada en: " + imagePath);
-
-            return resultados;
-
-        } catch (Exception e) {
-            throw new IOException("Error al procesar la credencial: " + e.getMessage());
-        } finally {
-            driver.quit();
-        }
+        throw new IOException("No se pudo procesar la credencial");
     }
 
     private static void crearDirectoriosSiNoExisten() {
