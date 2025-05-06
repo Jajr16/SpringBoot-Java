@@ -53,15 +53,19 @@ RUN apt-get update && \
     xdg-utils \
     && rm -rf /var/lib/apt/lists/*
 
-# Configurar ChromeDriver
+# Configurar ChromeDriver y directorios necesarios
 RUN chmod +x /usr/bin/chromedriver && \
     ln -s /usr/bin/chromedriver /usr/local/bin/chromedriver && \
     mkdir -p /root/.cache/selenium && \
-    chmod -R 777 /root/.cache/selenium
+    chmod -R 777 /root/.cache/selenium && \
+    mkdir -p /root/.cache/selenium/chromedriver/linux64 && \
+    chmod -R 777 /root/.cache/selenium/chromedriver && \
+    mkdir -p /tmp/selenium && \
+    chmod -R 777 /tmp/selenium
 
 # Configurar variables de entorno
 ENV CHROME_BIN=/usr/bin/google-chrome-stable
-ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
+ENV CHROMEDRIVER_PATH=/root/.cache/selenium/chromedriver/linux64/chromedriver
 ENV DISPLAY=:99
 
 # Crear directorios necesarios y establecer permisos
@@ -85,9 +89,12 @@ Xvfb :99 -screen 0 1920x1080x24 -ac +extension GLX +render -noreset &\n\
 sleep 5\n\
 echo "Verificando permisos de directorios..."\n\
 ls -la /app/src/main/resources/static/images/credenciales\n\
-ls -la /root/.cache\n\
+ls -la /root/.cache/selenium\n\
+ls -la /root/.cache/selenium/chromedriver/linux64\n\
+echo "Verificando ChromeDriver..."\n\
+find /root/.cache/selenium -name "chromedriver*"\n\
 echo "Starting application..."\n\
-java -Dwebdriver.chrome.driver=/usr/bin/chromedriver \
+java -Dwebdriver.chrome.driver=/root/.cache/selenium/chromedriver/linux64/chromedriver \
      -Dwebdriver.chrome.whitelistedIps="" \
      -Dwebdriver.chrome.verboseLogging=true \
      -Xmx512m -Xms256m \
@@ -97,7 +104,8 @@ java -Dwebdriver.chrome.driver=/usr/bin/chromedriver \
 # Verificar que los ejecutables necesarios están disponibles y tienen permisos
 RUN ls -la /usr/bin/google-chrome-stable && \
     ls -la /usr/bin/chromedriver && \
-    ls -la /usr/local/bin/chromedriver
+    ls -la /usr/local/bin/chromedriver && \
+    ls -la /root/.cache/selenium
 
 EXPOSE 8080
 
