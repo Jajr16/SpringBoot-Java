@@ -40,8 +40,13 @@ public class ScrapingCredencial {
         options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--disable-gpu");
         options.addArguments("--remote-allow-origins=*");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--window-size=1920,1080");
+        options.addArguments("--start-maximized");
+        options.addArguments("--disable-extensions");
+        options.addArguments("--disable-setuid-sandbox");
+        options.addArguments("--disable-infobars");
 
         // Configuración específica para Windows
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
@@ -52,6 +57,7 @@ public class ScrapingCredencial {
             options.setBinary("/usr/bin/chromium");
         }
 
+        System.setProperty("webdriver.chrome.whitelistedIps", "");
         WebDriver driver = new ChromeDriver(options);
 
         try {

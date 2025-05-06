@@ -7,7 +7,7 @@ RUN mvn clean package -DskipTests
 # Etapa 2: Imagen final con Java, FFmpeg y Chrome
 FROM openjdk:17-jdk-slim
 
-# Instala FFmpeg y Chrome + dependencias necesarias
+# Instalar dependencias
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     ffmpeg \
@@ -37,11 +37,12 @@ RUN apt-get update && \
     libcups2 \
     libdbus-1-3 \
     libdrm2 \
+    libglib2.0-0 \
     libpangocairo-1.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
 # Configura variable de entorno para Chrome
-ENV CHROME_BIN=/usr/bin/chromium
+ENV CHROME_BIN=/usr/bin/chromium    
 ENV CHROME_PATH=/usr/lib/chromium/
 
 # Crea directorio para las imágenes
