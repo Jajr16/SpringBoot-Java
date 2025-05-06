@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 public class ScrapingCredencial {
     private static final String IMAGE_DIR = "/app/src/main/resources/static/images/credenciales/";
@@ -25,19 +26,44 @@ public class ScrapingCredencial {
     static {
         try {
             System.out.println("Iniciando configuración de WebDriverManager...");
-            WebDriverManager.chromedriver().setup();
-            chromeDriverPath = WebDriverManager.chromedriver().getDownloadedDriverPath();
-            System.out.println("ChromeDriver configurado en: " + chromeDriverPath);
 
+            // Configurar el driver de Chrome de manera más explícita
+            WebDriverManager.chromedriver()
+                    .clearDriverCache()
+                    .clearResolutionCache()
+                    .setup();
+
+            // Obtener y verificar el path del driver
+            chromeDriverPath = WebDriverManager.chromedriver().getDownloadedDriverPath();
+
+            if (chromeDriverPath == null || chromeDriverPath.isEmpty()) {
+                chromeDriverPath = "/usr/bin/chromedriver"; // Path por defecto en el contenedor
+            }
+
+            System.out.println("ChromeDriver path configurado: " + chromeDriverPath);
+
+            // Verificar que el archivo existe
+            File driverFile = new File(chromeDriverPath);
+            if (!driverFile.exists()) {
+                throw new RuntimeException("ChromeDriver no encontrado en: " + chromeDriverPath);
+            }
+
+            // Verificar permisos
+            if (!driverFile.canExecute()) {
+                driverFile.setExecutable(true);
+                System.out.println("Permisos de ejecución establecidos para ChromeDriver");
+            }
+
+            // Configurar el directorio de imágenes
             Path dirPath = Paths.get(IMAGE_DIR);
             if (!Files.exists(dirPath)) {
                 Files.createDirectories(dirPath);
-                System.out.println("Directorio creado: " + dirPath);
+                System.out.println("Directorio de imágenes creado: " + dirPath);
             }
         } catch (Exception e) {
-            System.err.println("Error en configuración inicial: " + e.getMessage());
+            System.err.println("Error crítico en configuración inicial: " + e.getMessage());
             e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error en configuración inicial de ChromeDriver", e);
         }
     }
 
@@ -126,7 +152,12 @@ public class ScrapingCredencial {
 
     private static WebDriver createWebDriver() {
         try {
-            System.out.println("Configurando ChromeDriver...");
+            System.out.println("Iniciando creación de ChromeDriver...");
+
+            // Verificar que tenemos un path válido
+            if (chromeDriverPath == null || chromeDriverPath.isEmpty()) {
+                throw new IllegalStateException("ChromeDriver path no configurado");
+            }
 
             ChromeOptions options = new ChromeOptions();
             options.addArguments(
@@ -142,19 +173,27 @@ public class ScrapingCredencial {
                     "--ignore-certificate-errors"
             );
 
-            System.setProperty("webdriver.chrome.driver", chromeDriverPath);
-            System.setProperty("webdriver.chrome.whitelistedIps", "");
+            // Configurar el path del ejecutable de Chrome
+            options.setBinary("/usr/bin/google-chrome-stable");
 
+            // Establecer propiedades del sistema de manera segura
+            Properties props = System.getProperties();
+            props.setProperty("webdriver.chrome.driver", chromeDriverPath);
+            props.setProperty("webdriver.chrome.whitelistedIps", "");
+
+            System.out.println("Creando nueva instancia de ChromeDriver con opciones configuradas");
             ChromeDriver driver = new ChromeDriver(options);
             System.out.println("ChromeDriver creado exitosamente");
+
             return driver;
 
         } catch (Exception e) {
             System.err.println("Error crítico creando ChromeDriver: " + e.getMessage());
             e.printStackTrace();
-            throw e;
+            throw new RuntimeException("Error creando ChromeDriver", e);
         }
     }
+
 
     private static Map<String, String> extraerDatosAlumnoConReintentos(String credencialUrl) throws IOException, InterruptedException {
         WebDriver driver = null;
