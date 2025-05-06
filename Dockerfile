@@ -49,8 +49,8 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY src/main/resources/chromedriver/ ./chromedriver/
-RUN chmod +x ./chromedriver/chromedriver && \
+COPY src/main/resources/chromedriver/chromedriver /app/chromedriver/chromedriver
+RUN chmod 777 /app/chromedriver/chromedriver && \
     ln -s /app/chromedriver/chromedriver /usr/local/bin/chromedriver
 
 ENV CHROME_BIN=/usr/bin/google-chrome-stable

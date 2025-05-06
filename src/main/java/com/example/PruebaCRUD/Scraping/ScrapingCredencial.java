@@ -126,32 +126,14 @@ public class ScrapingCredencial {
         try {
             System.out.println("Creando nueva instancia de ChromeDriver...");
 
-            // Detectar el sistema operativo
-            String osName = System.getProperty("os.name").toLowerCase();
-            String chromeDriverPath;
-
-            // Ajustar la ruta del chromedriver según el sistema operativo
-            if (osName.contains("win")) {
-                chromeDriverPath = "chromedriver/chromedriver.exe"; // Windows
-            } else {
-                chromeDriverPath = "chromedriver/chromedriver"; // Linux
-            }
-
-            // Verificar si el archivo existe en el contenedor
+            String chromeDriverPath = "/usr/local/bin/chromedriver";
             File driverFile = new File(chromeDriverPath);
             if (!driverFile.exists()) {
                 throw new RuntimeException("El archivo ChromeDriver no se encuentra en: " + chromeDriverPath);
             }
 
-            // Asegurarse de que el archivo sea ejecutable en Linux
-            if (!osName.contains("win") && !driverFile.setExecutable(true)) {
-                System.err.println("No se pudieron establecer permisos de ejecución para el archivo: " + chromeDriverPath);
-            }
-
-            // Configurar el path para Selenium
             System.setProperty("webdriver.chrome.driver", driverFile.getAbsolutePath());
 
-            // Opciones para Chrome
             ChromeOptions options = new ChromeOptions();
             options.addArguments(
                     "--headless",
