@@ -27,6 +27,7 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearm
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     google-chrome-stable \
+    chromium-chromedriver \
     xvfb \
     libglib2.0-0 \
     libnss3 \
@@ -52,8 +53,15 @@ RUN apt-get update && \
     xdg-utils \
     && rm -rf /var/lib/apt/lists/*
 
+# Configurar ChromeDriver
+RUN chmod +x /usr/bin/chromedriver && \
+    ln -s /usr/bin/chromedriver /usr/local/bin/chromedriver && \
+    mkdir -p /root/.cache/selenium && \
+    chmod -R 777 /root/.cache/selenium
+
 # Configurar variables de entorno
 ENV CHROME_BIN=/usr/bin/google-chrome-stable
+ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
 ENV DISPLAY=:99
 
 # Crear directorios necesarios y establecer permisos
@@ -68,16 +76,28 @@ COPY --from=build /app/target/PruebaCRUD-0.0.1-SNAPSHOT.jar app.jar
 
 # Script de inicio mejorado
 RUN echo '#!/bin/bash\n\
+echo "Verificando instalación de Chrome..."\n\
+google-chrome-stable --version\n\
+echo "Verificando instalación de ChromeDriver..."\n\
+chromedriver --version\n\
+echo "Iniciando Xvfb..."\n\
 Xvfb :99 -screen 0 1920x1080x24 -ac +extension GLX +render -noreset &\n\
 sleep 5\n\
-echo "Chrome version:"\n\
-google-chrome-stable --version\n\
+echo "Verificando permisos de directorios..."\n\
+ls -la /app/src/main/resources/static/images/credenciales\n\
+ls -la /root/.cache\n\
 echo "Starting application..."\n\
-java -Dwebdriver.chrome.whitelistedIps="" \
+java -Dwebdriver.chrome.driver=/usr/bin/chromedriver \
+     -Dwebdriver.chrome.whitelistedIps="" \
      -Dwebdriver.chrome.verboseLogging=true \
      -Xmx512m -Xms256m \
      -jar /app/app.jar' > /start.sh && \
     chmod +x /start.sh
+
+# Verificar que los ejecutables necesarios están disponibles y tienen permisos
+RUN ls -la /usr/bin/google-chrome-stable && \
+    ls -la /usr/bin/chromedriver && \
+    ls -la /usr/local/bin/chromedriver
 
 EXPOSE 8080
 
