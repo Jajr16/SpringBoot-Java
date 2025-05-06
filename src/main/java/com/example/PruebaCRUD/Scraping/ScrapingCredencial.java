@@ -4,21 +4,22 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class ScrapingCredencial {
 
-    private static final String IMAGE_DIR = "./src/main/java/com/example/PruebaCRUD/Scraping/images/";
+    private static final String IMAGE_DIR = "/app/src/main/resources/static/images/credenciales/"; 
 
     public static Map<String, String> capturarCredencial(String credencialUrl) throws IOException {
         System.out.println("Iniciando captura de credencial...");
-
-        // Configura WebDriverManager para manejar automáticamente ChromeDriver
-        WebDriverManager.chromedriver().setup();
-
         Map<String, String> resultados = new HashMap<>();
 
         // Extraer ID del alumno
@@ -28,75 +29,72 @@ public class ScrapingCredencial {
         }
         resultados.put("alumnoId", alumnoId);
 
+
         // Verificar si ya existe una imagen para este ID
         String existingImagePath = findExistingImage(alumnoId);
         if (existingImagePath != null) {
             System.out.println("Ya existe una imagen para este ID: " + existingImagePath);
             resultados.put("imagenPath", existingImagePath);
-            return resultados;
         }
 
-        // Configuración optimizada de Chrome
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments(
-                "--headless=new",         // Headless moderno
-                "--no-sandbox",           // Necesario para CI/CD
-                "--disable-dev-shm-usage"  // Para entornos con poca memoria
-        );
 
-        WebDriver driver = null;
+        WebDriverManager.chromedriver().setup();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless", "--window-size=1920,1080");
+        WebDriver driver = new ChromeDriver(options);
+
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--remote-allow-origins=*");
+
+
+
+
         try {
-            driver = new ChromeDriver(options);
             driver.get(credencialUrl);
-            Thread.sleep(3000); // Espera para carga inicial
+            Thread.sleep(3000);
 
             // Extraer datos del HTML
             resultados.putAll(extraerDatosAlumno(driver));
 
-            // Tomar screenshot solo si no existe la imagen
-            if (!resultados.containsKey("imagenPath")) {
-                // Ajustar tamaño de ventana para captura completa
+            // Solo tomar screenshot si no existe la imagen
+            if (existingImagePath == null) {
                 JavascriptExecutor js = (JavascriptExecutor) driver;
                 long scrollHeight = (long) js.executeScript("return document.body.scrollHeight");
                 driver.manage().window().setSize(new Dimension(1920, (int) scrollHeight));
 
-                // Capturar y guardar imagen
-                byte[] screenshotBytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+                File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
                 String imageName = "credencial_" + alumnoId + ".png";
-                Path destination = Paths.get(IMAGE_DIR, imageName);
+                File imageFile = new File(IMAGE_DIR, imageName);
+                Files.copy(screenshot.toPath(), imageFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-                // Crear directorio si no existe
-                Files.createDirectories(destination.getParent());
-                Files.write(destination, screenshotBytes);
-
-                resultados.put("imagenPath", destination.toAbsolutePath().toString());
-                System.out.println("Screenshot guardado en: " + destination);
+                resultados.put("imagenPath", imageFile.getAbsolutePath());
+                System.out.println("Screenshot guardado en: " + imageFile.getAbsolutePath());
             }
 
             return resultados;
 
         } catch (Exception e) {
-            throw new IOException("Error al procesar la credencial: " + e.getMessage(), e);
+            throw new IOException("Error al procesar la credencial: " + e.getMessage());
         } finally {
-            if (driver != null) {
-                driver.quit(); // Cierra el driver siempre
-            }
+            driver.quit();
         }
     }
 
-    // Métodos auxiliares
     private static Map<String, String> extraerDatosAlumno(WebDriver driver) {
         Map<String, String> datos = new HashMap<>();
         System.out.println("\n=== INICIO DE EXTRACCIÓN DE DATOS ===");
 
         try {
-            // Ejemplo: Extraer boleta (ajusta los selectores según tu HTML real)
+            // Boleta
             WebElement boletaElement = driver.findElement(By.cssSelector(".boleta"));
             String boleta = boletaElement.getText().replaceAll("[^0-9]", "");
             datos.put("boleta", boleta);
             System.out.println("[EXTRACCIÓN] Boleta obtenida: " + boleta);
 
-            // Ejemplo: Extraer CURP (con validación básica)
+            // CURP
             WebElement curpElement = driver.findElement(By.cssSelector(".curp"));
             String curp = curpElement.getText().trim().toUpperCase();
             if (!curp.matches("^[A-Z]{4}[0-9]{6}[A-Z]{6}[0-9A-Z]{2}$")) {
@@ -105,9 +103,23 @@ public class ScrapingCredencial {
             datos.put("curp", curp);
             System.out.println("[OK] CURP: " + curp);
 
-            // Agrega más extracciones según sea necesario (nombre, carrera, etc.)
-            datos.put("nombre", driver.findElement(By.cssSelector(".nombre")).getText().trim());
-            datos.put("carrera", driver.findElement(By.cssSelector(".carrera")).getText().trim());
+            // Nombre
+            WebElement nombreElement = driver.findElement(By.cssSelector(".nombre"));
+            String nombre = nombreElement.getText().trim();
+            datos.put("nombre", nombre);
+            System.out.println("[EXTRACCIÓN] Nombre obtenido: " + nombre);
+
+            // Carrera
+            WebElement carreraElement = driver.findElement(By.cssSelector(".carrera"));
+            String carrera = carreraElement.getText().trim();
+            datos.put("carrera", carrera);
+            System.out.println("[EXTRACCIÓN] Carrera obtenida: " + carrera);
+
+            // Escuela
+            WebElement escuelaElement = driver.findElement(By.cssSelector(".escuela"));
+            String escuela = escuelaElement.getText().trim();
+            datos.put("escuela", escuela);
+            System.out.println("[EXTRACCIÓN] Escuela obtenida: " + escuela);
 
         } catch (NoSuchElementException e) {
             System.err.println("[ERROR] Elemento no encontrado: " + e.getMessage());
@@ -119,23 +131,26 @@ public class ScrapingCredencial {
 
     private static String extractAlumnoId(String url) {
         int index = url.indexOf("?h=");
-        return (index != -1) ? url.substring(index + 3, Math.min(url.length(), index + 150)) : null;
+        if (index != -1) {
+            return url.substring(index + 3, Math.min(url.length(), index + 150));
+        }
+        return null;
     }
 
-    private static String findExistingImage(String alumnoId) throws IOException {
-        Path dirPath = Paths.get(IMAGE_DIR);
-        if (!Files.exists(dirPath)) {
-            Files.createDirectories(dirPath);
+    private static String findExistingImage(String alumnoId) {
+        File dir = new File(IMAGE_DIR);
+        if (!dir.exists()) {
+            dir.mkdirs();
             return null;
         }
 
-        try (var stream = Files.list(dirPath)) {
-            return stream
-                    .filter(path -> path.getFileName().toString().startsWith("credencial_" + alumnoId))
-                    .findFirst()
-                    .map(Path::toAbsolutePath)
-                    .map(Path::toString)
-                    .orElse(null);
+        // Buscar archivos que comiencen con "credencial_[ID]"
+        String prefix = "credencial_" + alumnoId;
+        File[] matchingFiles = dir.listFiles((dir1, name) -> name.startsWith(prefix));
+
+        if (matchingFiles != null && matchingFiles.length > 0) {
+            return matchingFiles[0].getAbsolutePath();
         }
+        return null;
     }
 }
