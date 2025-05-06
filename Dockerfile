@@ -9,22 +9,22 @@ FROM openjdk:17-jdk-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV CHROME_BIN=/usr/bin/google-chrome-stable
+ENV SELENIUM_VERSION=4.16.1
 
+# Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     wget \
     gnupg2 \
-    apt-transport-https \
-    ca-certificates \
-    software-properties-common \
     unzip \
-    curl
+    curl \
+    xvfb
 
+# Instalar Chrome específico
 RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /usr/share/keyrings/google-chrome.gpg && \
     echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    google-chrome-stable \
-    xvfb \
+    google-chrome-stable=136.0.7103.59-1 \
     libgtk-3-0 \
     libgbm1 \
     libnss3 \
@@ -34,7 +34,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libcairo2 \
     libcups2 \
     libdbus-1-3 \
-    libexpat1 \
     libfontconfig1 \
     libfreetype6 \
     libglib2.0-0 \
@@ -48,45 +47,62 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxi6 \
     libxrender1 \
     libpango-1.0-0 \
-    libpangocairo-1.0-0 \
     fonts-liberation \
-    xdg-utils \
-    wget \
     && rm -rf /var/lib/apt/lists/*
 
-# Obtener la versión de Chrome instalada y descargar el ChromeDriver correspondiente
-RUN wget "https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.49/linux64/chromedriver-linux64.zip" -O /tmp/chromedriver.zip && \
+# Instalar ChromeDriver específico (debe coincidir con la versión de Chrome)
+RUN CHROME_MAJOR_VERSION=$(google-chrome-stable --version | sed -E 's/.* ([0-9]+)\..*/\1/') && \
+    CHROME_VERSION=$(google-chrome-stable --version | awk '{print $3}') && \
+    echo "Versión de Chrome detectada: $CHROME_VERSION" && \
+    wget "https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chromedriver-linux64.zip" -O /tmp/chromedriver.zip && \
     unzip /tmp/chromedriver.zip -d /opt/chromedriver && \
     chmod +x /opt/chromedriver/chromedriver-linux64/chromedriver && \
     ln -s /opt/chromedriver/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver && \
     rm /tmp/chromedriver.zip
 
+# Configurar variables de entorno
 ENV CHROME_BIN=/usr/bin/google-chrome-stable
 ENV CHROMEDRIVER_PATH=/usr/local/bin/chromedriver
 ENV DISPLAY=:99
 
+# Crear directorios necesarios
 RUN mkdir -p /app/src/main/resources/static/images/credenciales && \
     chmod -R 777 /app && \
     mkdir -p /root/.cache && \
     chmod -R 777 /root/.cache
 
-COPY --from=build /app/target/PruebaCRUD-0.0.1-SNAPSHOT.jar app.jar
+# Copiar el JAR de la aplicación
+COPY --from=build /app/target/*.jar /app/app.jar
+RUN chmod +r /app/app.jar
 
+# Script de inicio mejorado
 RUN echo '#!/bin/bash\n\
-echo "Verificando instalación de Chrome..."\n\
+echo "=== INICIO DE CONFIGURACIÓN ==="\n\
+echo "Versión de Chrome:"\n\
 google-chrome-stable --version\n\
-echo "Verificando instalación de ChromeDriver..."\n\
+echo "Versión de ChromeDriver:"\n\
 chromedriver --version\n\
+echo "Verificando archivo JAR... de Spring"\n\
+if [ ! -f /app/app.jar ]; then\n\
+  echo "ERROR: No se encuentra /app/app.jar"\n\
+  echo "Contenido de /app:"\n\
+  ls -la /app\n\
+  exit 1\n\
+fi\n\
+echo "Tamaño del JAR: $(du -h /app/app.jar | cut -f1)"\n\
 echo "Iniciando Xvfb..."\n\
 Xvfb :99 -screen 0 1920x1080x24 -ac +extension GLX +render -noreset &\n\
-sleep 10\n\
-echo "Verificando permisos de directorios..."\n\
-ls -la /usr/local/bin/chromedriver\n\
-echo "Starting application..."\n\
-java -Dwebdriver.chrome.driver=/usr/local/bin/chromedriver \
-         -Dwebdriver.chrome.verboseLogging=true \
-         -Xmx512m -Xms256m \
-         -jar /app/app.jar' > /start.sh && \
+sleep 5\n\
+echo "Variables de entorno:"\n\
+echo "CHROME_BIN=$CHROME_BIN"\n\
+echo "CHROMEDRIVER_PATH=$CHROMEDRIVER_PATH"\n\
+echo "DISPLAY=$DISPLAY"\n\
+echo "=== INICIANDO APLICACIÓN ==="\n\
+java -Dwebdriver.chrome.driver=$CHROMEDRIVER_PATH \
+     -Dselenium.version=$SELENIUM_VERSION \
+     -Dwebdriver.chrome.verboseLogging=true \
+     -Xmx512m -Xms256m \
+     -jar /app/app.jar' > /start.sh && \
 chmod +x /start.sh
 
 EXPOSE 8080
