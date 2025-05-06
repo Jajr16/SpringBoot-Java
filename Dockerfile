@@ -1,11 +1,17 @@
-# Etapa 1: Compilar el proyecto
-FROM maven:3.8.5-openjdk-17-slim AS build
+# Etapa 1: construir la aplicación
+FROM maven:3.9.6-eclipse-temurin-17-alpine as build
 WORKDIR /app
-COPY . .
+COPY pom.xml .
+COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Etapa 2: Imagen final
-FROM openjdk:17-jdk-slim
+# Etapa 2: crear la imagen final
+FROM eclipse-temurin:17-jdk-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar /app/app.jar
+EXPOSE 8080
+CMD ["java", "-jar", "/app/app.jar"]
+
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV CHROME_BIN=/usr/bin/google-chrome-stable
