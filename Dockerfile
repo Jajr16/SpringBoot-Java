@@ -8,7 +8,7 @@ RUN mvn clean package -DskipTests
 FROM openjdk:17-jdk-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV CHROME_VERSION 123.0.6312.105 # Fija una versión específica de Chrome
+ENV CHROME_VERSION 136.0.7103 # Usamos la parte principal de la versión
 
 RUN apt-get update && apt-get install -y \
     wget \
@@ -22,7 +22,7 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearm
     echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    google-chrome-stable=${CHROME_VERSION}-1 \
+    google-chrome-stable=${CHROME_VERSION}-1 \ # Intentamos con la versión principal
     xvfb \
     libgtk-3-0 \
     libgbm1 \
@@ -53,10 +53,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
-COPY src/main/resources/chromedriver/chromedriver /app/chromedriver/chromedriver
-RUN chmod 777 /app/chromedriver/chromedriver && \
-    ln -s /app/chromedriver/chromedriver /usr/local/bin/chromedriver
+# Descargar y configurar ChromeDriver para la versión de Chrome
+RUN wget "https://chromedriver.storage.googleapis.com/136.0.7103.49/chromedriver_linux64.zip" -O /tmp/chromedriver.zip && \
+    unzip /tmp/chromedriver.zip -d /opt/chromedriver && \
+    chmod +x /opt/chromedriver/chromedriver && \
+    ln -s /opt/chromedriver/chromedriver /usr/local/bin/chromedriver && \
+    rm /tmp/chromedriver.zip
 
 ENV CHROME_BIN=/usr/bin/google-chrome-stable
 ENV CHROMEDRIVER_PATH=/usr/local/bin/chromedriver
@@ -78,11 +80,7 @@ echo "Iniciando Xvfb..."\n\
 Xvfb :99 -screen 0 1920x1080x24 -ac +extension GLX +render -noreset &\n\
 sleep 10\n\
 echo "Verificando permisos de directorios..."\n\
-ls -la /app/chromedriver/chromedriver\n\
 ls -la /usr/local/bin/chromedriver\n\
-ls -la /root/.cache/selenium\n\
-echo "Verificando ChromeDriver..."\n\
-find / -name "chromedriver*"\n\
 echo "Starting application..."\n\
 java -Dwebdriver.chrome.driver=/usr/local/bin/chromedriver \
      -Dwebdriver.chrome.verboseLogging=true \
