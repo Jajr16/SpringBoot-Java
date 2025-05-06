@@ -16,7 +16,8 @@ RUN apt-get update && apt-get install -y \
     gnupg2 \
     apt-transport-https \
     ca-certificates \
-    software-properties-common
+    software-properties-common \
+    unzip
 
 # Configurar repositorio de Chrome
 RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /usr/share/keyrings/google-chrome.gpg && \

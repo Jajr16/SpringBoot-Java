@@ -17,12 +17,14 @@ public class ScrapingCredencial {
 
     private static final String IMAGE_DIR = "/app/src/main/resources/static/images/credenciales/";
     private static final int MAX_RETRIES = 3;
+    private static String chromeDriverPath;
 
     static {
         try {
-            // Configurar WebDriver
-            System.setProperty("webdriver.chrome.whitelistedIps", "");
+            // Configurar WebDriver y obtener la ruta
             WebDriverManager.chromedriver().setup();
+            chromeDriverPath = WebDriverManager.chromedriver().getDownloadedDriverPath();
+            System.out.println("ChromeDriver path: " + chromeDriverPath);
 
             // Crear directorio si no existe
             Path dirPath = Paths.get(IMAGE_DIR);
@@ -63,7 +65,7 @@ public class ScrapingCredencial {
             try {
                 driver = createWebDriver();
                 driver.get(credencialUrl);
-                Thread.sleep(5000); // Esperar a que cargue la página
+                Thread.sleep(5000);
 
                 resultados.putAll(extraerDatosAlumno(driver));
 
@@ -79,7 +81,6 @@ public class ScrapingCredencial {
             } catch (Exception e) {
                 lastException = e;
                 System.err.println("Intento " + intento + " fallido: " + e.getMessage());
-
                 if (intento < MAX_RETRIES) {
                     try {
                         Thread.sleep(2000 * intento);
@@ -113,8 +114,8 @@ public class ScrapingCredencial {
                 "--disable-extensions"
         );
 
-        options.setBinary("/usr/bin/google-chrome-stable");
-        System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
+        // Usar la ruta del ChromeDriver descargado por WebDriverManager
+        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
 
         return new ChromeDriver(options);
     }
