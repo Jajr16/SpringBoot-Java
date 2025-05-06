@@ -16,6 +16,7 @@ RUN apt-get update && \
     chromium-driver \
     libnss3 \
     libgconf-2-4 \
+    libglib2.0-0 \
     libfontconfig1 \
     libfreetype6 \
     libx11-6 \
