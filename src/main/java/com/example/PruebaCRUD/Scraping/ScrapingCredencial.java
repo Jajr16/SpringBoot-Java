@@ -132,23 +132,20 @@ public class ScrapingCredencial {
 
             // Ajustar la ruta del chromedriver según el sistema operativo
             if (osName.contains("win")) {
-                chromeDriverPath = "/chromedriver/chromedriver.exe"; // Windows
+                chromeDriverPath = "chromedriver/chromedriver.exe"; // Windows
             } else {
-                chromeDriverPath = "/chromedriver/chromedriver"; // Linux
+                chromeDriverPath = "chromedriver/chromedriver"; // Linux
             }
 
-            String driverAbsolutePath = "/usr/local/bin/chromedriver";
-            System.setProperty("webdriver.chrome.driver", driverAbsolutePath);
-
-            // Verificar si el archivo existe
-            File driverFile = new File(driverAbsolutePath);
+            // Verificar si el archivo existe en el contenedor
+            File driverFile = new File(chromeDriverPath);
             if (!driverFile.exists()) {
-                throw new RuntimeException("El archivo ChromeDriver no se encuentra en: " + driverAbsolutePath);
+                throw new RuntimeException("El archivo ChromeDriver no se encuentra en: " + chromeDriverPath);
             }
 
-            // Asegurar permisos de ejecución en Linux
+            // Asegurarse de que el archivo sea ejecutable en Linux
             if (!osName.contains("win") && !driverFile.setExecutable(true)) {
-                System.err.println("No se pudieron establecer permisos de ejecución para el archivo: " + driverAbsolutePath);
+                System.err.println("No se pudieron establecer permisos de ejecución para el archivo: " + chromeDriverPath);
             }
 
             // Configurar el path para Selenium
@@ -157,7 +154,7 @@ public class ScrapingCredencial {
             // Opciones para Chrome
             ChromeOptions options = new ChromeOptions();
             options.addArguments(
-                    "--headless=new",
+                    "--headless",
                     "--no-sandbox",
                     "--disable-dev-shm-usage",
                     "--disable-gpu",
@@ -176,7 +173,6 @@ public class ScrapingCredencial {
             throw e;
         }
     }
-
 
     private static Map<String, String> extraerDatosAlumnoConReintentos(String credencialUrl) throws IOException, InterruptedException {
         WebDriver driver = null;
