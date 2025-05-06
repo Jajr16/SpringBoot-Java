@@ -83,12 +83,12 @@
 
 
 
-		<!-- WebDriverr Manager (para manejar ChromeDriver automáticamente) -->
-		<dependency>
-			<groupId>io.github.bonigarcia</groupId>
-			<artifactId>webdrivermanager</artifactId>
-			<version>5.7.0</version>  <!-- Última versión estable -->
-		</dependency>
+<!--		&lt;!&ndash; WebDriverr Manager (para manejar ChromeDriver automáticamente) &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>io.github.bonigarcia</groupId>-->
+<!--			<artifactId>webdrivermanager</artifactId>-->
+<!--			<version>5.7.0</version>  &lt;!&ndash; Última versión estable &ndash;&gt;-->
+<!--		</dependency>-->
 
 
 		<dependency>
