@@ -8,15 +8,21 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Stream;
 
 public class ScrapingCredencial {
 
-    private static final String IMAGE_DIR = "./src/main/java/com/example/PruebaCRUD/Scraping/images/";
+    private static String BASE_DIR = System.getProperty("user.home") + "/pruebacrud";
+    private static String IMAGE_DIR = BASE_DIR + "/images/";
+    private static final long UN_MES_EN_MILLIS = 30L * 24 * 60 * 60 * 1000;
+
+    static {
+        // Configurar WebDriverManager al cargar la clase
+        WebDriverManager.chromedriver().setup();
+        crearDirectoriosSiNoExisten();
+    }
 
     public static Map<String, String> capturarCredencial(String credencialUrl) throws IOException {
         System.out.println("Iniciando captura de credencial...");
@@ -29,11 +35,15 @@ public class ScrapingCredencial {
         }
         resultados.put("alumnoId", alumnoId);
 
-        // Verificar si ya existe una imagen para este ID
+        // Verificar si ya existe una imagen para este ID y si no ha expirado
         String existingImagePath = findExistingImage(alumnoId);
-        if (existingImagePath != null) {
-            System.out.println("Ya existe una imagen para este ID: " + existingImagePath);
+        if (existingImagePath != null && !isCacheExpired(new File(existingImagePath))) {
+            System.out.println("Usando imagen en caché (menos de un mes de antigüedad): " + existingImagePath);
             resultados.put("imagenPath", existingImagePath);
+
+            // Aún así extraemos los datos por si han cambiado
+            resultados.putAll(extraerDatosAlumno(credencialUrl));
+            return resultados;
         }
 
         ChromeOptions options = new ChromeOptions();
@@ -48,12 +58,9 @@ public class ScrapingCredencial {
         options.addArguments("--disable-setuid-sandbox");
         options.addArguments("--disable-infobars");
 
-        // Configuración específica para Windows
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
-            // Ruta típica de Chrome en Windows
             options.setBinary("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
         } else {
-            // Ruta para Linux (opcional, si necesitas compatibilidad multiplataforma)
             options.setBinary("/usr/bin/chromium");
         }
 
@@ -67,20 +74,18 @@ public class ScrapingCredencial {
             // Extraer datos del HTML
             resultados.putAll(extraerDatosAlumno(driver));
 
-            // Solo tomar screenshot si no existe la imagen
-            if (existingImagePath == null) {
-                JavascriptExecutor js = (JavascriptExecutor) driver;
-                long scrollHeight = (long) js.executeScript("return document.body.scrollHeight");
-                driver.manage().window().setSize(new Dimension(1920, (int) scrollHeight));
+            // Tomar screenshot
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            long scrollHeight = (long) js.executeScript("return document.body.scrollHeight");
+            driver.manage().window().setSize(new Dimension(1920, (int) scrollHeight));
 
-                File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-                String imageName = "credencial_" + alumnoId + ".png";
-                File imageFile = new File(IMAGE_DIR, imageName);
-                Files.copy(screenshot.toPath(), imageFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            String imageName = "credencial_" + alumnoId + ".png";
+            File imageFile = new File(IMAGE_DIR, imageName);
+            Files.copy(screenshot.toPath(), imageFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-                resultados.put("imagenPath", imageFile.getAbsolutePath());
-                System.out.println("Screenshot guardado en: " + imageFile.getAbsolutePath());
-            }
+            resultados.put("imagenPath", imageFile.getAbsolutePath());
+            System.out.println("Nueva imagen de credencial guardada en: " + imageFile.getAbsolutePath());
 
             return resultados;
 
@@ -137,6 +142,23 @@ public class ScrapingCredencial {
         return datos;
     }
 
+    private static Map<String, String> extraerDatosAlumno(String credencialUrl) throws IOException {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--remote-allow-origins=*");
+
+        WebDriver driver = new ChromeDriver(options);
+        try {
+            driver.get(credencialUrl);
+            return extraerDatosAlumno(driver);
+        } finally {
+            driver.quit();
+        }
+    }
+
     private static String extractAlumnoId(String url) {
         int index = url.indexOf("?h=");
         if (index != -1) {
@@ -154,11 +176,35 @@ public class ScrapingCredencial {
 
         // Buscar archivos que comiencen con "credencial_[ID]"
         String prefix = "credencial_" + alumnoId;
-        File[] matchingFiles = dir.listFiles((dir1, name) -> name.startsWith(prefix));
+        File[] matchingFiles = dir.listFiles((dir1, name) -> name.startsWith(prefix) && name.endsWith(".png"));
 
         if (matchingFiles != null && matchingFiles.length > 0) {
             return matchingFiles[0].getAbsolutePath();
         }
         return null;
+    }
+
+    private static boolean isCacheExpired(File file) {
+        long tiempoActual = System.currentTimeMillis();
+        long tiempoArchivo = file.lastModified();
+        return (tiempoActual - tiempoArchivo) > UN_MES_EN_MILLIS;
+    }
+
+    private static void crearDirectoriosSiNoExisten() {
+        File baseDir = new File(BASE_DIR);
+        File imageDir = new File(IMAGE_DIR);
+
+        try {
+            if (!baseDir.exists()) baseDir.mkdirs();
+            if (!imageDir.exists()) imageDir.mkdirs();
+        } catch (Exception e) {
+            // Si falla, usar directorio temporal
+            System.err.println("No se pudo crear directorio en ubicación principal, usando temporal: " + e.getMessage());
+            String tmpDir = System.getProperty("java.io.tmpdir") + "/pruebacrud";
+            File tmpImageDir = new File(tmpDir + "/images");
+            tmpImageDir.mkdirs();
+            IMAGE_DIR = tmpImageDir.getAbsolutePath() + "/";
+            BASE_DIR = tmpDir;
+        }
     }
 }
