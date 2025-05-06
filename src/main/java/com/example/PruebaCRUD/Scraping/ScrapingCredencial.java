@@ -114,17 +114,9 @@ public class ScrapingCredencial {
     private static WebDriver createWebDriver() {
         System.out.println("Creando nueva instancia de ChromeDriver...");
         ChromeOptions options = new ChromeOptions();
-        options.addArguments(
-                "--headless",
-                "--no-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-gpu",
-                "--window-size=1920,1080",
-                "--remote-allow-origins=*",
-                "--disable-extensions",
-                "--user-data-dir=/app/chrome-data",
-                "--homedir=/app"
-        );
+        options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu", "--window-size=1920,1080", "--remote-allow-origins=*");
+        // options.addArguments("--user-data-dir=/app/chrome-data");
+        // options.addArguments("--homedir=/app");
         ChromeDriver driver = new ChromeDriver(options);
         Capabilities capabilities = driver.getCapabilities();
         String browserVersion = capabilities.getBrowserVersion();
