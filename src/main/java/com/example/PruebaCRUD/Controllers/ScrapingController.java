@@ -85,6 +85,8 @@ public class ScrapingController {
             System.err.println("Error en el scraping: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new CredencialResponseDTO("Error al procesar la credencial: " + e.getMessage(), null));
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }
