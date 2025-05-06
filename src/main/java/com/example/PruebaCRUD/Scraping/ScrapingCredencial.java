@@ -42,7 +42,16 @@ public class ScrapingCredencial {
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--disable-gpu");
         options.addArguments("--remote-allow-origins=*");
-        options.setBinary("/usr/bin/chromium");
+
+        // Configuración específica para Windows
+        if (System.getProperty("os.name").toLowerCase().contains("win")) {
+            // Ruta típica de Chrome en Windows
+            options.setBinary("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
+        } else {
+            // Ruta para Linux (opcional, si necesitas compatibilidad multiplataforma)
+            options.setBinary("/usr/bin/chromium");
+        }
+
         WebDriver driver = new ChromeDriver(options);
 
         try {

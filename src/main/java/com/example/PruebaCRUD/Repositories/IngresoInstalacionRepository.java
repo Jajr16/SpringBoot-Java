@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface IngresoInstalacionRepository extends JpaRepository<IngresoInstalacion, IngresoInstalacionPK> {
@@ -22,29 +23,35 @@ public interface IngresoInstalacionRepository extends JpaRepository<IngresoInsta
             "a.CURP.nombre, " +
             "a.CURP.apellido_p as apellidoP, " +
             "a.CURP.apellido_m as apellidoM, " +
-            "CAST(e.id_ETS AS string)) " +
+            "e.id_ETS) " +
             "FROM InscripcionETS ie " +
             "JOIN ie.boletaIns a " +
             "JOIN ie.idETSIns e " +
             "WHERE a.boleta = :boleta AND e.id_ETS = :idETS")
-    List<IngresoInstalacionDTO> findAlumnosInscritosETS(@Param("boleta") String boleta, @Param("idETS") Integer idETS);
+    List<IngresoInstalacionDTO> findAlumnosInscritosETS(@Param("boleta") String boleta,
+                                                        @Param("idETS") Integer idETS);
 
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO ingreso_instalacion (boleta, idets, fecha, hora) VALUES (:boleta, :idETS, :fecha, :hora)",
+    @Query(value = "INSERT INTO ingreso_instalacion (boleta, idets, fecha, hora) " +
+            "VALUES (:boleta, :idets, :fecha, :hora)",
             nativeQuery = true)
     void saveAttendance(@Param("boleta") String boleta,
-                        @Param("idETS") Integer idETS,
+                        @Param("idets") Integer idETS,
                         @Param("fecha") Date fecha,
                         @Param("hora") Time hora);
 
-    @Query(value = "SELECT i FROM IngresoInstalacion i WHERE " +
-            "CAST(i.id.boleta AS string) = CAST(:boleta AS string) AND " +
+    @Query("SELECT i FROM IngresoInstalacion i WHERE " +
+            "i.id.boleta = :boleta AND " +
             "i.id.fecha = :fecha AND " +
-            "CAST(i.id.idets AS integer) = CAST(:idets AS integer)")
+            "CAST(i.id.idets AS integer) = :idETS")  // Conversión explícita
     List<IngresoInstalacion> findByBoletaAndFechaAndIdETS(
             @Param("boleta") String boleta,
             @Param("fecha") Date fecha,
-            @Param("idets") Integer idets);
+            @Param("idETS") Integer idETS);
+
+    // Método opcional para diagnóstico
+    @Query(value = "SELECT idETS FROM ets WHERE idETS = :idETS", nativeQuery = true)
+    Integer verificarExistenciaETS(@Param("idETS") Integer idETS);
 }
