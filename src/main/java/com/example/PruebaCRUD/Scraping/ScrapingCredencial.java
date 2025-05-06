@@ -50,23 +50,14 @@ public class ScrapingCredencial {
         options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--disable-gpu");
-        options.addArguments("--window-size=1920,1080");
-        options.addArguments("--disable-extensions");
-        options.addArguments("--disable-setuid-sandbox");
-        options.addArguments("--disable-infobars");
-        options.addArguments("--disable-web-security");
-        options.addArguments("--ignore-certificate-errors");
+        options.addArguments("--remote-allow-origins=*");
 
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
             options.setBinary("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
         } else {
             options.setBinary("/usr/bin/chromium");
         }
-
-        WebDriverManager.chromedriver().setup();
-        System.setProperty("webdriver.chrome.whitelistedIps", "");
 
         WebDriver driver = new ChromeDriver(options);
 
