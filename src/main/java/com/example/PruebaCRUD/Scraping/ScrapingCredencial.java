@@ -1,6 +1,5 @@
 package com.example.PruebaCRUD.Scraping;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -15,38 +14,24 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 public class ScrapingCredencial {
-    private static final String IMAGE_DIR = "/app/src/main/resources/static/images/credenciales/";
+    private static final String IMAGE_DIR = "src/main/resources/static/images/credenciales/";
     private static final int MAX_RETRIES = 3;
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
     private static String chromeDriverPath;
 
     static {
         try {
-            System.out.println("Iniciando configuración de WebDriverManager...");
-            WebDriverManager.chromedriver().setup();
-            chromeDriverPath = WebDriverManager.chromedriver().getDownloadedDriverPath();
-            System.out.println("ChromeDriver descargado en: " + chromeDriverPath);
+            System.out.println("Verificando el directorio de imágenes...");
 
-            // Verificar que el archivo existe
-            File driverFile = new File(chromeDriverPath);
-            if (!driverFile.exists()) {
-                throw new RuntimeException("ChromeDriver no encontrado en: " + chromeDriverPath);
-            }
-
-            // Asegurar permisos de ejecución
-            if (!driverFile.setExecutable(true)) {
-                System.out.println("Advertencia: No se pudieron establecer permisos de ejecución");
-            }
-
-            // Verificar el directorio de imágenes
+            // Verificar que la carpeta de imágenes exista
             Path dirPath = Paths.get(IMAGE_DIR);
             if (!Files.exists(dirPath)) {
                 Files.createDirectories(dirPath);
                 System.out.println("Directorio creado: " + dirPath);
             }
+
         } catch (Exception e) {
             System.err.println("Error en configuración inicial: " + e.getMessage());
             e.printStackTrace();
@@ -141,23 +126,36 @@ public class ScrapingCredencial {
         try {
             System.out.println("Creando nueva instancia de ChromeDriver...");
 
-            // Detectar el sistema operativo y configurar el driver
+            // Detectar el sistema operativo y configurar el driver adecuado
             String osName = System.getProperty("os.name").toLowerCase();
             String chromeDriverPath;
 
             if (osName.contains("win")) {
-                chromeDriverPath = "src/main/resources/chromedriver/chromedriver.exe"; // Windows
+                // Usar el chromedriver.exe para Windows
+                chromeDriverPath = "src/main/resources/chromedriver/chromedriver.exe";
             } else {
-                chromeDriverPath = "src/main/resources/chromedriver/chromedriver"; // Linux
+                // Usar el chromedriver para Linux
+                chromeDriverPath = "src/main/resources/chromedriver/chromedriver";
             }
 
-            // Configurar el path del ChromeDriver
-            System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+            // Verificar si el archivo existe
+            File driverFile = new File(chromeDriverPath);
+            if (!driverFile.exists()) {
+                throw new RuntimeException("El archivo ChromeDriver no se encuentra en: " + chromeDriverPath);
+            }
+
+            // Configurar permisos de ejecución en Linux
+            if (!osName.contains("win") && !driverFile.setExecutable(true)) {
+                System.err.println("No se pudieron establecer permisos de ejecución para el archivo: " + chromeDriverPath);
+            }
+
+            // Configurar la ruta del driver en Selenium
+            System.setProperty("webdriver.chrome.driver", driverFile.getAbsolutePath());
 
             // Configurar opciones para Chrome
             ChromeOptions options = new ChromeOptions();
             options.addArguments(
-                    "--headless=new",
+                    "--headless=new", // Modo headless para entornos sin GUI
                     "--no-sandbox",
                     "--disable-dev-shm-usage",
                     "--disable-gpu",
@@ -167,7 +165,7 @@ public class ScrapingCredencial {
             );
 
             ChromeDriver driver = new ChromeDriver(options);
-            System.out.println("ChromeDriver listo desde: " + chromeDriverPath);
+            System.out.println("ChromeDriver listo desde: " + driverFile.getAbsolutePath());
             return driver;
 
         } catch (Exception e) {
