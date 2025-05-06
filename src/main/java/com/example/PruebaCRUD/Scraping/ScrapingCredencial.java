@@ -19,7 +19,6 @@ public class ScrapingCredencial {
     private static final long UN_MES_EN_MILLIS = 30L * 24 * 60 * 60 * 1000;
 
     static {
-        // Configurar WebDriverManager al cargar la clase
         WebDriverManager.chromedriver().setup();
         crearDirectoriosSiNoExisten();
     }
@@ -41,7 +40,6 @@ public class ScrapingCredencial {
             System.out.println("Usando imagen en caché (menos de un mes de antigüedad): " + existingImagePath);
             resultados.put("imagenPath", existingImagePath);
 
-            // Aún así extraemos los datos por si han cambiado
             resultados.putAll(extraerDatosAlumno(credencialUrl));
             return resultados;
         }
@@ -192,7 +190,6 @@ public class ScrapingCredencial {
             if (!baseDir.exists()) baseDir.mkdirs();
             if (!imageDir.exists()) imageDir.mkdirs();
         } catch (Exception e) {
-            // Si falla, usar directorio temporal
             System.err.println("No se pudo crear directorio en ubicación principal, usando temporal: " + e.getMessage());
             String tmpDir = System.getProperty("java.io.tmpdir") + "/pruebacrud";
             File tmpImageDir = new File(tmpDir + "/images");
