@@ -141,6 +141,20 @@ public class ScrapingCredencial {
         try {
             System.out.println("Creando nueva instancia de ChromeDriver...");
 
+            // Detectar el sistema operativo y configurar el driver
+            String osName = System.getProperty("os.name").toLowerCase();
+            String chromeDriverPath;
+
+            if (osName.contains("win")) {
+                chromeDriverPath = "src/main/resources/chromedriver/chromedriver.exe"; // Windows
+            } else {
+                chromeDriverPath = "src/main/resources/chromedriver/chromedriver"; // Linux
+            }
+
+            // Configurar el path del ChromeDriver
+            System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+
+            // Configurar opciones para Chrome
             ChromeOptions options = new ChromeOptions();
             options.addArguments(
                     "--headless=new",
@@ -152,11 +166,8 @@ public class ScrapingCredencial {
                     "--disable-extensions"
             );
 
-            // Usar el path descargado por WebDriverManager
-            System.setProperty("webdriver.chrome.driver", chromeDriverPath);
-
             ChromeDriver driver = new ChromeDriver(options);
-            System.out.println("ChromeDriver creado exitosamente usando: " + chromeDriverPath);
+            System.out.println("ChromeDriver listo desde: " + chromeDriverPath);
             return driver;
 
         } catch (Exception e) {
