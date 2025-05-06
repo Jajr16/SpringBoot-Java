@@ -16,22 +16,23 @@ import java.util.Map;
 public class ScrapingCredencial {
 
     private static final String IMAGE_DIR = "/app/src/main/resources/static/images/credenciales/";
-    private static final long UN_MES_EN_MILLIS = 30L * 24 * 60 * 60 * 1000;
+    private static final int MAX_RETRIES = 3;
 
     static {
-        configurarWebDriver();
-        crearDirectoriosSiNoExisten();
-    }
-
-    private static void configurarWebDriver() {
         try {
-            // Configuración específica para Docker
+            // Configurar WebDriver
             System.setProperty("webdriver.chrome.whitelistedIps", "");
-            WebDriverManager.chromedriver()
-                    .driverVersion("latest")
-                    .setup();
+            WebDriverManager.chromedriver().setup();
+
+            // Crear directorio si no existe
+            Path dirPath = Paths.get(IMAGE_DIR);
+            if (!Files.exists(dirPath)) {
+                Files.createDirectories(dirPath);
+                System.out.println("Directorio creado: " + dirPath);
+            }
         } catch (Exception e) {
-            System.err.println("Error configurando WebDriver: " + e.getMessage());
+            System.err.println("Error en configuración inicial: " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -46,104 +47,107 @@ public class ScrapingCredencial {
         resultados.put("alumnoId", alumnoId);
 
         String imageName = "credencial_" + alumnoId + ".png";
-        Path imagePath = Paths.get(IMAGE_DIR, imageName);
+        String existingImagePath = findExistingImage(alumnoId);
 
-        if (Files.exists(imagePath) && !isCacheExpired(imagePath.toFile())) {
-            System.out.println("Usando imagen en caché: " + imagePath);
+        if (existingImagePath != null) {
+            System.out.println("Usando imagen existente: " + existingImagePath);
             resultados.put("imagenPath", "/images/credenciales/" + imageName);
-            resultados.putAll(extraerDatosAlumno(credencialUrl));
+            resultados.putAll(extraerDatosAlumnoConReintentos(credencialUrl));
             return resultados;
         }
 
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments(
-                "--headless=new",
-                "--no-sandbox",
-                "--disable-dev-shm-usage",
-                "--remote-allow-origins=*",
-                "--disable-gpu",
-                "--window-size=1920,1080",
-                "--disable-software-rasterizer",
-                "--disable-extensions",
-                "--ignore-certificate-errors",
-                "--disable-dev-tools"
-        );
-
-        // Configuración específica para Docker
-        options.setBinary("/usr/bin/google-chrome-stable");
-
-        // Configurar preferencias
-        Map<String, Object> prefs = new HashMap<>();
-        prefs.put("profile.default_content_settings.popups", 0);
-        prefs.put("download.default_directory", IMAGE_DIR);
-        options.setExperimentalOption("prefs", prefs);
-
         WebDriver driver = null;
-        int maxRetries = 3;
         Exception lastException = null;
 
-        for (int i = 0; i < maxRetries; i++) {
+        for (int intento = 1; intento <= MAX_RETRIES; intento++) {
             try {
-                driver = new ChromeDriver(options);
+                driver = createWebDriver();
                 driver.get(credencialUrl);
-                Thread.sleep(3000);
+                Thread.sleep(5000); // Esperar a que cargue la página
 
                 resultados.putAll(extraerDatosAlumno(driver));
 
-                JavascriptExecutor js = (JavascriptExecutor) driver;
-                long scrollHeight = (long) js.executeScript("return document.body.scrollHeight");
-                driver.manage().window().setSize(new Dimension(1920, (int) scrollHeight));
-
                 File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-                Files.copy(screenshot.toPath(), imagePath, StandardCopyOption.REPLACE_EXISTING);
+                File imageFile = new File(IMAGE_DIR, imageName);
+                Files.copy(screenshot.toPath(), imageFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
                 resultados.put("imagenPath", "/images/credenciales/" + imageName);
-                System.out.println("Nueva imagen guardada en: " + imagePath);
+                System.out.println("Nueva imagen guardada en: " + imageFile.getAbsolutePath());
 
                 return resultados;
 
             } catch (Exception e) {
                 lastException = e;
-                System.err.println("Intento " + (i + 1) + " fallido: " + e.getMessage());
+                System.err.println("Intento " + intento + " fallido: " + e.getMessage());
+
+                if (intento < MAX_RETRIES) {
+                    try {
+                        Thread.sleep(2000 * intento);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            } finally {
                 if (driver != null) {
-                    driver.quit();
+                    try {
+                        driver.quit();
+                    } catch (Exception e) {
+                        System.err.println("Error al cerrar el driver: " + e.getMessage());
+                    }
                 }
-                if (i == maxRetries - 1) {
-                    throw new IOException("Error después de " + maxRetries + " intentos", lastException);
-                }
+            }
+        }
+
+        throw new IOException("Error después de " + MAX_RETRIES + " intentos", lastException);
+    }
+
+    private static WebDriver createWebDriver() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments(
+                "--headless=new",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+                "--window-size=1920,1080",
+                "--remote-allow-origins=*",
+                "--disable-extensions"
+        );
+
+        options.setBinary("/usr/bin/google-chrome-stable");
+        System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
+
+        return new ChromeDriver(options);
+    }
+
+    private static Map<String, String> extraerDatosAlumnoConReintentos(String credencialUrl) throws IOException {
+        WebDriver driver = null;
+        Exception lastException = null;
+
+        for (int i = 0; i < MAX_RETRIES; i++) {
+            try {
+                driver = createWebDriver();
+                driver.get(credencialUrl);
+                return extraerDatosAlumno(driver);
+            } catch (Exception e) {
+                lastException = e;
                 try {
                     Thread.sleep(2000 * (i + 1));
                 } catch (InterruptedException ie) {
                     Thread.currentThread().interrupt();
                 }
+            } finally {
+                if (driver != null) {
+                    try {
+                        driver.quit();
+                    } catch (Exception e) {
+                        System.err.println("Error al cerrar el driver: " + e.getMessage());
+                    }
+                }
             }
         }
 
-        throw new IOException("No se pudo procesar la credencial");
+        throw new IOException("Error en la extracción de datos", lastException);
     }
-
-    private static void crearDirectoriosSiNoExisten() {
-        try {
-            Path dirPath = Paths.get(IMAGE_DIR);
-            if (!Files.exists(dirPath)) {
-                Files.createDirectories(dirPath);
-                System.out.println("Directorio creado: " + dirPath);
-            }
-        } catch (IOException e) {
-            System.err.println("Error al crear directorio de imágenes: " + e.getMessage());
-            throw new RuntimeException("No se pudo crear el directorio de imágenes", e);
-        }
-    }
-
-    // El resto de los métodos permanecen igual, excepto findExistingImage que necesita ser actualizado:
-    private static String findExistingImage(String alumnoId) {
-        Path imagePath = Paths.get(IMAGE_DIR, "credencial_" + alumnoId + ".png");
-        if (Files.exists(imagePath)) {
-            return imagePath.toString();
-        }
-        return null;
-    }
-
 
     private static Map<String, String> extraerDatosAlumno(WebDriver driver) {
         Map<String, String> datos = new HashMap<>();
@@ -185,27 +189,11 @@ public class ScrapingCredencial {
 
         } catch (NoSuchElementException e) {
             System.err.println("[ERROR] Elemento no encontrado: " + e.getMessage());
+            throw e;
         }
 
         System.out.println("=== FIN DE EXTRACCIÓN ===\n");
         return datos;
-    }
-
-    private static Map<String, String> extraerDatosAlumno(String credencialUrl) throws IOException {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--remote-allow-origins=*");
-
-        WebDriver driver = new ChromeDriver(options);
-        try {
-            driver.get(credencialUrl);
-            return extraerDatosAlumno(driver);
-        } finally {
-            driver.quit();
-        }
     }
 
     private static String extractAlumnoId(String url) {
@@ -215,9 +203,20 @@ public class ScrapingCredencial {
         }
         return null;
     }
-    private static boolean isCacheExpired(File file) {
-        long tiempoActual = System.currentTimeMillis();
-        long tiempoArchivo = file.lastModified();
-        return (tiempoActual - tiempoArchivo) > UN_MES_EN_MILLIS;
+
+    private static String findExistingImage(String alumnoId) {
+        File dir = new File(IMAGE_DIR);
+        if (!dir.exists()) {
+            dir.mkdirs();
+            return null;
+        }
+
+        String prefix = "credencial_" + alumnoId;
+        File[] matchingFiles = dir.listFiles((dir1, name) -> name.startsWith(prefix) && name.endsWith(".png"));
+
+        if (matchingFiles != null && matchingFiles.length > 0) {
+            return matchingFiles[0].getName();
+        }
+        return null;
     }
 }
