@@ -7,10 +7,8 @@ RUN mvn clean package -DskipTests
 # Etapa 2: Imagen final
 FROM openjdk:17-jdk-slim
 
-# Configurar entorno
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Instalar dependencias básicas primero
 RUN apt-get update && apt-get install -y \
     wget \
     gnupg2 \
@@ -19,15 +17,12 @@ RUN apt-get update && apt-get install -y \
     software-properties-common \
     unzip
 
-# Configurar repositorio de Chrome
 RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /usr/share/keyrings/google-chrome.gpg && \
     echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
 
-# Instalar Chrome y dependencias
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     google-chrome-stable \
-    chromium-chromedriver \
     xvfb \
     libglib2.0-0 \
     libnss3 \
@@ -53,27 +48,22 @@ RUN apt-get update && \
     xdg-utils \
     && rm -rf /var/lib/apt/lists/*
 
-# Configurar ChromeDriver descargado manualmente
 WORKDIR /app
 COPY src/main/resources/chromedriver/ ./chromedriver/
 RUN chmod +x ./chromedriver/chromedriver && \
-    ln -s /app/chromedriver/chromedriver /usr/local/bin/chromedriver # Enlaza tu propio Driver
+    ln -s /app/chromedriver/chromedriver /usr/local/bin/chromedriver
 
-# Configurar variables de entorno
 ENV CHROME_BIN=/usr/bin/google-chrome-stable
 ENV CHROMEDRIVER_PATH=/usr/local/bin/chromedriver
 ENV DISPLAY=:99
 
-# Crear directorios necesarios y establecer permisos
 RUN mkdir -p /app/src/main/resources/static/images/credenciales && \
     chmod -R 777 /app && \
     mkdir -p /root/.cache && \
     chmod -R 777 /root/.cache
 
-# Copiar el JAR
 COPY --from=build /app/target/PruebaCRUD-0.0.1-SNAPSHOT.jar app.jar
 
-# Script de inicio mejorado
 RUN echo '#!/bin/bash\n\
 echo "Verificando instalación de Chrome..."\n\
 google-chrome-stable --version\n\
