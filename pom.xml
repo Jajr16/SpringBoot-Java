@@ -81,13 +81,6 @@
 			<version>4.8.0</version>  <!-- Puedes ajustar la versión si es necesario -->
 		</dependency>
 
-		<!-- WebDriverr Manager (para manejar ChromeDriver automáticamente) -->
-		<dependency>
-			<groupId>io.github.bonigarcia</groupId>
-			<artifactId>webdrivermanager</artifactId>
-			<version>5.7.0</version>  <!-- Última versión estable -->
-		</dependency>
-
 		<dependency>
 			<groupId>net.sourceforge.tess4j</groupId>
 			<artifactId>tess4j</artifactId>

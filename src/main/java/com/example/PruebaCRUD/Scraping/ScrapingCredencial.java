@@ -125,7 +125,11 @@ public class ScrapingCredencial {
                 "--user-data-dir=/app/chrome-data",
                 "--homedir=/app"
         );
-        return new ChromeDriver(options);
+        ChromeDriver driver = new ChromeDriver(options);
+        Capabilities capabilities = driver.getCapabilities();
+        String browserVersion = capabilities.getBrowserVersion();
+        System.out.println("Versión de Chrome detectada: " + browserVersion);
+        return driver;
     }
 
     private static Map<String, String> extraerDatosAlumnoConReintentos(String credencialUrl) throws IOException, InterruptedException {
