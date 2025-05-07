@@ -55,20 +55,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Obtener la versión de Chrome instalada y descargar el ChromeDriver correspondiente
-RUN wget "https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.49/linux64/chromedriver-linux64.zip" -O /tmp/chromedriver.zip && \
-    unzip /tmp/chromedriver.zip -d /opt/chromedriver && \
-    chmod +x /opt/chromedriver/chromedriver-linux64/chromedriver && \
-    ln -s /opt/chromedriver/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver && \
-    rm /tmp/chromedriver.zip
-
-ENV CHROME_BIN=/usr/bin/google-chrome-stable
-ENV CHROMEDRIVER_PATH=/usr/local/bin/chromedriver
-ENV DISPLAY=:99
-
-RUN mkdir -p /app/src/main/resources/static/images/credenciales && \
-    chmod -R 777 /app && \
-    mkdir -p /root/.cache && \
-    chmod -R 777 /root/.cache
+#RUN wget "https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.49/linux64/chromedriver-linux64.zip" -O /tmp/chromedriver.zip && \
+#    unzip /tmp/chromedriver.zip -d /opt/chromedriver && \
+#    chmod +x /opt/chromedriver/chromedriver-linux64/chromedriver && \
+#    ln -s /opt/chromedriver/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver && \
+#    rm /tmp/chromedriver.zip
+#
+#ENV CHROME_BIN=/usr/bin/google-chrome-stable
+#ENV CHROMEDRIVER_PATH=/usr/local/bin/chromedriver
+#ENV DISPLAY=:99
+#
+#RUN mkdir -p /app/src/main/resources/static/images/credenciales && \
+#    chmod -R 777 /app && \
+#    mkdir -p /root/.cache && \
+#    chmod -R 777 /root/.cache
 
 WORKDIR /home/site/wwwroot
 COPY --from=build /app/target/PruebaCRUD-0.0.1-SNAPSHOT.jar app.jar

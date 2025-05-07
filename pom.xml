@@ -91,6 +91,8 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<!-- Selenium WebDriver -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
@@ -113,6 +115,17 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+
+
+		<!--		&lt;!&ndash; WebDriverr Manager (para manejar ChromeDriver automáticamente) &ndash;&gt;-->
+		<!--		<dependency>-->
+		<!--			<groupId>io.github.bonigarcia</groupId>-->
+		<!--			<artifactId>webdrivermanager</artifactId>-->
+		<!--			<version>5.7.0</version>  &lt;!&ndash; Última versión estable &ndash;&gt;-->
+		<!--		</dependency>-->
+
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi (PARA LEER ARCHIVOS) -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
@@ -124,6 +137,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml (PARA LEER ARCHIVOS) -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
