@@ -73,6 +73,8 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.18.3</version>
 		</dependency>
+
+		<!-- Selenium WebDriver -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
@@ -83,11 +85,23 @@
 			<artifactId>tess4j</artifactId>
 			<version>5.8.0</version>
 		</dependency>
+
+
+
+		<!--		&lt;!&ndash; WebDriverr Manager (para manejar ChromeDriver automáticamente) &ndash;&gt;-->
+		<!--		<dependency>-->
+		<!--			<groupId>io.github.bonigarcia</groupId>-->
+		<!--			<artifactId>webdrivermanager</artifactId>-->
+		<!--			<version>5.7.0</version>  &lt;!&ndash; Última versión estable &ndash;&gt;-->
+		<!--		</dependency>-->
+
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi (PARA LEER ARCHIVOS) -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
 			<version>4.1.2</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml (PARA LEER ARCHIVOS) -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
