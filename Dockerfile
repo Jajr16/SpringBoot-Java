@@ -70,25 +70,11 @@ RUN mkdir -p /app/src/main/resources/static/images/credenciales && \
     mkdir -p /root/.cache && \
     chmod -R 777 /root/.cache
 
+WORKDIR /home/site/wwwroot
 COPY --from=build /app/target/PruebaCRUD-0.0.1-SNAPSHOT.jar app.jar
 
-RUN echo '#!/bin/bash\n\
-echo "Verificando instalación de Chrome..."\n\
-google-chrome-stable --version\n\
-echo "Verificando instalación de ChromeDriver..."\n\
-chromedriver --version\n\
-echo "Iniciando Xvfb..."\n\
-Xvfb :99 -screen 0 1920x1080x24 -ac +extension GLX +render -noreset &\n\
-sleep 10\n\
-echo "Verificando permisos de directorios..."\n\
-ls -la /usr/local/bin/chromedriver\n\
-echo "Starting application..."\n\
-java -Dwebdriver.chrome.driver=/usr/local/bin/chromedriver \
-         -Dwebdriver.chrome.verboseLogging=true \
-         -Xmx512m -Xms256m \
-         -jar /app/app.jar' > /start.sh && \
-chmod +x /start.sh
+# Ya no necesitamos el script de inicio ni el comando CMD
+# RUN echo ... > /start.sh && chmod +x /start.sh
+# CMD ["/start.sh"]
 
 EXPOSE 8080
-
-CMD ["/start.sh"]

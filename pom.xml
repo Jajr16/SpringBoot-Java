@@ -90,12 +90,6 @@
 <!--			<version>5.7.0</version>  &lt;!&ndash; Última versión estable &ndash;&gt;-->
 <!--		</dependency>-->
 
-
-		<dependency>
-			<groupId>net.sourceforge.tess4j</groupId>
-			<artifactId>tess4j</artifactId>
-			<version>5.8.0</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi (PARA LEER ARCHIVOS) -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
