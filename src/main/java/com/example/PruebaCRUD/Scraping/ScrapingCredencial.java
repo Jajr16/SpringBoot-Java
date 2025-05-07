@@ -70,6 +70,7 @@ public class ScrapingCredencial {
         System.out.println("Configurando opciones de Chrome...");
         ChromeOptions options = new ChromeOptions();
         // Usar el nuevo modo headless recomendado
+        options.setBinary(System.getenv("CHROME_BIN"));
         options.addArguments("--headless=new");
         options.addArguments("--window-size=1920,1080");
         options.addArguments("--no-sandbox"); // Esencial para contenedores
