@@ -27,6 +27,11 @@ public class ScrapingCredencial {
 
     private static final String FRONTEND_IMAGE_PATH_PREFIX = "/images/credenciales/";
 
+    static {
+        // Configuración explícita de rutas
+        System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+        System.setProperty("webdriver.chrome.bin", "/usr/bin/google-chrome-stable");
+    }
 
     public static Map<String, String> capturarCredencial(String credencialUrl) throws IOException {
         System.out.println("Iniciando captura de credencial para URL: " + credencialUrl);
@@ -70,8 +75,8 @@ public class ScrapingCredencial {
         System.out.println("Configurando opciones de Chrome...");
         ChromeOptions options = new ChromeOptions();
         // Usar el nuevo modo headless recomendado
-        options.setBinary(System.getenv("CHROME_BIN"));
-        options.addArguments("--headless=new");
+        options.setBinary("/usr/bin/google-chrome-stable");
+        options.addArguments("--headless");
         options.addArguments("--window-size=1920,1080");
         options.addArguments("--no-sandbox"); // Esencial para contenedores
         options.addArguments("--disable-dev-shm-usage"); // Importante para contenedores
