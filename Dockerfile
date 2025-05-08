@@ -39,6 +39,12 @@ RUN apt-get update && \
 ENV CHROME_BIN=/usr/bin/chromium
 ENV CHROME_PATH=/usr/lib/chromium/
 
+# Mueve el chromedriver al PATH
+RUN mv /usr/lib/chromium/chromedriver /usr/local/bin/
+
+# Asegura que el chromedriver sea ejecutable (redundante pero seguro)
+RUN chmod +x /usr/local/bin/chromedriver
+
 # Crea directorio para las imágenes
 RUN mkdir -p /app/images/
 RUN chmod 777 /app/images/
