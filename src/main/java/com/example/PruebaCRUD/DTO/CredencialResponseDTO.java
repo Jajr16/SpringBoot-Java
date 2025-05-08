@@ -11,6 +11,7 @@ public class CredencialResponseDTO {
         this.credenciales = credenciales;
     }
 
+
     public String getImagen() {
         return imagen;
     }

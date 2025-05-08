@@ -1,39 +1,50 @@
-#--------------------------------------------------------------------
-# Build Stage
-#--------------------------------------------------------------------
+# Etapa 1: Compilar el proyecto
 FROM maven:3.8.5-openjdk-17-slim AS build
 WORKDIR /app
-COPY pom.xml .
-# Primero copiamos solo el POM para cachear las dependencias
-RUN mvn dependency:go-offline
-COPY src ./src
-# Luego el build completo
+COPY . .
 RUN mvn clean package -DskipTests
 
-#--------------------------------------------------------------------
-# Final Stage
-#--------------------------------------------------------------------
-FROM mcr.microsoft.com/playwright/java:v1.42.0-focal
+# Etapa 2: Imagen final con Java, FFmpeg y Chrome
+FROM openjdk:17-jdk-slim
 
-# Configuración de directorios persistentes (con verificación)
-RUN mkdir -p /home/site/wwwroot/images/credenciales && \
-    mkdir -p /home/site/wwwroot && \
-    chmod -R 777 /home/site/wwwroot && \
-    echo "Directorios creados correctamente"
-
-# Instalar solo dependencias adicionales necesarias
+# Instala FFmpeg y Chrome + dependencias necesarias
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    fonts-liberation \
-    && apt-get clean \
+    ffmpeg \
+    libx264-dev \
+    chromium \
+    chromium-driver \
+    libnss3 \
+    libgconf-2-4 \
+    libglib2.0-0 \
+    libfontconfig1 \
+    libfreetype6 \
+    libx11-6 \
+    libx11-xcb1 \
+    libxcb1 \
+    libxcomposite1 \
+    libxcursor1 \
+    libxdamage1 \
+    libxext6 \
+    libxfixes3 \
+    libxi6 \
+    libxrandr2 \
+    libxrender1 \
+    libxss1 \
+    libxtst6 \
+    xvfb \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiar aplicación
-COPY --from=build /app/target/*.jar /app.jar
+# Configura variable de entorno para Chrome
+ENV CHROME_BIN=/usr/bin/chromium
+ENV CHROME_PATH=/usr/lib/chromium/
 
-# Configuración de salud
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8080/actuator/health || exit 1
+# Crea directorio para las imágenes
+RUN mkdir -p /app/images/
+RUN chmod 777 /app/images/
 
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+# Copia el .jar
+COPY --from=build /app/target/PruebaCRUD-0.0.1-SNAPSHOT.jar app.jar
+
+# Ejecuta el .jar con puerto dinámico
+CMD ["java", "-Xmx256m", "-Xms128m", "-jar", "/app.jar"]
