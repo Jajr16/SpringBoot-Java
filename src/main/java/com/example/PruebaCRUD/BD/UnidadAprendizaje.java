@@ -23,7 +23,7 @@ public class UnidadAprendizaje {
      * Relación en la BD de la tabla actual con la clase de la instancia. LAZY indica que las consultas a la tabla
      * principal no van a obtener los datos de la tabla relacionada
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)  
     @JoinColumn(name = "idPA", nullable = false) // Notación para especificar el nombre de la columna que tendrá la relación
     private ProgramaAcademico idPA;
 
