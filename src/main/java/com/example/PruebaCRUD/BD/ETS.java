@@ -41,7 +41,7 @@ import java.util.List;
     @Column(name = "Cupo", nullable = false)
     private Integer Cupo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "idUA", nullable = false)
     private UnidadAprendizaje idUA;
 
