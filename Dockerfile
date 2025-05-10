@@ -1,49 +1,38 @@
 # Etapa 1: Compilación con Maven
 FROM maven:3.8.5-openjdk-17-slim AS build
 WORKDIR /app
-COPY . .
+COPY pom.xml .
+COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Etapa 2: Imagen de producción
-FROM openjdk:17-jdk-slim
+# Etapa 2: Imagen de producción basada en imagen oficial de Playwright
+FROM mcr.microsoft.com/playwright/java:v1.42.0-focal
 
-# Instalar dependencias necesarias para Playwright
+# Instalar dependencias adicionales si son necesarias
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    wget \
-    unzip \
-    libglib2.0-0 \
-    libnss3 \
-    libnspr4 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libcups2 \
-    libdrm2 \
-    libxcb1 \
-    libxkbcommon0 \
-    libx11-6 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxext6 \
-    libxfixes3 \
-    libxrandr2 \
-    libgbm1 \
-    libasound2 \
-    libatspi2.0-0 \
-    fonts-noto-color-emoji \
+    fonts-liberation \
+    libappindicator3-1 \
+    xvfb \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Configurar entorno
+ENV DISPLAY=:99
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+
+# Directorio de trabajo
+WORKDIR /app
+
+# Copiar el JAR compilado
+COPY --from=build /app/target/*.jar app.jar
 
 # Crear directorio para imágenes persistentes
 RUN mkdir -p /home/site/wwwroot/images/credenciales && \
-    chmod 777 /home/site/wwwroot/images/credenciales
+    chmod -R 777 /home/site/wwwroot/images
 
-# Copiar el JAR compilado
-COPY --from=build /app/target/PruebaCRUD-0.0.1-SNAPSHOT.jar app.jar
-
-# Puerto expuesto (necesario para Azure App Service)
+# Puerto expuesto
 EXPOSE 8080
 
-# Comando de inicio con parámetros para Playwright
-CMD java -Djdk.tls.client.protocols=TLSv1.2 \
-         -Dplaywright.browsers=chromium \
-         -jar /app.jar
+# Comando de inicio optimizado
+ENTRYPOINT ["java", "-jar", "app.jar"]
