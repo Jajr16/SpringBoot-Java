@@ -30,7 +30,7 @@ ENV DISPLAY=:99
 ENV PLAYWRIGHT_DISABLE_HOST_CHECK=true
 
 # --- 3. Forzar instalación de dependencias ---
-RUN npx playwright install-deps --force || true
+RUN mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install-deps" || true
 
 # --- 4. Configuración aplicación ---
 WORKDIR /app
