@@ -80,22 +80,16 @@ public class ScrapingCredencial {
     }
 
     private static Browser launchBrowser(Playwright playwright) {
-        // Ruta EXACTA para la imagen v1.42.0
-        String chromiumPath = "/ms-playwright/chromium-1105/chrome-linux/chrome";
-
-        // Verificar si existe el ejecutable
-        if (!Files.exists(Paths.get(chromiumPath))) {
-            throw new RuntimeException("Chromium no encontrado en: " + chromiumPath);
-        }
-
+        // Configuración robusta para Docker
         return playwright.chromium().launch(new BrowserType.LaunchOptions()
                 .setHeadless(true)
-                .setExecutablePath(Paths.get(chromiumPath))
                 .setArgs(Arrays.asList(
                         "--no-sandbox",
                         "--disable-dev-shm-usage",
                         "--disable-gpu",
-                        "--single-process"
+                        "--single-process",
+                        "--disable-software-rasterizer",
+                        "--disable-setuid-sandbox"
                 )));
     }
 
