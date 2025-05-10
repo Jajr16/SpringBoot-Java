@@ -7,13 +7,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ScrapingCredencial {
 
     // Configuración de rutas
-    public static final String PERSISTENT_STORAGE_BASE = "/home/site/wwwroot/";
+    public static final String PERSISTENT_STORAGE_BASE = "/app/";  // Cambiado de /home/site/wwwroot/
     public static final String CREDENTIALS_IMAGE_SUBDIR = "images/credenciales/";
     public static final String FULL_IMAGE_STORAGE_DIR = PERSISTENT_STORAGE_BASE + CREDENTIALS_IMAGE_SUBDIR;
     public static final String FRONTEND_IMAGE_PATH_PREFIX = "/images/credenciales/";
@@ -79,12 +80,21 @@ public class ScrapingCredencial {
     }
 
     private static Browser launchBrowser(Playwright playwright) {
+        // Ruta EXACTA para la imagen v1.42.0
+        String chromiumPath = "/ms-playwright/chromium-1105/chrome-linux/chrome";
+
+        // Verificar si existe el ejecutable
+        if (!Files.exists(Paths.get(chromiumPath))) {
+            throw new RuntimeException("Chromium no encontrado en: " + chromiumPath);
+        }
+
         return playwright.chromium().launch(new BrowserType.LaunchOptions()
                 .setHeadless(true)
-                .setChannel("chromium")  // Usa Chromium preinstalado
-                .setArgs(java.util.List.of(
+                .setExecutablePath(Paths.get(chromiumPath))
+                .setArgs(Arrays.asList(
                         "--no-sandbox",
                         "--disable-dev-shm-usage",
+                        "--disable-gpu",
                         "--single-process"
                 )));
     }
