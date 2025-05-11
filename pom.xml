@@ -74,19 +74,31 @@
 			<version>1.18.3</version>
 		</dependency>
 
-		<!-- Selenium WebDriver -->
+		<dependency>
+			<groupId>org.xhtmlrenderer</groupId>
+			<artifactId>flying-saucer-pdf-openpdf</artifactId>
+			<version>9.1.22</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<version>${selenium.version}</version>
+			<version>4.32.0</version>
 		</dependency>
 
-		<!-- Para Maven -->
 		<dependency>
-			<groupId>com.microsoft.playwright</groupId>
-			<artifactId>playwright</artifactId>
-			<version>1.42.0</version> <!-- Usa la versión más reciente -->
+			<groupId>io.github.bonigarcia</groupId>
+			<artifactId>webdrivermanager</artifactId>
+			<version>5.7.0</version>
 		</dependency>
+
+			<dependency>
+				<groupId>com.microsoft.playwright</groupId>
+				<artifactId>playwright</artifactId>
+				<version>1.42.0</version> <!-- Usa la versión más reciente -->
+			</dependency>
+
 
 
 		<dependency>
@@ -94,23 +106,11 @@
 			<artifactId>tess4j</artifactId>
 			<version>5.8.0</version>
 		</dependency>
-
-
-
-				<!-- WebDriverr Manager (para manejar ChromeDriver automáticamente) -->
-				<dependency>
-					<groupId>io.github.bonigarcia</groupId>
-					<artifactId>webdrivermanager</artifactId>
-					<version>5.7.0</version>  <!-- Última versión estable -->
-				</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi (PARA LEER ARCHIVOS) -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
 			<version>4.1.2</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml (PARA LEER ARCHIVOS) -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
@@ -146,6 +146,21 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>
