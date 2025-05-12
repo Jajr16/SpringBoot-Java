@@ -10,7 +10,7 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URI;
+import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -30,6 +30,11 @@ public class ScrapingCredencial {
     public static final String FULL_PDF_STORAGE_DIR = PERSISTENT_STORAGE_BASE + CREDENTIALS_PDF_SUBDIR;
     public static final String FRONTEND_IMAGE_PATH_PREFIX = "/images/credenciales/";
     private static final int PDF_DPI = 300;
+
+    // Configurar manejo de cookies global
+    static {
+        CookieHandler.setDefault(new CookieManager());
+    }
 
     public static Map<String, String> capturarCredencial(String credencialUrl) throws IOException {
         System.out.println("Iniciando captura de credencial para URL: " + credencialUrl);
@@ -83,21 +88,42 @@ public class ScrapingCredencial {
     }
 
     private static String fetchHtmlContent(String url) throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
+        // Pequeño retardo aleatorio entre 1-3 segundos
+        Thread.sleep(1000 + (long)(Math.random() * 2000));
+
+        HttpClient client = HttpClient.newBuilder()
+                .followRedirects(HttpClient.Redirect.NORMAL)  // Seguir redirecciones
+                .build();
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+                .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+                .header("Accept-Language", "es-MX,es;q=0.9,en;q=0.8")
+                .header("Referer", "https://www.dae.ipn.mx/")
                 .GET()
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
+        // Verificar si hubo redirección
+        if (response.statusCode() >= 300 && response.statusCode() < 400) {
+            String newLocation = response.headers().firstValue("Location").orElse(null);
+            if (newLocation != null) {
+                System.out.println("Redirección detectada. Nueva ubicación: " + newLocation);
+                return fetchHtmlContent(newLocation);
+            }
+        }
+
         if (response.statusCode() != 200) {
-            throw new IOException("Error al obtener la página. Código: " + response.statusCode());
+            throw new IOException("Error al obtener la página. Código: " + response.statusCode() +
+                    ", Ubicación: " + response.headers().firstValue("Location").orElse("N/A"));
         }
 
         return response.body();
     }
 
+    // Resto de los métodos permanecen igual...
     private static void generatePdfFromHtml(String htmlContent, Path pdfPath) throws IOException {
         try (OutputStream os = new FileOutputStream(pdfPath.toFile())) {
             ITextRenderer renderer = new ITextRenderer();

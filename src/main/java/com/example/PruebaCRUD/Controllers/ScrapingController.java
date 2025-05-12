@@ -85,7 +85,6 @@ public class ScrapingController {
             }
 
             System.out.println("Procesando imagen...");
-//            String imageFileName = "credencial_" + extractAlumnoId(credencialUrl) + ".png";
             String fullImagePath = ScrapingCredencial.FULL_IMAGE_STORAGE_DIR +
                     imagenPath.substring(ScrapingCredencial.FRONTEND_IMAGE_PATH_PREFIX.length());
 
@@ -107,6 +106,7 @@ public class ScrapingController {
                     .body(new CredencialResponseDTO("Error al procesar la credencial: " + e.getMessage(), null));
         }
     }
+
     private String convertImageToBase64(String imagePath) throws IOException {
         try {
             File imageFile = new File(imagePath);
@@ -117,10 +117,4 @@ public class ScrapingController {
             throw e;
         }
     }
-//    private String extractAlumnoId(String url) {
-//        if (url == null || !url.contains("?h=")) {
-//            return null;
-//        }
-//        return url.substring(url.indexOf("?h=") + 3);
-//    }
 }
