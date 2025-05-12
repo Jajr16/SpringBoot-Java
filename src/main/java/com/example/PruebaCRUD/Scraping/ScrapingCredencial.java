@@ -81,11 +81,11 @@ public class ScrapingCredencial {
 
     private static Browser launchBrowser(Playwright playwright) {
         // Ruta exacta para Chromium
-        String chromiumPath = "/ms-playwright/chromium-1105/chrome-linux/chrome";
+//        String chromiumPath = "/ms-playwright/chromium-1105/chrome-linux/chrome";
 
         return playwright.chromium().launch(new BrowserType.LaunchOptions()
                 .setHeadless(true)
-                .setExecutablePath(Paths.get(chromiumPath))
+//                .setExecutablePath(Paths.get(chromiumPath))
                 .setArgs(Arrays.asList(
                         "--no-sandbox",
                         "--disable-dev-shm-usage",
