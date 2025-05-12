@@ -18,7 +18,5 @@ public interface IngresoSalonRepository extends JpaRepository<IngresoSalon, Bole
 
     @Query(value = "SELECT eliminar_reporte_alumno(:idets, :boleta)", nativeQuery = true)
     boolean eliminarReporteAlumno(@Param("idets") Integer idets, @Param("boleta") String boleta);
-
-
 }
 
