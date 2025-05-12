@@ -7,39 +7,38 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # ========= ETAPA DE EJECUCIÓN =========
-FROM mcr.microsoft.com/playwright/java:v1.42.0-jammy
+FROM eclipse-temurin:17-jdk-jammy
 
-# --- 1. Instalar dependencias con FORCE-YES ---
+# --- 1. Instalar solo dependencias necesarias para PDFBox ---
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends --fix-broken --force-yes \
-    fonts-liberation libappindicator3-1 xvfb \
-    libglib2.0-0 libnss3 libnspr4 libdbus-1-3 \
-    libatk1.0-0 libatk-bridge2.0-0 libcups2 \
-    libdrm2 libatspi2.0-0 libx11-6 libxcomposite1 \
-    libxdamage1 libxext6 libxfixes3 libxrandr2 \
-    libgbm1 libxcb1 libxkbcommon0 libpango-1.0-0 \
-    libcairo2 libasound2 libharfbuzz0b libgdk-pixbuf2.0-0 \
-    libgtk-3-0 libxtst6 libxshmfence1 libxrender1 \
+    apt-get install -y --no-install-recommends \
+    libfreetype6 \
+    fontconfig \
+    fonts-dejavu \
+    fonts-liberation \
+    fonts-noto \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# --- 2. Configuración CRÍTICA ---
-ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
-ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
-ENV DISPLAY=:99
-ENV PLAYWRIGHT_DISABLE_HOST_CHECK=true
-
-# --- 3. Forzar instalación de dependencias ---
-RUN mvn exec:java -e -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install-deps" || true
-
-# --- 4. Configuración aplicación ---
+# --- 2. Configuración de la aplicación ---
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
-# --- 5. Permisos y usuario ---
-RUN chmod -R 777 /ms-playwright && \
-    chown -R pwuser:pwuser /app /ms-playwright
+# --- 3. Crear directorios necesarios ---
+RUN mkdir -p /app/images/credenciales && \
+    mkdir -p /app/pdfs/credenciales && \
+    mkdir -p /app/fonts
 
-USER pwuser
+# --- 4. Variables de entorno importantes ---
+ENV JAVA_OPTS="-Djava.awt.headless=true -Xmx512m"
+ENV PERSISTENT_STORAGE_BASE=/app/
+ENV PDF_DPI=300
+
+# --- 5. Permisos y usuario ---
+RUN groupadd -r appuser && \
+    useradd -r -g appuser appuser && \
+    chown -R appuser:appuser /app
+
+USER appuser
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
