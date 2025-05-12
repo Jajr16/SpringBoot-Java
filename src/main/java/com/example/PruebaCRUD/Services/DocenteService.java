@@ -169,7 +169,7 @@ public class DocenteService {
         );
     }
 
-    public String obtenerRfcDocente(int idets) {
+        public String obtenerRfcDocente(int idets) {
         return aplicaRepository.callObtenerDocenteRfc(idets);
     }
 }

@@ -177,14 +177,6 @@ public class AlumnoService {
             throw new RuntimeException("Debes de llenar todos los campos.");
         }
 
-        File carpeta = new File(new File("").getAbsolutePath()
-                + "/src/main/java/com/example/PruebaCRUD/EntrenamientoIMG/"
-                + newVideoAlumnoDTOSaes.getBoleta() + "/");
-
-        if (!carpeta.exists()) {
-            carpeta.mkdirs();
-        }
-
         Optional<UnidadAcademica> uaAlumno = this.unidadAcademicaRepository.findByNombre("ESCOM");
 
         try (FileInputStream archivo = new FileInputStream("./src/main/java/com/example/PruebaCRUD/grupos_ESCOM.xlsx");
