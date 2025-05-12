@@ -28,7 +28,7 @@ public class UnidadAcademica {
         this.id_Escuela = idEscuela;
         this.nombre = nombre;
     }
-
+    
     public UnidadAcademica (String nombre) {
         this.nombre = nombre;
     }
