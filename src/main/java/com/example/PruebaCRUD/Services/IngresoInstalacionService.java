@@ -21,9 +21,6 @@ public class IngresoInstalacionService {
     @Autowired
     private IngresoInstalacionRepository ingresoInstalacionRepository;
 
-    @Autowired
-    private InscripcionETSRepository inscripcionETSRepository; // Nuevo repositorio necesario
-
     @Transactional
     public List<IngresoInstalacionDTO> registrarEntrada(String boleta, String fechaStr, String horaStr, Integer idETS) {
         try {
