@@ -1,8 +1,8 @@
 package com.example.PruebaCRUD.Controllers.Saes;
 
 import com.example.PruebaCRUD.DTO.Saes.*;
-import com.example.PruebaCRUD.Services.AlumnoService;
-import com.example.PruebaCRUD.Services.DocenteService;
+import com.example.PruebaCRUD.Services.AlumnoServicio;
+import com.example.PruebaCRUD.Services.DocenteServicio;
 import com.example.PruebaCRUD.Services.PersonalSeguridadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,23 +21,23 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("/saes") // Mapear la url a este método
 public class PersonaControllerSaes {
     private final PersonalSeguridadService personalSeguridadService;
-    private final DocenteService docenteService;
-    private final AlumnoService alumnoService;
+    private final DocenteServicio docenteService;
+    private final AlumnoServicio alumnoService;
 
     @Autowired // Notación que permite inyectar dependencias, en este caso, PeriodoETSService
     public PersonaControllerSaes(PersonalSeguridadService personalSeguridadService,
-                                 DocenteService docenteService, AlumnoService alumnoService) {
+                                 DocenteServicio docenteService, AlumnoServicio alumnoService) {
         this.personalSeguridadService = personalSeguridadService;
         this.docenteService = docenteService;
         this.alumnoService = alumnoService;
     }
 
     @PostMapping("/nAlumno")
-    public ResponseEntity<Object> newAlumno(@ModelAttribute NewAlumnoDTOSaes newAlumnoDTOSaes,
+    public ResponseEntity<Object> newAlumno(@ModelAttribute NuevoAlumnoDTOSaes nuevoAlumnoDTOSaes,
                                             @RequestParam("video")MultipartFile video,
                                             @RequestParam("credencial")MultipartFile credencial) throws IOException,
             ExecutionException, InterruptedException {
-        return this.alumnoService.newAlumno(newAlumnoDTOSaes, video, credencial);
+        return this.alumnoService.nuevoAlumno(nuevoAlumnoDTOSaes, video, credencial);
     }
 
     @GetMapping("/check-volume")
@@ -48,14 +48,14 @@ public class PersonaControllerSaes {
 
     @GetMapping("/docentes")
     public ResponseEntity<List<DocentesDTOSaes>> getDocentes(){
-        List<DocentesDTOSaes> response = this.docenteService.getDocentesSaes();
+        List<DocentesDTOSaes> response = this.docenteService.obtenerDocentesSaes();
         System.out.println(response);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/nd")
-    public ResponseEntity<Object> registrarDocentes(@RequestBody NewDocentesDTOSaes newDocentesDTOSaes) {
-        return this.docenteService.newDocente(newDocentesDTOSaes);
+    public ResponseEntity<Object> registrarDocentes(@RequestBody NuevoDocenteDTOSaes nuevoDocenteDTOSaes) {
+        return this.docenteService.nuevoDocente(nuevoDocenteDTOSaes);
     }
 
     @GetMapping("/ps")
@@ -66,14 +66,14 @@ public class PersonaControllerSaes {
     }
 
     @PostMapping("/nps")
-    public ResponseEntity<Object> registrarPersonalSeguridad(@RequestBody NewPersonalSeguridadDTOSaes
-                                                                         newPersonalSeguridadDTOSaes) {
-        return this.personalSeguridadService.newPersonalSeguridad(newPersonalSeguridadDTOSaes);
+    public ResponseEntity<Object> registrarPersonalSeguridad(@RequestBody NuevoPersonalSeguridadDTOSaes
+                                                                     nuevoPersonalSeguridadDTOSaes) {
+        return this.personalSeguridadService.newPersonalSeguridad(nuevoPersonalSeguridadDTOSaes);
     }
 
     @GetMapping("/DocenteToETS")
-    public ResponseEntity<List<DocentesDTOToETS>> getDocenteToETS() {
-        List<DocentesDTOToETS> response = this.docenteService.getDocentesToETS();
+    public ResponseEntity<List<DocentesDTOParaETS>> getDocenteToETS() {
+        List<DocentesDTOParaETS> response = this.docenteService.obtenerDocentesParaETS();
         System.out.println("AQUI EL DOCENTE ES " + response);
 
         if (response.isEmpty()) {

@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.example.PruebaCRUD.BD.TokenNotificacion;
-import com.example.PruebaCRUD.Repositories.TokenNotificacionRepository;
+import com.example.PruebaCRUD.Repositories.TokenNotificacionRepositorio;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -28,11 +28,11 @@ public class FirebaseService {
     
     // Cache de la instancia de FirebaseMessaging
     private final FirebaseMessaging firebaseMessaging;
-    private final TokenNotificacionRepository tokenNotificacionRepository;
+    private final TokenNotificacionRepositorio tokenNotificacionRepositorio;
 
     @Autowired
-    public FirebaseService(TokenNotificacionRepository tokenNotificacionRepository) {
-        this.tokenNotificacionRepository = tokenNotificacionRepository;
+    public FirebaseService(TokenNotificacionRepositorio tokenNotificacionRepositorio) {
+        this.tokenNotificacionRepositorio = tokenNotificacionRepositorio;
         this.firebaseMessaging = initializeFirebase();
     }
 
@@ -83,7 +83,7 @@ public class FirebaseService {
     @Async
     public void enviarNoti(String usuario, String titulo, String cuerpo, String remitente, String mensaje) {
         try {
-            Optional<TokenNotificacion> tokenOpt = tokenNotificacionRepository.findByUsuarioUsuario(usuario);
+            Optional<TokenNotificacion> tokenOpt = tokenNotificacionRepositorio.findByUsuarioUsuario(usuario);
             if (tokenOpt.isEmpty() || tokenOpt.get().getToken() == null || tokenOpt.get().getToken().isEmpty()) {
                 logger.warn("Token no válido para usuario: {}", usuario);
                 return;

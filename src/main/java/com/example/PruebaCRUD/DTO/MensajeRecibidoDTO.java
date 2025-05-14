@@ -1,7 +1,5 @@
 package com.example.PruebaCRUD.DTO;
 
-import com.example.PruebaCRUD.Repositories.MensajeRepository;
-
 public class MensajeRecibidoDTO {
     private String remitente;
     private String destinatario;

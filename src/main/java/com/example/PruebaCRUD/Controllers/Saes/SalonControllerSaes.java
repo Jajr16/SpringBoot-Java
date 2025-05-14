@@ -1,8 +1,6 @@
 package com.example.PruebaCRUD.Controllers.Saes;
 
-import com.example.PruebaCRUD.DTO.Saes.PeriodosETSProjectionSaes;
-import com.example.PruebaCRUD.DTO.Saes.SalonProjectionSaes;
-import com.example.PruebaCRUD.Services.ETSService;
+import com.example.PruebaCRUD.Services.ETSServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,16 +15,16 @@ import java.util.List;
 @RestController // Notación que defina el controlador REST (Solicitudes HTTP)
 @RequestMapping("/saes") // Mapear la url a este método
 public class SalonControllerSaes {
-    private final ETSService etsService;
+    private final ETSServicio etsService;
 
     @Autowired // Notación que permite inyectar dependencias, en este caso, PeriodoETSService
-    public SalonControllerSaes(ETSService etsService) {
+    public SalonControllerSaes(ETSServicio etsService) {
         this.etsService = etsService;
     }
 
     @GetMapping("/SalonToETS") // Notación para manejar solicitudes GET
     public ResponseEntity<List<?>> getSalonToETS() {
-        List<?> response = this.etsService.getSalonesToETS();
+        List<?> response = this.etsService.obtenerSalonesParaETS();
 
         if (response.isEmpty()) {
             return ResponseEntity.noContent().build();

@@ -1,7 +1,7 @@
 package com.example.PruebaCRUD.Services;
 
 import com.example.PruebaCRUD.BD.*;
-import com.example.PruebaCRUD.DTO.Saes.NewPersonalSeguridadDTOSaes;
+import com.example.PruebaCRUD.DTO.Saes.NuevoPersonalSeguridadDTOSaes;
 import com.example.PruebaCRUD.DTO.Saes.PersonalSeguridadDTOSaes;
 import com.example.PruebaCRUD.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,42 +20,42 @@ import java.util.stream.Stream;
  */
 @Service // Anotación que indica que esta clase es un servicio de negocio
 public class PersonalSeguridadService {
-    private final CargoPSRepository cargoPSRepository;
-    private final PersonalSeguridadRepository personalSeguridadRepository;
-    private final UsuarioRepository usuarioRepository;
-    private final TurnoRepository turnoRepository;
-    private final UnidadAcademicaRepository unidadAcademicaRepository;
-    private final PersonaService personaService;
+    private final CargoPSRepositorio cargoPSRepositorio;
+    private final PersonalSeguridadRepositorio personalSeguridadRepositorio;
+    private final UsuarioRepositorio usuarioRepository;
+    private final TurnoRepositorio turnoRepositorio;
+    private final UnidadAcademicaRepositorio unidadAcademicaRepository;
+    private final PersonaServicio personaService;
 
     HashMap<String, Object> datos = new HashMap<>();
 
     @Autowired
-    public PersonalSeguridadService(CargoPSRepository cargoPSRepository,
-                                    PersonalSeguridadRepository personalSeguridadRepository,
-                                    UsuarioRepository usuarioRepository, TurnoRepository turnoRepository,
-                                    UnidadAcademicaRepository unidadAcademicaRepository, PersonaService personaService) {
-        this.cargoPSRepository = cargoPSRepository;
-        this.personalSeguridadRepository = personalSeguridadRepository;
+    public PersonalSeguridadService(CargoPSRepositorio cargoPSRepositorio,
+                                    PersonalSeguridadRepositorio personalSeguridadRepositorio,
+                                    UsuarioRepositorio usuarioRepository, TurnoRepositorio turnoRepositorio,
+                                    UnidadAcademicaRepositorio unidadAcademicaRepository, PersonaServicio personaService) {
+        this.cargoPSRepositorio = cargoPSRepositorio;
+        this.personalSeguridadRepositorio = personalSeguridadRepositorio;
         this.usuarioRepository = usuarioRepository;
-        this.turnoRepository = turnoRepository;
+        this.turnoRepositorio = turnoRepositorio;
         this.unidadAcademicaRepository = unidadAcademicaRepository;
         this.personaService = personaService;
     }
 
     public List<?> getCargos() {
-        return this.cargoPSRepository.findAllBy();
+        return this.cargoPSRepositorio.findAllBy();
     };
 
     //    Función para traer a todo el personal de seguridad
     public List<PersonalSeguridadDTOSaes> getPS() {
-        return personalSeguridadRepository.findPersonalSeguridad();
+        return personalSeguridadRepositorio.findPersonalSeguridad();
     }
 
     /**
      * Función para crear un nuevo Personal de seguridad
      */
     @Transactional // Notación que indica que si algo falla, hace un rollback a todas las transacciones ya hechas
-    public ResponseEntity<Object> newPersonalSeguridad(NewPersonalSeguridadDTOSaes personalSeguridad) {
+    public ResponseEntity<Object> newPersonalSeguridad(NuevoPersonalSeguridadDTOSaes personalSeguridad) {
         datos = new HashMap<>();
 
         if (Stream.of(personalSeguridad.getCurp(), personalSeguridad.getNombre(), personalSeguridad.getApellido_P(),
@@ -95,16 +95,16 @@ public class PersonalSeguridadService {
         }
 
         Persona persona;
-        persona = PersonaService.Persona(personalSeguridad.getCurp(), personalSeguridad.getNombre(),
+        persona = PersonaServicio.Persona(personalSeguridad.getCurp(), personalSeguridad.getNombre(),
                 personalSeguridad.getApellido_P(), personalSeguridad.getApellido_M(), personalSeguridad.getSexo(),
                 unidadAcademica);
 
-        ResponseEntity<Object> responsePersona = personaService.newPersona(persona);
+        ResponseEntity<Object> responsePersona = personaService.nuevaPersona(persona);
         if (responsePersona.getStatusCode() != HttpStatus.CREATED) {
             return responsePersona;
         }
 
-        Optional<Turno> turno = turnoRepository.findByNombre(personalSeguridad.getTurno());
+        Optional<Turno> turno = turnoRepositorio.findByNombre(personalSeguridad.getTurno());
 
         if (turno.isEmpty()) {
             datos.put("Error", true);
@@ -116,7 +116,7 @@ public class PersonalSeguridadService {
             );
         }
 
-        Optional<CargoPS> cargo = cargoPSRepository.findByNombre(personalSeguridad.getCargoPS());
+        Optional<CargoPS> cargo = cargoPSRepositorio.findByNombre(personalSeguridad.getCargoPS());
 
         if (cargo.isEmpty()) {
             datos.put("Error", true);
@@ -134,7 +134,7 @@ public class PersonalSeguridadService {
         nuevoPersonalSeguridad.setTurno(turno.get());
         nuevoPersonalSeguridad.setCargo(cargo.get());
 
-        personalSeguridadRepository.save(nuevoPersonalSeguridad);
+        personalSeguridadRepositorio.save(nuevoPersonalSeguridad);
 
         datos.put("message", "Personal de seguridad registrada con éxito.");
         return new ResponseEntity<>(

@@ -5,9 +5,9 @@ import com.example.PruebaCRUD.BD.IngresoSalon;
 import com.example.PruebaCRUD.BD.InscripcionETS;
 import com.example.PruebaCRUD.BD.PKCompuesta.BoletaETSPK;
 import com.example.PruebaCRUD.BD.PKCompuesta.InscripcionETSPK;
-import com.example.PruebaCRUD.Repositories.ETSRepository;
-import com.example.PruebaCRUD.Repositories.IngresoSalonRepository;
-import com.example.PruebaCRUD.Repositories.InscripcionETSRepository;
+import com.example.PruebaCRUD.Repositories.ETSRepositorio;
+import com.example.PruebaCRUD.Repositories.IngresoSalonRepositorio;
+import com.example.PruebaCRUD.Repositories.InscripcionETSRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,13 +24,13 @@ import java.util.Optional;
 public class ReporteNoPresenteService {
 
     @Autowired
-    private InscripcionETSRepository inscripcionETSRepository;
+    private InscripcionETSRepositorio inscripcionETSRepository;
 
     @Autowired
-    private ETSRepository etsRepository;
+    private ETSRepositorio etsRepositorio;
 
     @Autowired
-    private IngresoSalonRepository ingresoSalonRepository;
+    private IngresoSalonRepositorio ingresoSalonRepositorio;
 
     private final ZoneId mexicoCityZone = ZoneId.of("America/Mexico_City");
 
@@ -46,7 +45,7 @@ public class ReporteNoPresenteService {
             System.out.println(boleta);
             System.out.println(idets);
 
-            Optional<ETS> etsOptional = etsRepository.findById(idets);
+            Optional<ETS> etsOptional = etsRepositorio.findById(idets);
 
             etsOptional.ifPresent(ets -> {
                 LocalDate fechaEts = ets.getFecha().toInstant().atZone(mexicoCityZone).toLocalDate();
@@ -58,7 +57,7 @@ public class ReporteNoPresenteService {
 
                 if (now.isAfter(delayDateTime)) {
 
-                    if (!ingresoSalonRepository.verificarIngresoFuncion(boleta, idets)) {
+                    if (!ingresoSalonRepositorio.verificarIngresoFuncion(boleta, idets)) {
                         IngresoSalon nuevoIngreso = new IngresoSalon();
                         BoletaETSPK boletaETSPK = new BoletaETSPK();
                         boletaETSPK.setBoleta(boleta);
@@ -76,7 +75,7 @@ public class ReporteNoPresenteService {
                         nuevoIngreso.setHora(null);
                         nuevoIngreso.setDocente(null);
                         nuevoIngreso.setTipo(null);
-                        ingresoSalonRepository.save(nuevoIngreso);
+                        ingresoSalonRepositorio.save(nuevoIngreso);
                         System.out.println("Creando ingreso_salon para boleta: " + boleta + ", idets: " + idets);
                     }
                 }

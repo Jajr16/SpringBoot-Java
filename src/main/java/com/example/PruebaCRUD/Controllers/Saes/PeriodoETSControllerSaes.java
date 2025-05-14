@@ -15,10 +15,10 @@ import java.util.List;
 @RestController // Notación que defina el controlador REST (Solicitudes HTTP)
 @RequestMapping("/saes") // Mapear la url a este método
 public class PeriodoETSControllerSaes {
-    private final PeriodoETSService periodoETSService;
+    private final PeriodoETSServicio periodoETSService;
 
     @Autowired // Notación que permite inyectar dependencias, en este caso, PeriodoETSService
-    public PeriodoETSControllerSaes(PeriodoETSService periodoETSService) {
+    public PeriodoETSControllerSaes(PeriodoETSServicio periodoETSService) {
         this.periodoETSService = periodoETSService;
     }
 

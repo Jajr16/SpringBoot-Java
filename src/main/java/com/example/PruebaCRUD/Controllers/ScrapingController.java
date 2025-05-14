@@ -1,10 +1,10 @@
 package com.example.PruebaCRUD.Controllers;
 
 import com.example.PruebaCRUD.DTO.CredencialDTO;
-import com.example.PruebaCRUD.DTO.CredencialResponseDTO;
+import com.example.PruebaCRUD.DTO.CredencialRespuestaDTO;
 import com.example.PruebaCRUD.Scraping.Scraping;
 import com.example.PruebaCRUD.Scraping.ScrapingCredencial;
-import com.example.PruebaCRUD.Services.AlumnoService;
+import com.example.PruebaCRUD.Services.AlumnoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +29,7 @@ import java.util.Map;
 @RestController
 public class ScrapingController {
     @Autowired
-    private AlumnoService alumnoService;
+    private AlumnoServicio alumnoService;
 
     private final Scraping scraping = new Scraping();
 
@@ -57,7 +56,7 @@ public class ScrapingController {
     }
 
     @GetMapping("/ImageDAE/capturar")
-    public ResponseEntity<CredencialResponseDTO> capturarCredencial(
+    public ResponseEntity<CredencialRespuestaDTO> capturarCredencial(
             @RequestParam("url") String credencialUrl) {
         System.out.println("=== SOLICITUD RECIBIDA ===");
         System.out.println("URL recibida: " + credencialUrl);
@@ -75,13 +74,13 @@ public class ScrapingController {
             if (boleta == null || boleta.isEmpty()) {
                 System.err.println("No se encontró la boleta en el HTML");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new CredencialResponseDTO("No se encontró la boleta en el HTML", null));
+                        .body(new CredencialRespuestaDTO("No se encontró la boleta en el HTML", null));
             }
 
             if (imagenPath == null) {
                 System.err.println("No se generó la ruta de la imagen");
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(new CredencialResponseDTO("Error al generar la imagen (ruta no encontrada)", null));
+                        .body(new CredencialRespuestaDTO("Error al generar la imagen (ruta no encontrada)", null));
             }
 
             System.out.println("Procesando imagen...");
@@ -91,10 +90,10 @@ public class ScrapingController {
             String base64Image = convertImageToBase64(fullImagePath);
 
             System.out.println("Buscando credenciales en la base de datos...");
-            List<CredencialDTO> credenciales = alumnoService.findCredencialPorBoleta(boleta);
+            List<CredencialDTO> credenciales = alumnoService.encontrarCredencialPorBoleta(boleta);
 
             System.out.println("Proceso completado exitosamente");
-            CredencialResponseDTO responseDTO = new CredencialResponseDTO(base64Image, credenciales);
+            CredencialRespuestaDTO responseDTO = new CredencialRespuestaDTO(base64Image, credenciales);
             return ResponseEntity.ok().body(responseDTO);
 
         } catch (IOException e) {
@@ -103,7 +102,7 @@ public class ScrapingController {
             e.printStackTrace();
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CredencialResponseDTO("Error al procesar la credencial: " + e.getMessage(), null));
+                    .body(new CredencialRespuestaDTO("Error al procesar la credencial: " + e.getMessage(), null));
         }
     }
 

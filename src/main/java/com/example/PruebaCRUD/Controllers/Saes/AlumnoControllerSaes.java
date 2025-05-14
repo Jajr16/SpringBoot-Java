@@ -1,10 +1,9 @@
 package com.example.PruebaCRUD.Controllers.Saes;
 
 import com.example.PruebaCRUD.DTO.Saes.AlumnoDTOSaes;
-import com.example.PruebaCRUD.DTO.Saes.ListInsAlumnProjectionSaes;
-import com.example.PruebaCRUD.DTO.Saes.ListInsETSProjectionSaes;
-import com.example.PruebaCRUD.DTO.Saes.NewVideoAlumnoDTOSaes;
-import com.example.PruebaCRUD.Services.AlumnoService;
+import com.example.PruebaCRUD.DTO.Saes.ListaAlumnosInscritosProjectionSaes;
+import com.example.PruebaCRUD.DTO.Saes.NuevoVideoAlumnoDTOSaes;
+import com.example.PruebaCRUD.Services.AlumnoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,21 +17,21 @@ import java.util.List;
 @RestController // Notación que defina el controlador REST (Solicitudes HTTP)
 @RequestMapping("/saes") // Mapear la url a este método
 public class AlumnoControllerSaes {
-    private final AlumnoService alumnoService;
+    private final AlumnoServicio alumnoService;
 
     @Autowired
-    public AlumnoControllerSaes(AlumnoService alumnoService) {
+    public AlumnoControllerSaes(AlumnoServicio alumnoService) {
         this.alumnoService = alumnoService;
     }
 
     @GetMapping("/studentperschool/{usuario}")
-    public ResponseEntity<List<ListInsAlumnProjectionSaes>> getAlumnos(@PathVariable("usuario") String usuario) {
-        List<ListInsAlumnProjectionSaes> response = this.alumnoService.getAlumnos(usuario);
+    public ResponseEntity<List<ListaAlumnosInscritosProjectionSaes>> getAlumnos(@PathVariable("usuario") String usuario) {
+        List<ListaAlumnosInscritosProjectionSaes> response = this.alumnoService.getAlumnos(usuario);
 
         if (response.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {
-            for (ListInsAlumnProjectionSaes alumno : response) {
+            for (ListaAlumnosInscritosProjectionSaes alumno : response) {
                 System.out.println("Alumno: " + alumno.getNombre() + " " + alumno.getBoleta());
             }
         }
@@ -48,8 +47,8 @@ public class AlumnoControllerSaes {
     }
 
     @PostMapping("/nvAlumno")
-    public ResponseEntity<Object> newVideoAlumno(@ModelAttribute NewVideoAlumnoDTOSaes newVideoAlumnoDTOSaes)
+    public ResponseEntity<Object> newVideoAlumno(@ModelAttribute NuevoVideoAlumnoDTOSaes nuevoVideoAlumnoDTOSaes)
             throws IOException {
-        return this.alumnoService.newVideoAlumno(newVideoAlumnoDTOSaes);
+        return this.alumnoService.nuevoVideoAlumno(nuevoVideoAlumnoDTOSaes);
     }
 }

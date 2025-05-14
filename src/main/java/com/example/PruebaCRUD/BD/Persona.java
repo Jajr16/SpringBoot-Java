@@ -1,6 +1,5 @@
 package com.example.PruebaCRUD.BD;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 /**

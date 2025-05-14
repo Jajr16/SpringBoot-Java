@@ -1,7 +1,7 @@
 package com.example.PruebaCRUD.Services;
 
 import com.example.PruebaCRUD.DTO.Saes.UnidadAprendizajeProjectionSaes;
-import com.example.PruebaCRUD.Repositories.UnidadAprendizajeRepository;
+import com.example.PruebaCRUD.Repositories.UnidadAprendizajeRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +12,14 @@ import java.util.List;
  */
 @Service // Anotación que indica que esta clase es un servicio de negocio
 public class UnidadAprendizajeService {
-    private final UnidadAprendizajeRepository unidadAprendizajeRepository;
+    private final UnidadAprendizajeRepositorio unidadAprendizajeRepositorio;
 
     @Autowired // Notación que permite inyectar dependencias
-    public UnidadAprendizajeService(UnidadAprendizajeRepository unidadAprendizajeRepository) {
-        this.unidadAprendizajeRepository = unidadAprendizajeRepository;
+    public UnidadAprendizajeService(UnidadAprendizajeRepositorio unidadAprendizajeRepositorio) {
+        this.unidadAprendizajeRepositorio = unidadAprendizajeRepositorio;
     }
 
     public List<UnidadAprendizajeProjectionSaes> getUApren(){
-        return this.unidadAprendizajeRepository.findAllBy();
+        return this.unidadAprendizajeRepositorio.findAllBy();
     }
 }
