@@ -286,9 +286,9 @@ public class DatabaseInitializer {
                    SELECT 
                        aplica.idets, 
                        periodoets.periodo, 
-                       turno.nombre as turno_nombre, -- Corregido el nombre de la columna para que coincida con la definición de la función
+                       turno.nombre as turno_nombre,
                        ets.fecha, 
-                       unidadaprendizaje.nombre as unidad_aprendizaje_nombre, -- Corregido el nombre de la columna
+                       unidadaprendizaje.nombre as unidad_aprendizaje_nombre,
                        unidadaprendizaje.idpa
                    FROM aplica
                 INNER JOIN ets ON aplica.idets = ets.idets
