@@ -66,7 +66,7 @@
               String turno = (String) result[2];
               Date fecha = (Date) result[3];
               String materia = (String) result[4];
-              String carrera = (String) result[5];
+              String carrera = (String) result[6];
     
               // Convertir la fecha a String (o al formato que necesites)
               String fechaString = fecha.toString();

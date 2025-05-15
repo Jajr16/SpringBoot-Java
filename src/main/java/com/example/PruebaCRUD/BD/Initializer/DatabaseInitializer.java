@@ -22,10 +22,10 @@ public class DatabaseInitializer {
             jdbcTemplate.execute(dropFunctionIfExists("login"));
             jdbcTemplate.execute(loginFunction());
 
-            jdbcTemplate.execute(dropFunctionIfExists("listinscripcionesets"));
+            jdbcTemplate.execute(dropFunctionIfExists("ListInscripcionesETS"));
             jdbcTemplate.execute(listInscripcionesETSFunction());
 
-            jdbcTemplate.execute(dropFunctionIfExists("listaplica"));
+            jdbcTemplate.execute(dropFunctionIfExists("ListAplica"));
             jdbcTemplate.execute(listAplicaFunction());
 
             jdbcTemplate.execute(dropFunctionIfExists("buscardatosestudiante"));
