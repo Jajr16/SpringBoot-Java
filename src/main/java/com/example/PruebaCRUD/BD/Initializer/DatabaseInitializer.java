@@ -234,8 +234,8 @@ public class DatabaseInitializer {
                    turno_nombre VARCHAR,
                    fecha DATE,
                    unidad_aprendizaje_nombre VARCHAR,
+                   inscrito Boolean,
                    idpa VARCHAR,
-                inscrito Boolean
                )
                LANGUAGE plpgsql
                AS $$
@@ -267,32 +267,42 @@ public class DatabaseInitializer {
 
     private String listAplicaFunction() {
         return """
-                CREATE OR REPLACE FUNCTION ListAplica(
-                       boletaC VARCHAR(18)
-                   )
-                   RETURNS TABLE(
-                       idets INTEGER,
-                       periodo VARCHAR,
-                       turno_nombre VARCHAR,
-                       fecha DATE,
-                       unidad_aprendizaje_nombre VARCHAR
-                   )
-                   LANGUAGE plpgsql
-                   AS $$
-                   BEGIN
-                   	RETURN QUERY
-                
-                       SELECT aplica.idets, periodoets.periodo, turno.nombre as turno, ets.fecha, unidadaprendizaje.nombre FROM aplica
-                   	INNER JOIN ets ON aplica.idets = ets.idets
-                   	INNER JOIN periodoets ON ets.id_periodo = periodoets.id_periodo\s
-                   	INNER JOIN turno ON turno.id_turno = ets.turno
-                   	INNER JOIN unidadaprendizaje ON unidadaprendizaje.idua = ets.idua WHERE aplica.docente_rfc = boletaC;
-                
-                      \s
-                   END;
-                   $$;
-            """;
+            CREATE OR REPLACE FUNCTION ListAplica(
+                   boletaC VARCHAR(18)
+               )
+               RETURNS TABLE(
+                   idets INTEGER,
+                   periodo VARCHAR,
+                   turno_nombre VARCHAR,
+                   fecha DATE,
+                   unidad_aprendizaje_nombre VARCHAR,
+                   idpa VARCHAR
+               )
+               LANGUAGE plpgsql
+               AS $$
+               BEGIN
+                RETURN QUERY
+            
+                   SELECT 
+                       aplica.idets, 
+                       periodoets.periodo, 
+                       turno.nombre as turno_nombre, -- Corregido el nombre de la columna para que coincida con la definición de la función
+                       ets.fecha, 
+                       unidadaprendizaje.nombre as unidad_aprendizaje_nombre, -- Corregido el nombre de la columna
+                       unidadaprendizaje.idpa
+                   FROM aplica
+                INNER JOIN ets ON aplica.idets = ets.idets
+                INNER JOIN periodoets ON ets.id_periodo = periodoets.id_periodo
+                INNER JOIN turno ON turno.id_turno = ets.turno
+                INNER JOIN unidadaprendizaje ON unidadaprendizaje.idua = ets.idua 
+                   WHERE aplica.docente_rfc = boletaC;
+            
+                  \s
+               END;
+               $$;
+        """;
     }
+
 
     private String buscarDatosEstudianteFunction() {
         return """
