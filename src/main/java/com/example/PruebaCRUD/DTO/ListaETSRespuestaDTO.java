@@ -11,27 +11,31 @@ public class ListaETSRespuestaDTO {
     private String Fecha;
     private String UnidadAprendizaje;
     private Boolean inscrito;
+    private String carrera;
 
     // ==================== CONSTRUCTORES =====================
     public ListaETSRespuestaDTO() {}
 
 
-    public ListaETSRespuestaDTO(Integer idETS, String Periodo, String Turno, String Fecha, String UnidadAprendizaje) {
+    public ListaETSRespuestaDTO(Integer idETS, String Periodo, String Turno, String Fecha, String UnidadAprendizaje,
+                                String carrera) {
         this.idETS = idETS;
         this.idPeriodo = Periodo;
         this.Turno = Turno;
         this.Fecha = Fecha;
         this.UnidadAprendizaje = UnidadAprendizaje;
+        this.carrera = carrera;
     }
 
     public ListaETSRespuestaDTO(Integer idETS, String Periodo, String Turno, String Fecha, String UnidadAprendizaje,
-                                Boolean inscrito) {
+                                Boolean inscrito, String carrera) {
         this.idETS = idETS;
         this.idPeriodo = Periodo;
         this.Turno = Turno;
         this.Fecha = Fecha;
         this.UnidadAprendizaje = UnidadAprendizaje;
         this.inscrito = inscrito;
+        this.carrera = carrera;
     }
 
     // ==================== SETTERS AND GETTERS ====================

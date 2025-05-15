@@ -37,12 +37,13 @@
                 Date fecha = (Date) result[3];
                 String materia = (String) result[4];
                 Boolean inscrito = (Boolean) result[5];
+                String carrera = (String) result[6];
     
                 // Convertir la fecha a String (o al formato que necesites)
                 String fechaString = fecha.toString();
     
                 // Crear un DTO y agregarlo a la lista de respuestas
-                responseList.add(new ListaETSRespuestaDTO(idets, periodo, turno, fechaString, materia, inscrito));
+                responseList.add(new ListaETSRespuestaDTO(idets, periodo, turno, fechaString, materia, inscrito, carrera));
             }
     
             return responseList;
@@ -65,12 +66,13 @@
               String turno = (String) result[2];
               Date fecha = (Date) result[3];
               String materia = (String) result[4];
+              String carrera = (String) result[5];
     
               // Convertir la fecha a String (o al formato que necesites)
               String fechaString = fecha.toString();
     
               // Crear un DTO y agregarlo a la lista de respuestas
-              responseList.add(new ListaETSRespuestaDTO(idets, periodo, turno, fechaString, materia));
+              responseList.add(new ListaETSRespuestaDTO(idets, periodo, turno, fechaString, materia, carrera));
           }
     
           return responseList;
