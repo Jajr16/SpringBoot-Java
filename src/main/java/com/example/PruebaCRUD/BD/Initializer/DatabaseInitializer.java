@@ -22,10 +22,10 @@ public class DatabaseInitializer {
             jdbcTemplate.execute(dropFunctionIfExists("login"));
             jdbcTemplate.execute(loginFunction());
 
-            jdbcTemplate.execute(dropFunctionIfExists("ListInscripcionesETS"));
+            jdbcTemplate.execute(dropFunctionIfExists("listinscripcionesets"));
             jdbcTemplate.execute(listInscripcionesETSFunction());
 
-            jdbcTemplate.execute(dropFunctionIfExists("ListAplica"));
+            jdbcTemplate.execute(dropFunctionIfExists("listaplica"));
             jdbcTemplate.execute(listAplicaFunction());
 
             jdbcTemplate.execute(dropFunctionIfExists("buscardatosestudiante"));
@@ -92,9 +92,9 @@ public class DatabaseInitializer {
             case "login":
                 return "DROP FUNCTION IF EXISTS login(VARCHAR, VARCHAR) CASCADE;";
             case "listinscripcionesets":
-                return "DROP FUNCTION IF EXISTS listinscripcionesETS(VARCHAR) CASCADE;";
+                return "DROP FUNCTION IF EXISTS ListInscripcionesETS(VARCHAR) CASCADE;";
             case "listaplica":
-                return "DROP FUNCTION IF EXISTS listaplica(VARCHAR) CASCADE;";
+                return "DROP FUNCTION IF EXISTS ListAplica(VARCHAR) CASCADE;";
             case "buscardatosestudiante":
                 return "DROP FUNCTION IF EXISTS buscardatosestudiante(VARCHAR) CASCADE;";
             case "obtenerasistenciadetalles":
