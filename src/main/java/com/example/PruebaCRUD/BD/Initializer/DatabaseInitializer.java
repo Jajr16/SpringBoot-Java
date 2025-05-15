@@ -234,8 +234,8 @@ public class DatabaseInitializer {
                    turno_nombre VARCHAR,
                    fecha DATE,
                    unidad_aprendizaje_nombre VARCHAR,
+                   inscrito Boolean,
                    idpa VARCHAR,
-                inscrito Boolean
                )
                LANGUAGE plpgsql
                AS $$
