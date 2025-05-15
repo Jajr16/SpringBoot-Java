@@ -225,42 +225,44 @@ public class DatabaseInitializer {
 
     private String listInscripcionesETSFunction() {
         return """
-                CREATE OR REPLACE FUNCTION ListInscripcionesETS(
-                       boletaC VARCHAR(18)
-                   )
-                   RETURNS TABLE(
-                       idets INTEGER,
-                       periodo VARCHAR,
-                       turno_nombre VARCHAR,
-                       fecha DATE,
-                       unidad_aprendizaje_nombre VARCHAR,
-                   	inscrito Boolean
-                   )
-                   LANGUAGE plpgsql
-                   AS $$
-                   BEGIN
-                   	RETURN QUERY
-                
-                   	SELECT\s
-                   	    ets.idets,
-                   	    periodoets.periodo,\s
-                   	    turno.nombre AS turno,\s
-                   	    ets.fecha,
-                   	    unidadaprendizaje.nombre AS unidad_aprendizaje,
-                   	    EXISTS (
-                               SELECT 1\s
-                               FROM inscripcionets i\s
-                               WHERE i.idets = ets.idets\s
-                               AND i.boleta = boletaC
-                           ) AS inscrito
-                   	FROM ets
-                   	INNER JOIN periodoets ON ets.id_periodo = periodoets.id_periodo\s
-                   	INNER JOIN turno ON turno.id_turno = ets.turno
-                   	INNER JOIN unidadaprendizaje ON unidadaprendizaje.idua = ets.idua;
-                      \s
-                   END;
-                   $$;
-            """;
+            CREATE OR REPLACE FUNCTION ListInscripcionesETS(
+                   boletaC VARCHAR(18)
+               )
+               RETURNS TABLE(
+                   idets INTEGER,
+                   periodo VARCHAR,
+                   turno_nombre VARCHAR,
+                   fecha DATE,
+                   unidad_aprendizaje_nombre VARCHAR,
+                   idpa VARCHAR,
+                inscrito Boolean
+               )
+               LANGUAGE plpgsql
+               AS $$
+               BEGIN
+                RETURN QUERY
+
+                SELECT
+                    ets.idets,
+                    periodoets.periodo,
+                    turno.nombre AS turno,
+                    ets.fecha,
+                    unidadaprendizaje.nombre AS unidad_aprendizaje,
+                    unidadaprendizaje.idpa,
+                    EXISTS (
+                           SELECT 1
+                           FROM inscripcionets i
+                           WHERE i.idets = ets.idets
+                           AND i.boleta = boletaC
+                       ) AS inscrito
+                FROM ets
+                INNER JOIN periodoets ON ets.id_periodo = periodoets.id_periodo
+                INNER JOIN turno ON turno.id_turno = ets.turno
+                INNER JOIN unidadaprendizaje ON unidadaprendizaje.idua = ets.idua;
+
+               END;
+               $$;
+        """;
     }
 
     private String listAplicaFunction() {

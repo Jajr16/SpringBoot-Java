@@ -87,6 +87,14 @@ public class ListaETSRespuestaDTO {
         this.inscrito = inscrito;
     }
 
+    public String getCarrera() {
+        return carrera;
+    }
+
+    public void setCarrera(String carrera) {
+        this.carrera = carrera;
+    }
+
     @Override
     public String toString() {
         return "ListaETSRespuestaDTO{" +
@@ -95,7 +103,8 @@ public class ListaETSRespuestaDTO {
                 ", Turno='" + Turno + '\'' +
                 ", Fecha='" + Fecha + '\'' +
                 ", UnidadAprendizaje='" + UnidadAprendizaje + '\'' +
-                ", inscrito=" + inscrito +
+                ", inscrito=" + inscrito + '\'' +
+                ", carrera=" + carrera +
                 '}';
     }
 }
