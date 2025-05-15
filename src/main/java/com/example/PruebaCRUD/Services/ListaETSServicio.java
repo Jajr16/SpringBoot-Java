@@ -23,31 +23,31 @@
             this.inscripcionETSRepository = inscripcionETSRepository;
             this.aplicaRepositorio = aplicaRepositorio;
         }
-    
-        public List<ListaETSRespuestaDTO> inscripcionesETS(String boleta) {
-            List<Object[]> results = inscripcionETSRepository.callListInscripcionesETS(boleta);
-    
-            List<ListaETSRespuestaDTO> responseList = new ArrayList<>();
-    
-            // Iterar sobre cada resultado y mapearlo a un DTO
-            for (Object[] result : results) {
-                Integer idets = (Integer) result[0];
-                String periodo = (String) result[1];
-                String turno = (String) result[2];
-                Date fecha = (Date) result[3];
-                String materia = (String) result[4];
-                Boolean inscrito = (Boolean) result[5];
-                String carrera = (String) result[6];
-    
-                // Convertir la fecha a String (o al formato que necesites)
-                String fechaString = fecha.toString();
-    
-                // Crear un DTO y agregarlo a la lista de respuestas
-                responseList.add(new ListaETSRespuestaDTO(idets, periodo, turno, fechaString, materia, inscrito, carrera));
-            }
-    
-            return responseList;
-        }
+
+          public List<ListaETSRespuestaDTO> inscripcionesETS(String boleta) {
+              List<Object[]> results = inscripcionETSRepository.callListInscripcionesETS(boleta);
+
+              List<ListaETSRespuestaDTO> responseList = new ArrayList<>();
+
+              // Iterar sobre cada resultado y mapearlo a un DTO
+              for (Object[] result : results) {
+                  Integer idets = (Integer) result[0];
+                  String periodo = (String) result[1];
+                  String turno = (String) result[2];
+                  Date fecha = (Date) result[3];
+                  String materia = (String) result[4];
+                  String carrera = (String) result[5];
+                  Boolean inscrito = (Boolean) result[6];
+
+                  // Convertir la fecha a String (o al formato que necesites)
+                  String fechaString = fecha.toString();
+
+                  // Crear un DTO y agregarlo a la lista de respuestas
+                  responseList.add(new ListaETSRespuestaDTO(idets, periodo, turno, fechaString, materia, inscrito, carrera));
+              }
+
+              return responseList;
+          }
     
         public Boolean confirmarInscripcion(String boleta) {
             return inscripcionETSRepository.existsByBoletaInsBoleta(boleta);
@@ -66,7 +66,7 @@
               String turno = (String) result[2];
               Date fecha = (Date) result[3];
               String materia = (String) result[4];
-              String carrera = (String) result[6];
+              String carrera = (String) result[5];
     
               // Convertir la fecha a String (o al formato que necesites)
               String fechaString = fecha.toString();
