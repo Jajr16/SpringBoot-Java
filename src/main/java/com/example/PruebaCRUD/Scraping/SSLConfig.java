@@ -54,13 +54,13 @@ public class SSLConfig {
         }
     }
 
-    public static synchronized void configureForIPN() {
+    public static synchronized void configurarParaIPN() {
         if (sslContext != null) {
             HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
         }
     }
 
-    public static synchronized void configureForFirebase() {
+    public static synchronized void configurarParaFirebase() {
         if (firebaseSslContext != null) {
             HttpsURLConnection.setDefaultSSLSocketFactory(firebaseSslContext.getSocketFactory());
             HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);

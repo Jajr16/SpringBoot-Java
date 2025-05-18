@@ -14,17 +14,17 @@ import java.util.List;
  */
 @RestController // Notación que defina el controlador REST (Solicitudes HTTP)
 @RequestMapping("/saes") // Mapear la url a este método
-public class ETSControllerSaes {
+public class ETSControladorSaes {
 
     private final ETSServicio etsService;
 
     @Autowired // Notación que permite inyectar dependencias, en este caso, ETSDetailsService y ETSService
-    public ETSControllerSaes(ETSServicio etsService) {
+    public ETSControladorSaes(ETSServicio etsService) {
         this.etsService = etsService;
     }
 
     @GetMapping("/ets") // Notación para manejar solicitudes GET
-    public ResponseEntity<List<ETSDTOSaes>> getETS(){
+    public ResponseEntity<List<ETSDTOSaes>> obtenerETS(){
         List<ETSDTOSaes> response = this.etsService.detallesAdminETS();
         System.out.println(response);
         return ResponseEntity.ok(response);

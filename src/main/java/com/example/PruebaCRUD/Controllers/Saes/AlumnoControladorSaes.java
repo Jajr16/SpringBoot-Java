@@ -16,17 +16,17 @@ import java.util.List;
  */
 @RestController // Notación que defina el controlador REST (Solicitudes HTTP)
 @RequestMapping("/saes") // Mapear la url a este método
-public class AlumnoControllerSaes {
-    private final AlumnoServicio alumnoService;
+public class AlumnoControladorSaes {
+    private final AlumnoServicio alumnoServicio;
 
     @Autowired
-    public AlumnoControllerSaes(AlumnoServicio alumnoService) {
-        this.alumnoService = alumnoService;
+    public AlumnoControladorSaes(AlumnoServicio alumnoServicio) {
+        this.alumnoServicio = alumnoServicio;
     }
 
     @GetMapping("/studentperschool/{usuario}")
-    public ResponseEntity<List<ListaAlumnosInscritosProjectionSaes>> getAlumnos(@PathVariable("usuario") String usuario) {
-        List<ListaAlumnosInscritosProjectionSaes> response = this.alumnoService.getAlumnos(usuario);
+    public ResponseEntity<List<ListaAlumnosInscritosProjectionSaes>> obtenerAlumnosInscritos(@PathVariable("usuario") String usuario) {
+        List<ListaAlumnosInscritosProjectionSaes> response = this.alumnoServicio.obtenerAlumnos(usuario);
 
         if (response.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -40,15 +40,15 @@ public class AlumnoControllerSaes {
     }
 
     @GetMapping("/alumnos") // Notación para manejar solicitudes GET
-    public ResponseEntity<List<AlumnoDTOSaes>> getAlumnos(){
-        List<AlumnoDTOSaes> response = this.alumnoService.getAlumnos();
+    public ResponseEntity<List<AlumnoDTOSaes>> obtenerAlumnos(){
+        List<AlumnoDTOSaes> response = this.alumnoServicio.obtenerAlumnos();
         System.out.println(response);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/nvAlumno")
-    public ResponseEntity<Object> newVideoAlumno(@ModelAttribute NuevoVideoAlumnoDTOSaes nuevoVideoAlumnoDTOSaes)
+    public ResponseEntity<Object> nuevoVideoAlumno(@ModelAttribute NuevoVideoAlumnoDTOSaes nuevoVideoAlumnoDTOSaes)
             throws IOException {
-        return this.alumnoService.nuevoVideoAlumno(nuevoVideoAlumnoDTOSaes);
+        return this.alumnoServicio.nuevoVideoAlumno(nuevoVideoAlumnoDTOSaes);
     }
 }

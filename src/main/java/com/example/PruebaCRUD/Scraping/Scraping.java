@@ -14,17 +14,17 @@ import java.io.InputStream;
 import java.net.URL;
 
 public class Scraping {
-    private static final String BASE_PATH = System.getProperty("user.home") + "/pruebacrud";
-    private static final String IMAGE_PATH = BASE_PATH + "/images/calendario.png";
-    private static final String PDF_PATH = BASE_PATH + "/files/calendario.pdf";
+    private static final String RUTA_BASE = System.getProperty("user.home") + "/pruebacrud";
+    private static final String RUTA_IMAGEN = RUTA_BASE + "/images/calendario.png";
+    private static final String RUTA_PDF = RUTA_BASE + "/files/calendario.pdf";
     private static final long UN_MES_EN_MILLIS = 30L * 24 * 60 * 60 * 1000;
 
-    public String processPdfToImage(String url, String cssQuery) {
+    public String procesarPdfAImage(String url, String cssQuery) {
         try {
             // Intentar crear directorios en la carpeta del usuario
-            File baseDir = new File(BASE_PATH);
-            File imageDir = new File(BASE_PATH + "/images");
-            File pdfDir = new File(BASE_PATH + "/files");
+            File baseDir = new File(RUTA_BASE);
+            File imageDir = new File(RUTA_BASE + "/images");
+            File pdfDir = new File(RUTA_BASE + "/files");
 
             try {
                 if (!baseDir.exists()) baseDir.mkdirs();
@@ -37,7 +37,7 @@ public class Scraping {
                 pdfDir = new File(tmpDir + "/files");
                 imageDir.mkdirs();
                 pdfDir.mkdirs();
-                return processPdfToImageWithPaths(
+                return procesarPdfAImageConRutas(
                     url, 
                     cssQuery, 
                     tmpDir + "/images/calendario.png",
@@ -45,7 +45,7 @@ public class Scraping {
                 );
             }
 
-            return processPdfToImageWithPaths(url, cssQuery, IMAGE_PATH, PDF_PATH);
+            return procesarPdfAImageConRutas(url, cssQuery, RUTA_IMAGEN, RUTA_PDF);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,17 +53,17 @@ public class Scraping {
         }
     }
 
-    private String processPdfToImageWithPaths(String url, String cssQuery, String imagePath, String pdfPath) throws Exception {
+    private String procesarPdfAImageConRutas(String url, String cssQuery, String imagePath, String pdfPath) throws Exception {
         File imageFile = new File(imagePath);
 
         // Verificar si la imagen existe y tiene menos de un mes
-        if (imageFile.exists() && !isCacheExpired(imageFile)) {
+        if (imageFile.exists() && !cacheExpirada(imageFile)) {
             System.out.println("Usando imagen en caché (menos de un mes de antigüedad)");
             return imagePath;
         }
 
         // Configurar SSL
-        SSLConfig.configureForIPN();
+        SSLConfig.configurarParaIPN();
 
         // Hacer scraping para obtener la URL del PDF
         Document document = Jsoup.connect(url).get();
@@ -100,7 +100,7 @@ public class Scraping {
         return imagePath;
     }
 
-    private boolean isCacheExpired(File file) {
+    private boolean cacheExpirada(File file) {
         long tiempoActual = System.currentTimeMillis();
         long tiempoArchivo = file.lastModified();
         return (tiempoActual - tiempoArchivo) > UN_MES_EN_MILLIS;

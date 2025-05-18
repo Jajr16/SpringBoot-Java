@@ -30,7 +30,7 @@ public class SustitutoServicio {
 
     public List<SolicitudReemplazoDTO> obtenerTodasSolicitudes() {
         return sustitutoRepositorio.findAll().stream()
-                .map(this::convertToDTO)
+                .map(this::convertirParaDTO)
                 .collect(Collectors.toList());
     }
 
@@ -84,11 +84,11 @@ public class SustitutoServicio {
     public List<SolicitudReemplazoDTO> obtenerSolicitudesPendientes() {
         List<Reemplazo> reemplazos = sustitutoRepositorio.findByEstatus(0); // 0 = PENDIENTE
         return reemplazos.stream()
-                .map(this::convertToDTO)
+                .map(this::convertirParaDTO)
                 .collect(Collectors.toList());
     }
 
-    private SolicitudReemplazoDTO convertToDTO(Reemplazo reemplazo) {
+    private SolicitudReemplazoDTO convertirParaDTO(Reemplazo reemplazo) {
         String estado = reemplazo.getEstatus() == 0 ? "PENDIENTE" :
                 reemplazo.getEstatus() == 1 ? "APROBADO" : "RECHAZADO";
 

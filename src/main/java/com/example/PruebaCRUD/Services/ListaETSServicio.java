@@ -15,67 +15,67 @@
      */
     @Service // Anotación que indica que esta clase es un servicio de negocio
     public class ListaETSServicio {
-        private final InscripcionETSRepositorio inscripcionETSRepository;
+        private final InscripcionETSRepositorio inscripcionETSRepositorio;
         private final AplicaRepositorio aplicaRepositorio;
     
         @Autowired // Notación que permite inyectar dependencias en este caso, InscripcionETSRepository
-        public ListaETSServicio(InscripcionETSRepositorio inscripcionETSRepository, AplicaRepositorio aplicaRepositorio) {
-            this.inscripcionETSRepository = inscripcionETSRepository;
+        public ListaETSServicio(InscripcionETSRepositorio inscripcionETSRepositorio, AplicaRepositorio aplicaRepositorio) {
+            this.inscripcionETSRepositorio = inscripcionETSRepositorio;
             this.aplicaRepositorio = aplicaRepositorio;
         }
 
-          public List<ListaETSRespuestaDTO> inscripcionesETS(String boleta) {
-              List<Object[]> results = inscripcionETSRepository.callListInscripcionesETS(boleta);
+      public List<ListaETSRespuestaDTO> inscripcionesETS(String boleta) {
+              List<Object[]> resultados = inscripcionETSRepositorio.callListInscripcionesETS(boleta);
 
-              List<ListaETSRespuestaDTO> responseList = new ArrayList<>();
+              List<ListaETSRespuestaDTO> respuestaLista = new ArrayList<>();
 
               // Iterar sobre cada resultado y mapearlo a un DTO
-              for (Object[] result : results) {
-                  Integer idets = (Integer) result[0];
-                  String periodo = (String) result[1];
-                  String turno = (String) result[2];
-                  Date fecha = (Date) result[3];
-                  String materia = (String) result[4];
-                  String carrera = (String) result[5];
-                  Boolean inscrito = (Boolean) result[6];
+              for (Object[] resultado : resultados) {
+                  Integer idets = (Integer) resultado[0];
+                  String periodo = (String) resultado[1];
+                  String turno = (String) resultado[2];
+                  Date fecha = (Date) resultado[3];
+                  String materia = (String) resultado[4];
+                  String carrera = (String) resultado[5];
+                  Boolean inscrito = (Boolean) resultado[6];
 
                   // Convertir la fecha a String (o al formato que necesites)
                   String fechaString = fecha.toString();
 
                   // Crear un DTO y agregarlo a la lista de respuestas
-                  responseList.add(new ListaETSRespuestaDTO(idets, periodo, turno, fechaString, materia, inscrito, carrera));
+                  respuestaLista.add(new ListaETSRespuestaDTO(idets, periodo, turno, fechaString, materia, inscrito, carrera));
               }
 
-              return responseList;
+              return respuestaLista;
           }
     
         public Boolean confirmarInscripcion(String boleta) {
-            return inscripcionETSRepository.existsByBoletaInsBoleta(boleta);
+            return inscripcionETSRepositorio.existsByBoletaInsBoleta(boleta);
         }
     
     
         public List<ListaETSRespuestaDTO> aplicacionETS(String docente_rfc) {
-          List<Object[]> results = aplicaRepositorio.callListAplica(docente_rfc);
+          List<Object[]> resultados = aplicaRepositorio.callListAplica(docente_rfc);
     
-          List<ListaETSRespuestaDTO> responseList = new ArrayList<>();
+          List<ListaETSRespuestaDTO> respuestaLista = new ArrayList<>();
     
           // Iterar sobre cada resultado y mapearlo a un DTO
-          for (Object[] result : results) {
-              Integer idets = (Integer) result[0];
-              String periodo = (String) result[1];
-              String turno = (String) result[2];
-              Date fecha = (Date) result[3];
-              String materia = (String) result[4];
-              String carrera = (String) result[5];
+          for (Object[] resultado : resultados) {
+              Integer idets = (Integer) resultado[0];
+              String periodo = (String) resultado[1];
+              String turno = (String) resultado[2];
+              Date fecha = (Date) resultado[3];
+              String materia = (String) resultado[4];
+              String carrera = (String) resultado[5];
     
               // Convertir la fecha a String (o al formato que necesites)
               String fechaString = fecha.toString();
     
               // Crear un DTO y agregarlo a la lista de respuestas
-              responseList.add(new ListaETSRespuestaDTO(idets, periodo, turno, fechaString, materia, carrera));
+              respuestaLista.add(new ListaETSRespuestaDTO(idets, periodo, turno, fechaString, materia, carrera));
           }
     
-          return responseList;
+          return respuestaLista;
         }
     
     }

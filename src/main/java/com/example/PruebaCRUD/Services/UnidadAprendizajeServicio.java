@@ -11,15 +11,15 @@ import java.util.List;
  * Clase que contendrá la lógica que para realizar las funciones principales de los endpoints
  */
 @Service // Anotación que indica que esta clase es un servicio de negocio
-public class UnidadAprendizajeService {
+public class UnidadAprendizajeServicio {
     private final UnidadAprendizajeRepositorio unidadAprendizajeRepositorio;
 
     @Autowired // Notación que permite inyectar dependencias
-    public UnidadAprendizajeService(UnidadAprendizajeRepositorio unidadAprendizajeRepositorio) {
+    public UnidadAprendizajeServicio(UnidadAprendizajeRepositorio unidadAprendizajeRepositorio) {
         this.unidadAprendizajeRepositorio = unidadAprendizajeRepositorio;
     }
 
-    public List<UnidadAprendizajeProjectionSaes> getUApren(){
+    public List<UnidadAprendizajeProjectionSaes> obtenerUApren(){
         return this.unidadAprendizajeRepositorio.findAllBy();
     }
 }

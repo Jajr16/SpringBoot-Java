@@ -19,35 +19,35 @@ import java.util.stream.Stream;
  * Clase que contendrá la lógica que para realizar las funciones principales de los endpoints
  */
 @Service // Anotación que indica que esta clase es un servicio de negocio
-public class PersonalSeguridadService {
+public class PersonalSeguridadServicio {
     private final CargoPSRepositorio cargoPSRepositorio;
     private final PersonalSeguridadRepositorio personalSeguridadRepositorio;
-    private final UsuarioRepositorio usuarioRepository;
+    private final UsuarioRepositorio usuarioRepositorio;
     private final TurnoRepositorio turnoRepositorio;
-    private final UnidadAcademicaRepositorio unidadAcademicaRepository;
-    private final PersonaServicio personaService;
+    private final UnidadAcademicaRepositorio unidadAcademicaRepositorio;
+    private final PersonaServicio personaServicio;
 
     HashMap<String, Object> datos = new HashMap<>();
 
     @Autowired
-    public PersonalSeguridadService(CargoPSRepositorio cargoPSRepositorio,
-                                    PersonalSeguridadRepositorio personalSeguridadRepositorio,
-                                    UsuarioRepositorio usuarioRepository, TurnoRepositorio turnoRepositorio,
-                                    UnidadAcademicaRepositorio unidadAcademicaRepository, PersonaServicio personaService) {
+    public PersonalSeguridadServicio(CargoPSRepositorio cargoPSRepositorio,
+                                     PersonalSeguridadRepositorio personalSeguridadRepositorio,
+                                     UsuarioRepositorio usuarioRepositorio, TurnoRepositorio turnoRepositorio,
+                                     UnidadAcademicaRepositorio unidadAcademicaRepositorio, PersonaServicio personaServicio) {
         this.cargoPSRepositorio = cargoPSRepositorio;
         this.personalSeguridadRepositorio = personalSeguridadRepositorio;
-        this.usuarioRepository = usuarioRepository;
+        this.usuarioRepositorio = usuarioRepositorio;
         this.turnoRepositorio = turnoRepositorio;
-        this.unidadAcademicaRepository = unidadAcademicaRepository;
-        this.personaService = personaService;
+        this.unidadAcademicaRepositorio = unidadAcademicaRepositorio;
+        this.personaServicio = personaServicio;
     }
 
-    public List<?> getCargos() {
+    public List<?> obtenerCargos() {
         return this.cargoPSRepositorio.findAllBy();
     };
 
     //    Función para traer a todo el personal de seguridad
-    public List<PersonalSeguridadDTOSaes> getPS() {
+    public List<PersonalSeguridadDTOSaes> obtenerPS() {
         return personalSeguridadRepositorio.findPersonalSeguridad();
     }
 
@@ -55,7 +55,7 @@ public class PersonalSeguridadService {
      * Función para crear un nuevo Personal de seguridad
      */
     @Transactional // Notación que indica que si algo falla, hace un rollback a todas las transacciones ya hechas
-    public ResponseEntity<Object> newPersonalSeguridad(NuevoPersonalSeguridadDTOSaes personalSeguridad) {
+    public ResponseEntity<Object> nuevoPersonalSeguridad(NuevoPersonalSeguridadDTOSaes personalSeguridad) {
         datos = new HashMap<>();
 
         if (Stream.of(personalSeguridad.getCurp(), personalSeguridad.getNombre(), personalSeguridad.getApellido_P(),
@@ -70,7 +70,7 @@ public class PersonalSeguridadService {
             );
         }
 
-        Integer escuela = usuarioRepository.findEscuela(personalSeguridad.getUser());
+        Integer escuela = usuarioRepositorio.findEscuela(personalSeguridad.getUser());
 
         if (escuela == null) {
             datos.put("Error", true);
@@ -82,7 +82,7 @@ public class PersonalSeguridadService {
             );
         }
 
-        UnidadAcademica unidadAcademica = unidadAcademicaRepository.getReferenceById(escuela);
+        UnidadAcademica unidadAcademica = unidadAcademicaRepositorio.getReferenceById(escuela);
 
         if (unidadAcademica == null) {
             datos.put("Error", true);
@@ -99,7 +99,7 @@ public class PersonalSeguridadService {
                 personalSeguridad.getApellido_P(), personalSeguridad.getApellido_M(), personalSeguridad.getSexo(),
                 unidadAcademica);
 
-        ResponseEntity<Object> responsePersona = personaService.nuevaPersona(persona);
+        ResponseEntity<Object> responsePersona = personaServicio.nuevaPersona(persona);
         if (responsePersona.getStatusCode() != HttpStatus.CREATED) {
             return responsePersona;
         }

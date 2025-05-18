@@ -14,37 +14,37 @@ import java.util.List;
  */
 @RestController // Notación que defina el controlador REST (Solicitudes HTTP)
 @RequestMapping("/saes") // Mapear la url a este método
-public class PeriodoETSControllerSaes {
-    private final PeriodoETSServicio periodoETSService;
+public class PeriodoETSControladorSaes {
+    private final PeriodoETSServicio periodoETSServicio;
 
     @Autowired // Notación que permite inyectar dependencias, en este caso, PeriodoETSService
-    public PeriodoETSControllerSaes(PeriodoETSServicio periodoETSService) {
-        this.periodoETSService = periodoETSService;
+    public PeriodoETSControladorSaes(PeriodoETSServicio periodoETSServicio) {
+        this.periodoETSServicio = periodoETSServicio;
     }
 
     @GetMapping("/periodoETS")  // Notación para manejar solicitudes GET
-    public ResponseEntity<List<periodoETS>> getPeriodos() {
-        List<periodoETS> response = this.periodoETSService.getPeriodos();
-        System.out.println(response);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<List<periodoETS>> obtenerPeriodos() {
+        List<periodoETS> respuesta = this.periodoETSServicio.obtenerPeriodos();
+        System.out.println(respuesta);
+        return ResponseEntity.ok(respuesta);
     }
 
     @PostMapping("/periodoETS") // Notación para manejar solicitudes POST
     public ResponseEntity<Object> registrarPeriodo(@RequestBody periodoETS periodoETS) {
         System.out.println("EL PERIODO QUE DA ES " + periodoETS);
-        return this.periodoETSService.newPeriodo(periodoETS);
+        return this.periodoETSServicio.nuevoPeriodo(periodoETS);
     }
 
 
     @GetMapping("/PeriodoToETS")
-    public ResponseEntity<List<PeriodosETSProjectionSaes>> getPeriodosToETS() {
-        List<PeriodosETSProjectionSaes> response = this.periodoETSService.obtenerPeriodos();
+    public ResponseEntity<List<PeriodosETSProjectionSaes>> obtenerPeriodosParaETS() {
+        List<PeriodosETSProjectionSaes> respuesta = this.periodoETSServicio.obtenerPeriodosSAES();
 
-        if (response.isEmpty()) {
+        if (respuesta.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        System.out.println(response);
-        return ResponseEntity.ok(response);
+        System.out.println(respuesta);
+        return ResponseEntity.ok(respuesta);
     }
 }

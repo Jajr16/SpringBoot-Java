@@ -1,7 +1,6 @@
 package com.example.PruebaCRUD.Controllers.Saes;
 
-import com.example.PruebaCRUD.DTO.Saes.UnidadAprendizajeProjectionSaes;
-import com.example.PruebaCRUD.Services.UnidadAprendizajeService;
+import com.example.PruebaCRUD.Services.ETSServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,24 +14,23 @@ import java.util.List;
  */
 @RestController // Notación que defina el controlador REST (Solicitudes HTTP)
 @RequestMapping("/saes") // Mapear la url a este método
-public class UnidadAprendizajeControllerSaes {
-
-    private final UnidadAprendizajeService unidadAprendizajeService;
+public class SalonControladorSaes {
+    private final ETSServicio etsServicio;
 
     @Autowired // Notación que permite inyectar dependencias, en este caso, PeriodoETSService
-    public UnidadAprendizajeControllerSaes(UnidadAprendizajeService unidadAprendizajeService) {
-        this.unidadAprendizajeService = unidadAprendizajeService;
+    public SalonControladorSaes(ETSServicio etsServicio) {
+        this.etsServicio = etsServicio;
     }
 
-    @GetMapping("/UAprenToETS") // Notación para manejar solicitudes GET
-    public ResponseEntity<List<UnidadAprendizajeProjectionSaes>> getUAprenToETS() {
-        List<UnidadAprendizajeProjectionSaes> response = this.unidadAprendizajeService.getUApren();
+    @GetMapping("/SalonToETS") // Notación para manejar solicitudes GET
+    public ResponseEntity<List<?>> obtenerSalonParaETS() {
+        List<?> response = this.etsServicio.obtenerSalonesParaETS();
 
         if (response.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        System.out.println(response);
+        System.out.println("SALON TO ETS ES " + response);
         return ResponseEntity.ok(response);
     }
 }

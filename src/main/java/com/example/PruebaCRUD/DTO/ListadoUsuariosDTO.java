@@ -5,9 +5,9 @@ package com.example.PruebaCRUD.DTO;
  * datos de los ETS
  */
 public class ListadoUsuariosDTO {
-    String usuario;
-    String nombre;
-    String tipo;
+    private String usuario;
+    private String nombre;
+    private String tipo;
 
     // ==================== CONSTRUCTORES =====================
     public ListadoUsuariosDTO(String usuario, String nombre, String tipo) {

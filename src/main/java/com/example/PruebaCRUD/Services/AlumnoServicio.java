@@ -93,7 +93,7 @@ public class AlumnoServicio {
         return resultados;
     }
 
-    public List<ListaAlumnosInscritosProjectionSaes> getAlumnos(String usuario) {
+    public List<ListaAlumnosInscritosProjectionSaes> obtenerAlumnos(String usuario) {
         return this.alumnoRepositorio.findAlumnosSaes(usuario);
     }
 
@@ -162,7 +162,7 @@ public class AlumnoServicio {
         return alumnoRepositorio.findbyBoleta(boleta);
     }
 
-    public List<AlumnoDTOSaes> getAlumnos() {
+    public List<AlumnoDTOSaes> obtenerAlumnos() {
         return alumnoRepositorio.findAllAsDTO();
     }
 

@@ -20,14 +20,14 @@ public class PersonaServicio {
 
     private final PersonaRepositorio personaRepositorio;
     private final GeneroRepositorio generoRepositorio;
-    private final UnidadAcademicaRepositorio unidadAcademicaRepository;
+    private final UnidadAcademicaRepositorio unidadAcademicaRepositorio;
 
     @Autowired // Notación que permite inyectar dependencias
     public PersonaServicio(PersonaRepositorio personaRepositorio, GeneroRepositorio generoRepositorio,
-                           UnidadAcademicaRepositorio unidadAcademicaRepository) {
+                           UnidadAcademicaRepositorio unidadAcademicaRepositorio) {
         this.personaRepositorio = personaRepositorio;
         this.generoRepositorio = generoRepositorio;
-        this.unidadAcademicaRepository = unidadAcademicaRepository;
+        this.unidadAcademicaRepositorio = unidadAcademicaRepositorio;
     }
 
      // =================== PERSONA ===================
@@ -82,7 +82,7 @@ public class PersonaServicio {
 
         // Se comprueba que la Unidad Académica recibida exista
         Optional<UnidadAcademica> uaOP =
-                unidadAcademicaRepository.findByNombre(persona.getUnidadAcademica().getNombre());
+                unidadAcademicaRepositorio.findByNombre(persona.getUnidadAcademica().getNombre());
         if (uaOP.isEmpty()) {
             datos.put("Error", true);
             datos.put("message", "La unidad académica ingresada no existe: " +

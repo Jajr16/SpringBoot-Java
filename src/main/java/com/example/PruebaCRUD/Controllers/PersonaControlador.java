@@ -39,7 +39,7 @@ public class PersonaControlador {
     }
 
     @GetMapping("/datos/{usuario}")
-    public ResponseEntity<List<DatosPersonaDTO>> nombre(@PathVariable("usuario") String usuario) {
+    public ResponseEntity<List<DatosPersonaDTO>> obtenerNombre(@PathVariable("usuario") String usuario) {
 
         List<DatosPersonaDTO> respuesta = personaServicio.NombreUsuario(usuario);
 

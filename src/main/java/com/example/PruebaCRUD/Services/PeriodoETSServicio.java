@@ -29,7 +29,7 @@ public class PeriodoETSServicio {
         this.periodRepo = periodoService;
     }
 
-    public List<periodoETS> getPeriodos() {
+    public List<periodoETS> obtenerPeriodos() {
         return periodRepo.findAll();
     }
 
@@ -37,7 +37,7 @@ public class PeriodoETSServicio {
       * Lógica para devolver los días faltantes para el periodo de ETS
       */
     public TiempoParaETS obtenerTiempoParaETS() {
-        LocalDate today = LocalDate.now();
+        LocalDate diaActual = LocalDate.now();
         String periodo = crearPeriodo();
 
         // Se busca la fecha de inicio del periodo mediante el periodo
@@ -45,7 +45,7 @@ public class PeriodoETSServicio {
         LocalDate fechaETSLD = LocalDate.parse(fechaETS);
 
         // Se calcula la diferencia de días
-        long diasDeDiferencia = ChronoUnit.DAYS.between(today, fechaETSLD);
+        long diasDeDiferencia = ChronoUnit.DAYS.between(diaActual, fechaETSLD);
 
         String response;
 
@@ -63,7 +63,7 @@ public class PeriodoETSServicio {
       * Lógica para la alta de un nuevo periodo
       * @param periodoETS variable de periodoETS la cuál contiene todos los datos de la tabla periodoETS
       */
-    public ResponseEntity<Object> newPeriodo(periodoETS periodoETS) {
+    public ResponseEntity<Object> nuevoPeriodo(periodoETS periodoETS) {
         datos = new HashMap<>();
 
         if (periodoETS.getPeriodo() == null || periodoETS.getPeriodo().isEmpty()
@@ -104,7 +104,7 @@ public class PeriodoETSServicio {
         );
     }
 
-    public List<PeriodosETSProjectionSaes> obtenerPeriodos() {
+    public List<PeriodosETSProjectionSaes> obtenerPeriodosSAES() {
         return periodRepo.findAllBy();
     }
 

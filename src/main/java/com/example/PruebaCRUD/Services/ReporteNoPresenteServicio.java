@@ -21,10 +21,10 @@ import java.util.Optional;
 
 
 @Service
-public class ReporteNoPresenteService {
+public class ReporteNoPresenteServicio {
 
     @Autowired
-    private InscripcionETSRepositorio inscripcionETSRepository;
+    private InscripcionETSRepositorio inscripcionETSRepositorio;
 
     @Autowired
     private ETSRepositorio etsRepositorio;
@@ -32,13 +32,13 @@ public class ReporteNoPresenteService {
     @Autowired
     private IngresoSalonRepositorio ingresoSalonRepositorio;
 
-    private final ZoneId mexicoCityZone = ZoneId.of("America/Mexico_City");
+    private final ZoneId zonaCDMX = ZoneId.of("America/Mexico_City");
 
     @Scheduled(fixedRate = 5000)
     public void verificarYCrearIngresosRetrasados() {
-        List<Object[]> distinctInscripciones = inscripcionETSRepository.findDistinctBoletaIdets();
+        List<Object[]> inscripcionesDistintas = inscripcionETSRepositorio.findDistinctBoletaIdets();
 
-        for (Object[] inscripcion : distinctInscripciones) {
+        for (Object[] inscripcion : inscripcionesDistintas) {
             String boleta = (String) inscripcion[0];
             Integer idets = (Integer) inscripcion[1];
 
@@ -48,11 +48,11 @@ public class ReporteNoPresenteService {
             Optional<ETS> etsOptional = etsRepositorio.findById(idets);
 
             etsOptional.ifPresent(ets -> {
-                LocalDate fechaEts = ets.getFecha().toInstant().atZone(mexicoCityZone).toLocalDate();
+                LocalDate fechaEts = ets.getFecha().toInstant().atZone(zonaCDMX).toLocalDate();
                 System.out.println("cosa rara " + fechaEts);
                 LocalTime horaEts = ets.getHora().toLocalTime();
                 LocalDateTime etsDateTime = LocalDateTime.of(fechaEts, horaEts);
-                LocalDateTime now = LocalDateTime.now(mexicoCityZone);
+                LocalDateTime now = LocalDateTime.now(zonaCDMX);
                 LocalDateTime delayDateTime = etsDateTime.plusHours(2).plusMinutes(1);
 
                 if (now.isAfter(delayDateTime)) {

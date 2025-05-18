@@ -10,18 +10,18 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TokenNotificationServicio {
-    private final UsuarioRepositorio usuarioRepository;
+    private final UsuarioRepositorio usuarioRepositorio;
     private final TokenNotificacionRepositorio tokenNotificacionRepositorio;
 
     @Autowired
-    public TokenNotificationServicio(UsuarioRepositorio usuarioRepository, TokenNotificacionRepositorio tokenNotificacionRepositorio) {
-        this.usuarioRepository = usuarioRepository;
+    public TokenNotificationServicio(UsuarioRepositorio usuarioRepositorio, TokenNotificacionRepositorio tokenNotificacionRepositorio) {
+        this.usuarioRepositorio = usuarioRepositorio;
         this.tokenNotificacionRepositorio = tokenNotificacionRepositorio;
     }
 
     public TokenRespuestaDTO registrarToken(String usuarioT, String token) {
         try {
-            Usuario usuario = usuarioRepository.findById(usuarioT)
+            Usuario usuario = usuarioRepositorio.findById(usuarioT)
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
             // Buscar si existe un token para este usuario

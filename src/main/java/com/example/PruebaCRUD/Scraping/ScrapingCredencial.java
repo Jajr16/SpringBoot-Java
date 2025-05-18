@@ -23,12 +23,12 @@ import java.util.Map;
 public class ScrapingCredencial {
 
     // Configuración de rutas
-    public static final String PERSISTENT_STORAGE_BASE = "/app/";
-    public static final String CREDENTIALS_IMAGE_SUBDIR = "images/credenciales/";
-    public static final String CREDENTIALS_PDF_SUBDIR = "pdfs/credenciales/";
-    public static final String FULL_IMAGE_STORAGE_DIR = PERSISTENT_STORAGE_BASE + CREDENTIALS_IMAGE_SUBDIR;
-    public static final String FULL_PDF_STORAGE_DIR = PERSISTENT_STORAGE_BASE + CREDENTIALS_PDF_SUBDIR;
-    public static final String FRONTEND_IMAGE_PATH_PREFIX = "/images/credenciales/";
+    public static final String ALMACENAMIENTO_PERSISTENTE = "/app/";
+    public static final String RUTA_IMAGEN_CREDENCIAL = "images/credenciales/";
+    public static final String RUTA_PDF_CREDENCIAL = "pdfs/credenciales/";
+    public static final String ALMACENAMIENTO_RUTA_COMPLETA = ALMACENAMIENTO_PERSISTENTE + RUTA_IMAGEN_CREDENCIAL;
+    public static final String RUTA_PDF_COMPLETA = ALMACENAMIENTO_PERSISTENTE + RUTA_PDF_CREDENCIAL;
+    public static final String PREFIJO_FRONTEND_RUTA_IMAGEN = "/images/credenciales/";
     private static final int PDF_DPI = 300;
 
     // Configurar manejo de cookies global
@@ -41,7 +41,7 @@ public class ScrapingCredencial {
         Map<String, String> resultados = new HashMap<>();
 
         // Validación y extracción de ID
-        String alumnoId = extractAlumnoId(credencialUrl);
+        String alumnoId = obtenerBoletaAlumno(credencialUrl);
         if (alumnoId == null || alumnoId.trim().isEmpty()) {
             throw new IOException("No se pudo extraer un identificador válido de la URL: " + credencialUrl);
         }
@@ -51,8 +51,8 @@ public class ScrapingCredencial {
         System.out.println("Alumno ID procesado: " + safeAlumnoId);
 
         // Preparar directorios
-        Path imageDirPath = prepareDirectory(FULL_IMAGE_STORAGE_DIR);
-        Path pdfDirPath = prepareDirectory(FULL_PDF_STORAGE_DIR);
+        Path imageDirPath = prepararDirectorio(ALMACENAMIENTO_RUTA_COMPLETA);
+        Path pdfDirPath = prepararDirectorio(RUTA_PDF_COMPLETA);
 
         String pdfName = "credencial_" + safeAlumnoId + ".pdf";
         String imageName = "credencial_" + safeAlumnoId + ".png";
@@ -62,7 +62,7 @@ public class ScrapingCredencial {
 
         try {
             // Paso 1: Obtener el HTML de la página
-            String htmlContent = fetchHtmlContent(credencialUrl);
+            String htmlContent = buscarContenidoHtml(credencialUrl);
 
             // Paso 2: Extraer datos del HTML
             Document doc = Jsoup.parse(htmlContent);
@@ -70,15 +70,15 @@ public class ScrapingCredencial {
 
             if (!Files.exists(imagePath)) {
                 // Paso 3: Generar PDF desde HTML
-                generatePdfFromHtml(htmlContent, pdfPath);
+                generarPDFDeHTML(htmlContent, pdfPath);
 
                 // Paso 4: Convertir PDF a imagen
-                convertPDFToImage(pdfPath, imagePath);
+                convertirPDFaImagen(pdfPath, imagePath);
             } else {
                 System.out.println("Imagen existente, omitiendo captura: " + imagePath);
             }
 
-            resultados.put("imagenPath", FRONTEND_IMAGE_PATH_PREFIX + imageName);
+            resultados.put("imagenPath", PREFIJO_FRONTEND_RUTA_IMAGEN + imageName);
             return resultados;
 
         } catch (InterruptedException e) {
@@ -87,7 +87,7 @@ public class ScrapingCredencial {
         }
     }
 
-    private static String fetchHtmlContent(String url) throws IOException, InterruptedException {
+    private static String buscarContenidoHtml(String url) throws IOException, InterruptedException {
         // Pequeño retardo aleatorio entre 1-3 segundos
         Thread.sleep(1000 + (long)(Math.random() * 2000));
 
@@ -111,7 +111,7 @@ public class ScrapingCredencial {
             String newLocation = response.headers().firstValue("Location").orElse(null);
             if (newLocation != null) {
                 System.out.println("Redirección detectada. Nueva ubicación: " + newLocation);
-                return fetchHtmlContent(newLocation);
+                return buscarContenidoHtml(newLocation);
             }
         }
 
@@ -124,12 +124,12 @@ public class ScrapingCredencial {
     }
 
     // Resto de los métodos permanecen igual...
-    private static void generatePdfFromHtml(String htmlContent, Path pdfPath) throws IOException {
+    private static void generarPDFDeHTML(String htmlContent, Path pdfPath) throws IOException {
         try (OutputStream os = new FileOutputStream(pdfPath.toFile())) {
             ITextRenderer renderer = new ITextRenderer();
 
             // Configurar el HTML (necesita ser XHTML compatible)
-            String xhtml = convertToXhtml(htmlContent);
+            String xhtml = convertirAXhtml(htmlContent);
             renderer.setDocumentFromString(xhtml);
 
             renderer.layout();
@@ -138,14 +138,14 @@ public class ScrapingCredencial {
         System.out.println("PDF generado: " + pdfPath.toAbsolutePath());
     }
 
-    private static String convertToXhtml(String html) {
+    private static String convertirAXhtml(String html) {
         // Jsoup puede ayudar a limpiar el HTML
         Document doc = Jsoup.parse(html);
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
         return doc.html();
     }
 
-    private static void convertPDFToImage(Path pdfPath, Path imagePath) throws IOException {
+    private static void convertirPDFaImagen(Path pdfPath, Path imagePath) throws IOException {
         try (PDDocument document = PDDocument.load(pdfPath.toFile())) {
             PDFRenderer pdfRenderer = new PDFRenderer(document);
             BufferedImage image = pdfRenderer.renderImageWithDPI(0, PDF_DPI);
@@ -154,7 +154,7 @@ public class ScrapingCredencial {
         }
     }
 
-    private static Path prepareDirectory(String directoryPath) throws IOException {
+    private static Path prepararDirectorio(String directoryPath) throws IOException {
         Path path = Paths.get(directoryPath);
         if (!Files.exists(path)) {
             Files.createDirectories(path);
@@ -166,11 +166,11 @@ public class ScrapingCredencial {
     private static Map<String, String> extraerDatosAlumno(Document doc) {
         Map<String, String> datos = new HashMap<>();
 
-        datos.put("boleta", getSafeTextContent(doc, ".boleta", "[^0-9]"));
-        datos.put("curp", getSafeTextContent(doc, ".curp", "").trim().toUpperCase());
-        datos.put("nombre", getSafeTextContent(doc, ".nombre", "").trim());
-        datos.put("carrera", getSafeTextContent(doc, ".carrera", "").trim());
-        datos.put("escuela", getSafeTextContent(doc, ".escuela", "").trim());
+        datos.put("boleta", obtenerTexto(doc, ".boleta", "[^0-9]"));
+        datos.put("curp", obtenerTexto(doc, ".curp", "").trim().toUpperCase());
+        datos.put("nombre", obtenerTexto(doc, ".nombre", "").trim());
+        datos.put("carrera", obtenerTexto(doc, ".carrera", "").trim());
+        datos.put("escuela", obtenerTexto(doc, ".escuela", "").trim());
 
         if (!datos.get("curp").matches("^[A-Z]{4}[0-9]{6}[A-Z]{6}[0-9A-Z]{2}$")) {
             System.err.println("Advertencia: CURP con formato potencialmente inválido");
@@ -179,7 +179,7 @@ public class ScrapingCredencial {
         return datos;
     }
 
-    private static String getSafeTextContent(Document doc, String selector, String regexToRemove) {
+    private static String obtenerTexto(Document doc, String selector, String regexToRemove) {
         try {
             Element element = doc.selectFirst(selector);
             String content = element != null ? element.text() : "";
@@ -190,7 +190,7 @@ public class ScrapingCredencial {
         }
     }
 
-    private static String extractAlumnoId(String url) {
+    private static String obtenerBoletaAlumno(String url) {
         if (url == null || !url.contains("?h=")) return null;
         return url.substring(url.indexOf("?h=") + 3);
     }

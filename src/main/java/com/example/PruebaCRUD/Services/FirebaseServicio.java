@@ -22,24 +22,24 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class FirebaseService {
-    private static final Logger logger = LoggerFactory.getLogger(FirebaseService.class);
-    private static final String LOCAL_CREDENTIALS_PATH = "./src/main/java/com/example/PruebaCRUD/serviceAccountKey.json";
+public class FirebaseServicio {
+    private static final Logger registro = LoggerFactory.getLogger(FirebaseServicio.class);
+    private static final String RUTA_CREDENCIALES_LOCAL = "./src/main/java/com/example/PruebaCRUD/serviceAccountKey.json";
     
     // Cache de la instancia de FirebaseMessaging
-    private final FirebaseMessaging firebaseMessaging;
+    private final FirebaseMessaging mensajesFirebase;
     private final TokenNotificacionRepositorio tokenNotificacionRepositorio;
 
     @Autowired
-    public FirebaseService(TokenNotificacionRepositorio tokenNotificacionRepositorio) {
+    public FirebaseServicio(TokenNotificacionRepositorio tokenNotificacionRepositorio) {
         this.tokenNotificacionRepositorio = tokenNotificacionRepositorio;
-        this.firebaseMessaging = initializeFirebase();
+        this.mensajesFirebase = inicializarfirebase();
     }
 
-    private FirebaseMessaging initializeFirebase() {
+    private FirebaseMessaging inicializarfirebase() {
         try {
             // Usar la configuración específica para Firebase
-            SSLConfig.configureForFirebase();
+            SSLConfig.configurarParaFirebase();
 
             System.setProperty("com.google.api.client.googleapis.auth.oauth2.GoogleCredentials.USE_SYSTEM_TRUSTED_STORE", "true");
 
@@ -55,7 +55,7 @@ public class FirebaseService {
             FirebaseApp.initializeApp(options);
             return FirebaseMessaging.getInstance();
         } catch (IOException e) {
-            logger.error("Error crítico al inicializar Firebase: {}", e.getMessage());
+            registro.error("Error crítico al inicializar Firebase: {}", e.getMessage());
             throw new RuntimeException("No se pudo inicializar Firebase", e);
         }
     }
@@ -64,10 +64,10 @@ public class FirebaseService {
         // Cache de credenciales para evitar lecturas repetidas
         try {
             return GoogleCredentials
-                    .fromStream(new FileInputStream(LOCAL_CREDENTIALS_PATH))
+                    .fromStream(new FileInputStream(RUTA_CREDENCIALES_LOCAL))
                     .createScoped("https://www.googleapis.com/auth/firebase.messaging");
         } catch (IOException localFileError) {
-            logger.debug("Archivo local no encontrado, usando variables de entorno");
+            registro.debug("Archivo local no encontrado, usando variables de entorno");
             
             String credentials = System.getenv("FIREBASE_CREDENTIALS");
             if (credentials == null || credentials.isEmpty()) {
@@ -85,16 +85,16 @@ public class FirebaseService {
         try {
             Optional<TokenNotificacion> tokenOpt = tokenNotificacionRepositorio.findByUsuarioUsuario(usuario);
             if (tokenOpt.isEmpty() || tokenOpt.get().getToken() == null || tokenOpt.get().getToken().isEmpty()) {
-                logger.warn("Token no válido para usuario: {}", usuario);
+                registro.warn("Token no válido para usuario: {}", usuario);
                 return;
             }
 
             Message msg = construirMensaje(tokenOpt.get().getToken(), titulo, cuerpo, usuario, remitente, mensaje);
-            String response = firebaseMessaging.send(msg);
-            logger.info("Notificación enviada. ID: {}", response);
+            String response = mensajesFirebase.send(msg);
+            registro.info("Notificación enviada. ID: {}", response);
 
         } catch (FirebaseMessagingException e) {
-            logger.error("Error al enviar notificación a {}: {}", usuario, e.getMessage());
+            registro.error("Error al enviar notificación a {}: {}", usuario, e.getMessage());
         }
     }
 

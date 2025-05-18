@@ -27,21 +27,21 @@ import java.util.Map;
  * Clase API que tendrá los endpoints
  */
 @RestController
-public class ScrapingController {
+public class ScrapingControlador {
     @Autowired
     private AlumnoServicio alumnoService;
 
     private final Scraping scraping = new Scraping();
 
     @GetMapping("/ImagePDF") // Notación para manejar solicitudes GET
-    public ResponseEntity<FileSystemResource> getCalendarImage() {
+    public ResponseEntity<FileSystemResource> obtenerImagenCalendario() {
         try {
             // URL del sitio web y selector CSS
             String url = "https://www.ipn.mx/calendario-academico.html";
             String cssQuery = ".col-12.col-md-4.offset-md-1 a";
 
             // Procesar el PDF y obtener la ruta de la imagen
-            String imagePath = scraping.processPdfToImage(url, cssQuery);
+            String imagePath = scraping.procesarPdfAImage(url, cssQuery);
 
             // Retornar la imagen como respuesta
             File imageFile = new File(imagePath);
@@ -84,10 +84,10 @@ public class ScrapingController {
             }
 
             System.out.println("Procesando imagen...");
-            String fullImagePath = ScrapingCredencial.FULL_IMAGE_STORAGE_DIR +
-                    imagenPath.substring(ScrapingCredencial.FRONTEND_IMAGE_PATH_PREFIX.length());
+            String fullImagePath = ScrapingCredencial.ALMACENAMIENTO_RUTA_COMPLETA +
+                    imagenPath.substring(ScrapingCredencial.PREFIJO_FRONTEND_RUTA_IMAGEN.length());
 
-            String base64Image = convertImageToBase64(fullImagePath);
+            String base64Image = convertirImagenABase64(fullImagePath);
 
             System.out.println("Buscando credenciales en la base de datos...");
             List<CredencialDTO> credenciales = alumnoService.encontrarCredencialPorBoleta(boleta);
@@ -106,7 +106,7 @@ public class ScrapingController {
         }
     }
 
-    private String convertImageToBase64(String imagePath) throws IOException {
+    private String convertirImagenABase64(String imagePath) throws IOException {
         try {
             File imageFile = new File(imagePath);
             byte[] imageBytes = Files.readAllBytes(imageFile.toPath());

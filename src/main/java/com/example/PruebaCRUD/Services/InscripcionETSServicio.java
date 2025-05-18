@@ -32,24 +32,24 @@ public class InscripcionETSServicio {
     HashMap<String, Object> datos = new HashMap<>();
 
     private final ETSRepositorio etsRepositorio;
-    private final InscripcionETSRepositorio inscripcionETSRepository;
-    private final AlumnoRepositorio alumnoRepository;
+    private final InscripcionETSRepositorio inscripcionETSRepositorio;
+    private final AlumnoRepositorio alumnoRepositorio;
 
     @Autowired
-    public InscripcionETSServicio(ETSRepositorio etsRepositorio, InscripcionETSRepositorio inscripcionETSRepository,
-                                  AlumnoRepositorio alumnoRepository) {
+    public InscripcionETSServicio(ETSRepositorio etsRepositorio, InscripcionETSRepositorio inscripcionETSRepositorio,
+                                  AlumnoRepositorio alumnoRepositorio) {
         this.etsRepositorio = etsRepositorio;
-        this.inscripcionETSRepository = inscripcionETSRepository;
-        this.alumnoRepository = alumnoRepository;
+        this.inscripcionETSRepositorio = inscripcionETSRepositorio;
+        this.alumnoRepositorio = alumnoRepositorio;
     }
 
-    public List<ListaInscripcionETSProjectionSaes> getMaterias(String usuario){
+    public List<ListaInscripcionETSProjectionSaes> obtenerMaterias(String usuario){
         return this.etsRepositorio.findETSL(usuario);
     }
 
     // Función para inscribir un alumno a un ets
     @Transactional
-    public ResponseEntity<Object> newInscripcion(NuevaPeticionInscripcionSaes nuevaPeticionInscripcionSaes) {
+    public ResponseEntity<Object> nuevaInscripcion(NuevaPeticionInscripcionSaes nuevaPeticionInscripcionSaes) {
         datos = new HashMap<>();
         System.out.println("AQUI SE SUPONE QUE ES" + nuevaPeticionInscripcionSaes);
 
@@ -77,7 +77,7 @@ public class InscripcionETSServicio {
             return new ResponseEntity<>(datos, HttpStatus.CONFLICT);
         }
 
-        Optional<Alumno> alumno = this.alumnoRepository.findByBoleta(nuevaPeticionInscripcionSaes.getBoleta());
+        Optional<Alumno> alumno = this.alumnoRepositorio.findByBoleta(nuevaPeticionInscripcionSaes.getBoleta());
 
         if (alumno.isEmpty()) {
             datos.put("Error", true);
@@ -92,7 +92,7 @@ public class InscripcionETSServicio {
         inspk.setBoleta(nuevaPeticionInscripcionSaes.getBoleta());
 
         // Validar si ya existe la inscripción
-        boolean exists = inscripcionETSRepository.existsById(inspk);
+        boolean exists = inscripcionETSRepositorio.existsById(inspk);
 
         if (exists) {
             datos.put("Error", true);
@@ -107,18 +107,18 @@ public class InscripcionETSServicio {
         newins.setEts(ets.get());
         newins.setAlumno(alumno.get());
 
-        inscripcionETSRepository.save(newins);
+        inscripcionETSRepositorio.save(newins);
 
         datos.put("message", "Alumno inscrito con éxito.");
         return new ResponseEntity<>(datos, HttpStatus.CREATED);
     }
 
-    public List<InscripcionesDTOSaes> getInscripciones(String usuario) {
-        return this.inscripcionETSRepository.getInscripciones(usuario);
+    public List<InscripcionesDTOSaes> obtenerInscripciones(String usuario) {
+        return this.inscripcionETSRepositorio.getInscripciones(usuario);
     }
 
     public List<ListaAlumnosDTO> ListarAlumnos(Integer idetss) {
-        List<Object[]> results = inscripcionETSRepository.callObtenerAsistenciaDetalles(idetss);
+        List<Object[]> results = inscripcionETSRepositorio.callObtenerAsistenciaDetalles(idetss);
 
         List<ListaAlumnosDTO> responseList = new ArrayList<>();
 
@@ -149,8 +149,8 @@ public class InscripcionETSServicio {
     }
 
     public List<DetalleAlumnosDTO> encontrarDetalleAlumnoporboleta(String boleta) {
-        System.out.println(inscripcionETSRepository.findDetalleAlumnoporboleta(boleta));
-        return inscripcionETSRepository.findDetalleAlumnoporboleta(boleta);
+        System.out.println(inscripcionETSRepositorio.findDetalleAlumnoporboleta(boleta));
+        return inscripcionETSRepositorio.findDetalleAlumnoporboleta(boleta);
     }
 
 }

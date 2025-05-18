@@ -24,16 +24,16 @@ import java.util.*;
 public class MensajeServicio {
     private final MensajeRepositorio mensajeRepositorio;
     private final ChatRepositorio chatRepositorio;
-    private final FirebaseService firebaseService;
-    private final UsuarioRepositorio usuarioRepository;
+    private final FirebaseServicio firebaseServicio;
+    private final UsuarioRepositorio usuarioRepositorio;
 
     @Autowired
     public MensajeServicio(MensajeRepositorio mensajeRepositorio,
-                           FirebaseService firebaseService, ChatRepositorio chatRepositorio, UsuarioRepositorio usuarioRepository) {
+                           FirebaseServicio firebaseServicio, ChatRepositorio chatRepositorio, UsuarioRepositorio usuarioRepositorio) {
         this.mensajeRepositorio = mensajeRepositorio;
-        this.firebaseService = firebaseService;
+        this.firebaseServicio = firebaseServicio;
         this.chatRepositorio = chatRepositorio;
-        this.usuarioRepository = usuarioRepository;
+        this.usuarioRepositorio = usuarioRepositorio;
     }
 
     public void enviarMensaje(Usuario remitente, Usuario destinatario, String contenido) {
@@ -63,12 +63,12 @@ public class MensajeServicio {
         System.out.println("Mensaje guardado correctamente en la base de datos");
 
         // Enviar notificación al destinatario
-        firebaseService.enviarNoti(destinatario.getUsuario(), "Nuevo mensaje", contenido, remitente.getUsuario(), contenido);
+        firebaseServicio.enviarNoti(destinatario.getUsuario(), "Nuevo mensaje", contenido, remitente.getUsuario(), contenido);
     }
 
     public List<ListadoUsuariosDTO> obtenerUsuarios(String usuario) {
-        System.out.println("EL RESULTADO DE LA CONSULTA FUE " + this.usuarioRepository.findUsers(usuario));
-        return this.usuarioRepository.findUsers(usuario);
+        System.out.println("EL RESULTADO DE LA CONSULTA FUE " + this.usuarioRepositorio.findUsers(usuario));
+        return this.usuarioRepositorio.findUsers(usuario);
     }
 
     public ResponseEntity<Object> obtenerChat(String user) {

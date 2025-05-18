@@ -12,15 +12,15 @@ import java.util.List;
  */
 @Service // Anotación que indica que esta clase es un servicio de negocio
 public class UnidadAcademicaServicio {
-    private final UnidadAcademicaRepositorio unidadAcademicaRepository;
+    private final UnidadAcademicaRepositorio unidadAcademicaRepositorio;
 
     @Autowired // Notación que permite inyectar dependencias
-    public UnidadAcademicaServicio(UnidadAcademicaRepositorio unidadAcademicaRepository) {
-        this.unidadAcademicaRepository = unidadAcademicaRepository;
+    public UnidadAcademicaServicio(UnidadAcademicaRepositorio unidadAcademicaRepositorio) {
+        this.unidadAcademicaRepositorio = unidadAcademicaRepositorio;
     }
 
     public List<UnidadAcademica> obtenerUA() {
-        return this.unidadAcademicaRepository.findAll();
+        return this.unidadAcademicaRepositorio.findAll();
     }
 
 }

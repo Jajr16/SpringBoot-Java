@@ -13,16 +13,16 @@ import java.util.List;
  */
 @RestController // Notación que defina el controlador REST (Solicitudes HTTP)
 @RequestMapping("/saes") // Mapear la url a este método
-public class CargoControllerSaes {
+public class CargoControladorSaes {
     private final DocenteServicio docenteService;
 
     @Autowired // Notación que permite inyectar dependencias, en este caso, DocenteService
-    public CargoControllerSaes(DocenteServicio docenteService) {
+    public CargoControladorSaes(DocenteServicio docenteService) {
         this.docenteService = docenteService;
     }
 
     @GetMapping("/CargoToDocente")
-    public List<?> getCargos() {
+    public List<?> obtenerCargosDocente() {
         return this.docenteService.obtenerCargos();
     }
 }
