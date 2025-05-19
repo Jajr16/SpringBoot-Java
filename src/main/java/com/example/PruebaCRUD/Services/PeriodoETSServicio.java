@@ -41,19 +41,40 @@ public class PeriodoETSServicio {
         String periodo = crearPeriodo();
 
         // Se busca la fecha de inicio del periodo mediante el periodo
-        String fechaETS = periodRepo.findFechaByPeriodo(periodo);
-        LocalDate fechaETSLD = LocalDate.parse(fechaETS);
+        List<String> fechaETS = periodRepo.findFechasByPeriodo(periodo);
+        System.out.println("Las fechas obtenidas son: " + fechaETS);
+        String listaFechas = fechaETS.get(0);
 
-        // Se calcula la diferencia de días
-        long diasDeDiferencia = ChronoUnit.DAYS.between(diaActual, fechaETSLD);
+        String[] fechasSeparadas = listaFechas.split(",");
 
-        String response;
+        LocalDate fechaInicioETS;
+        LocalDate fechaFinETS;
 
-        if (diasDeDiferencia < 0) {
-            response = "Aún no está registrado el siguiente periodo de ETS.";
-        } else {
-            response = "Faltan " + diasDeDiferencia + " días para el periodo de ETS.";
+        try {
+            fechaInicioETS = LocalDate.parse(fechasSeparadas[0].trim());
+            fechaFinETS = LocalDate.parse(fechasSeparadas[1].trim());
+
+        } catch (java.time.format.DateTimeParseException e) {
+            e.printStackTrace(); // O registra el error de otra manera
+            return new TiempoParaETS("Error al parsear las fechas: " + e.getMessage());
         }
+
+        String response = "";
+
+        if (diaActual.isAfter(fechaInicioETS) && diaActual.isBefore(fechaFinETS)) {
+            response = "Ya estás en el periodo de ETS!!!";
+        } else if (diaActual.isAfter(fechaFinETS)) {
+            response = "El periodo de ETS ya ha finalizado!!!";
+        } else if (diaActual.isBefore(fechaInicioETS)) {
+            // Se calcula la diferencia de días
+            long diasDeDiferencia = ChronoUnit.DAYS.between(diaActual, fechaInicioETS);
+            if (diasDeDiferencia < 0) {
+                response = "Aún no está programado el siguiente periodo de ETS.";
+            } else {
+                response = "Faltan " + diasDeDiferencia + " días para el periodo de ETS.";
+            }
+        }
+
 
         // Se retorna la respuesta por medio de un DTO
         return new TiempoParaETS(response);
