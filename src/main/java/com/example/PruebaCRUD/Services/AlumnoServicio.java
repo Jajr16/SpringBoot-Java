@@ -64,34 +64,38 @@ public class AlumnoServicio {
     }
 
     public List<AlumnoDTO> encontrarAlumnosInscritosETS() {
-
         String periodo = PeriodoETSServicio.crearPeriodo();
+        List<Object[]> fechasPeriodos = periodoETSRepositorio.findFechasByPeriodo(periodo);
 
-        List<String> fechasPeriodos = periodoETSRepositorio.findFechasByPeriodo(periodo);
-
-        if (fechasPeriodos == null) { // Si la fecha obtenida es null
-            // Usamos ArrayList como implementación de List
-            return new ArrayList<>();  // Retornamos la lista que contiene el error
+        if (fechasPeriodos == null || fechasPeriodos.isEmpty()) {
+            return new ArrayList<>();
         }
 
-        String fechasString = fechasPeriodos.get(0);
+        LocalDate hoy = LocalDate.now();
 
-        String[] fechasSeparadas = fechasString.split(",");
+        // Buscar si hoy está dentro de alguno de los periodos
+        for (Object[] fechas : fechasPeriodos) {
+            LocalDate inicio = LocalDate.parse(fechas[0].toString());
+            LocalDate fin = LocalDate.parse(fechas[1].toString());
 
-        System.out.println("LAS FECHAS DEL PERIODO " + periodo + " SON " + fechasPeriodos);
+            if ((hoy.isEqual(inicio) || hoy.isAfter(inicio)) && (hoy.isBefore(fin) || hoy.isEqual(fin))) {
+                Date fechaActual = Date.valueOf(hoy);
+                Date fechaInicio = Date.valueOf(inicio);
+                Date fechaFin = Date.valueOf(fin);
 
-        // Fecha actual
-        Date fechaActual = Date.valueOf(LocalDate.now());
+                List<AlumnoDTO> resultados = inscripcionETSRepositorio.findAlumnosInscritosETS(
+                        fechaActual, fechaInicio, fechaFin, periodo);
 
-        Date fechaInicio = Date.valueOf(LocalDate.parse(fechasSeparadas[0]));
-        Date fechaFin = Date.valueOf(LocalDate.parse(fechasSeparadas[1]));
+                System.out.println("LOS ALUMNOS QUE PRESENTAN ETS HOY SON: " + resultados);
+                return resultados;
+            }
+        }
 
-        List<AlumnoDTO> resultados = inscripcionETSRepositorio.findAlumnosInscritosETS(fechaActual, fechaInicio, fechaFin,
-                periodo);
-
-        System.out.println("LOS ALUMNOS QUE PRESENTAN ETS HOY SON: " + resultados);
-        return resultados;
+        // Si no estamos en ningún periodo activo
+        System.out.println("HOY NO HAY ETS PROGRAMADOS.");
+        return new ArrayList<>();
     }
+
 
     public List<ListaAlumnosInscritosProjectionSaes> obtenerAlumnos(String usuario) {
         return this.alumnoRepositorio.findAlumnosSaes(usuario);
