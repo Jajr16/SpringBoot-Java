@@ -61,7 +61,7 @@ public class IngresoInstalacionServicio {
             // 5. Registrar asistencia
             ingresoInstalacionRepositorio.saveAttendance(
                     boleta,
-                    idETS,  // Asegúrate que coincida con el nombre del parámetro en @Query nativo
+                    idETS,
                     fecha,
                     hora
             );

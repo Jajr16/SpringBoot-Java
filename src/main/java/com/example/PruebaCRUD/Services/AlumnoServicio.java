@@ -82,6 +82,10 @@ public class AlumnoServicio {
                 Date fechaActual = Date.valueOf(hoy);
                 Date fechaInicio = Date.valueOf(inicio);
                 Date fechaFin = Date.valueOf(fin);
+                System.out.println("LAS FECHAS SON: " + fechaActual);
+                System.out.println("LAS FECHAS SON: " + fechaInicio);
+                System.out.println("LAS FECHAS SON: " + fechaFin);
+                System.out.println("EL PERIODO ES: " + periodo);
 
                 List<AlumnoDTO> resultados = inscripcionETSRepositorio.findAlumnosInscritosETS(
                         fechaActual, fechaInicio, fechaFin, periodo);
