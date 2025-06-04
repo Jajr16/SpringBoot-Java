@@ -31,6 +31,7 @@ import java.nio.file.Files;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -71,7 +72,7 @@ public class AlumnoServicio {
             return new ArrayList<>();
         }
 
-        LocalDate hoy = LocalDate.now();
+        LocalDate hoy = LocalDate.now(ZoneId.of("America/Mexico_City"));
 
         // Buscar si hoy está dentro de alguno de los periodos
         for (Object[] fechas : fechasPeriodos) {
