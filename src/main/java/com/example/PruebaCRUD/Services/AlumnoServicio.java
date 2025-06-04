@@ -72,7 +72,8 @@ public class AlumnoServicio {
             return new ArrayList<>();
         }
 
-        LocalDate hoy = LocalDate.now(ZoneId.of("America/Mexico_City"));
+        LocalDate manana = LocalDate.now(ZoneId.of("America/Mexico_City"));
+        LocalDate hoy = manana.minusDays(1);
 
         // Buscar si hoy está dentro de alguno de los periodos
         for (Object[] fechas : fechasPeriodos) {
